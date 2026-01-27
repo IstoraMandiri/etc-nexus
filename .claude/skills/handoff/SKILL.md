@@ -39,13 +39,21 @@ Ensure TODO.md reflects:
 - **Next steps**: Specific, actionable items for the next agent
 - **Context needed**: Any non-obvious information the next agent needs
 
-### Step 4: Run /wrapup
+### Step 4: Update PROMPTLOG.md (subagent)
 
-Execute the `/wrapup` skill to:
-- Update PROMPTLOG.md with session prompts
-- Commit all documentation changes
+Use the Task tool to run the promptlog skill in a subagent:
 
-### Step 5: Report handoff summary
+```
+Task tool with subagent_type="general-purpose", prompt="Run /promptlog to update PROMPTLOG.md with this session's prompts"
+```
+
+Wait for the subagent to complete before proceeding.
+
+### Step 5: Commit all changes
+1. Stage SITREP.md, TODO.md, PROMPTLOG.md, and any other relevant files
+2. Create a commit with message: "Update docs for session handoff"
+
+### Step 6: Report handoff summary
 
 Output a brief summary for the user:
 

@@ -1,90 +1,86 @@
 # TODO
 
-## Current Challenge
+## Immediate Actions (Next Session)
 
-Upstream Hive tests are designed for Ethereum mainnet (post-merge, Cancun era). ETC is pre-merge with a different fork schedule. We need a testing methodology that:
+### 1. Fix `--nocompaction` Flag
+**File:** `hive/clients/core-geth/geth.sh:112`
 
-1. Validates core-geth works correctly for ETC use cases
-2. Doesn't skip tests that SHOULD pass
-3. Clearly documents why certain tests are excluded
+```bash
+# Current (broken):
+(cd /blocks && $geth $FLAGS --gcmode=archive --verbosity=$HIVE_LOGLEVEL import --nocompaction `ls | sort -n`)
 
-## Test Categorization Methodology
+# Fixed (remove --nocompaction):
+(cd /blocks && $geth $FLAGS --gcmode=archive --verbosity=$HIVE_LOGLEVEL import `ls | sort -n`)
+```
 
-### Step 1: Categorize All Hive Simulators
+### 2. Fix TTD Handling for Pre-Merge Tests
+**File:** `hive/clients/core-geth/mapper.jq`
 
-| Simulator | Relevance | Notes |
-|-----------|-----------|-------|
-| `devp2p/discv4` | **ETC-relevant** | P2P discovery - should pass |
-| `devp2p/eth` | **Needs investigation** | Uses Engine API (post-merge) |
-| `smoke/genesis` | **ETC-relevant** | Basic genesis handling - should pass |
-| `smoke/network` | **ETC-relevant** | Basic networking |
-| `ethereum/consensus` | **Partially relevant** | EVM tests, but defaults to Cancun |
-| `ethereum/sync` | **ETH-only** | Post-merge beacon sync |
-| `ethereum/engine` | **ETH-only** | Engine API (post-merge) |
-| `ethereum/rpc-compat` | **Partially relevant** | Many methods ETC doesn't implement |
-| `eth2/*` | **ETH-only** | Beacon chain tests |
-
-### Step 2: Establish ETC Baseline
-
-For each ETC-relevant simulator, run tests and document:
-- Total tests
-- Passed
-- Failed (with reason: ETC-expected vs bug)
-
-### Step 3: Create ETC Test Suite
+The mapper sets TTD even for pre-merge fork tests, causing core-geth to enter beacon sync mode. Investigation needed:
 
 Options:
-1. **Filter existing tests** - Run consensus tests with pre-merge fork configs
-2. **Create ETC simulator** - New `simulators/etc/` with ETC-specific tests
-3. **Fork test data** - Create ETC-specific test vectors
+1. Check if mapper can detect pre-merge configs and skip TTD
+2. Look for hive flag to disable post-merge mode
+3. Modify genesis.json generation to omit merge config
 
-## Immediate Actions
-
-### 1. Audit Passing Tests
-```bash
-# These MUST pass - they're ETC-relevant
-./hive --sim devp2p --sim.limit discv4 --client core-geth  # 16/16 ✓
-./hive --sim smoke/genesis --client core-geth              # 6/6 ✓
+**Evidence from client logs:**
+```
+Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)
+Chain post-merge, sync via beacon client
 ```
 
-### 2. Investigate devp2p/eth Failures
-The eth protocol tests fail because:
-- They use `--engineapi` (Engine API for post-merge)
-- Test chain data is from go-ethereum (may have post-merge assumptions)
-
-**Action**: Check if we can run eth protocol tests WITHOUT Engine API requirements.
-
-### 3. Run Pre-Merge Consensus Tests
-The consensus tests support different fork configs. Try:
+### 3. Re-run Consensus Tests After Fixes
+Once TTD issue is resolved:
 ```bash
-# Run only pre-London tests
-./hive --sim ethereum/consensus --client core-geth --sim.limit "Berlin|Istanbul|Constantinople"
+./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
 ```
 
-### 4. Document RPC Compatibility
-Run rpc-compat and categorize failures:
-- `eth_simulateV1` - Not implemented (OK for ETC)
-- `eth_syncing` - Should work (investigate)
-- Basic methods like `eth_blockNumber`, `eth_getBalance` - Must work
+### 4. File Bug for debug_getRaw* Crash
+**Issue:** `debug_getRawBlock`, `debug_getRawHeader`, `debug_getRawReceipts` return "method handler crashed" for non-genesis blocks.
 
-## Test Results Tracking
+**Evidence:**
+```json
+{"jsonrpc":"2.0","id":1,"error":{"code":-32603,"message":"method handler crashed"}}
+```
 
-### Baseline (Current core-geth)
+---
 
-| Test Suite | Pass | Fail | Notes |
-|------------|------|------|-------|
-| devp2p/discv4 | 16 | 0 | ✓ All pass |
-| smoke/genesis | 6 | 0 | ✓ All pass |
-| devp2p/eth | 1 | 19 | Engine API required |
-| ethereum/sync | 0 | 2 | Post-merge only |
-| ethereum/rpc-compat | 33 | 167 | Many ETH-only methods |
+## Test Status Summary
 
-### Target for ETC
+### Passing Tests (ETC Baseline)
+| Test | Pass | Fail | Status |
+|------|------|------|--------|
+| smoke/genesis | 6 | 3 | ✅ (3 Cancun expected) |
+| smoke/network | 2 | 0 | ✅ |
+| devp2p/discv4 | 16 | 0 | ✅ |
 
-We need to define which tests core-geth MUST pass for ETC. Create this list by:
-1. Identifying pre-merge, EVM-focused tests
-2. Running them against current core-geth
-3. Filing bugs for unexpected failures
+### Partially Working
+| Test | Pass | Fail | Notes |
+|------|------|------|-------|
+| ethereum/rpc-compat | 33 | 167 | 91 eth_simulateV1 expected |
+
+### Blocked (Need TTD Fix)
+| Test | Issue |
+|------|-------|
+| ethereum/consensus (legacy) | Beacon sync mode |
+| devp2p/eth | Engine API required |
+| ethereum/sync | Post-merge tests |
+
+### Not Applicable to ETC
+- ethereum/engine - Post-merge only
+- eth2/* - Beacon chain
+- portal/ - Experimental
+
+---
+
+## Documentation Status
+
+- [x] `HIVE-TEST-ANALYSIS.md` - Comprehensive analysis complete
+- [x] `CLAUDE.md` - Lessons learned documented
+- [x] `SITREP.md` - Updated with current state
+- [x] `TODO.md` - This file
+
+---
 
 ## Future: ECIP Testing
 
@@ -92,12 +88,17 @@ Once baseline is established:
 - [ ] ECIP-1120 implementation + tests
 - [ ] ECIP-1121 implementation + tests
 - [ ] ETC fork transition tests (Classic-specific ECIPs)
+- [ ] Consider creating `simulators/etc/` for ETC-specific tests
+
+---
 
 ## Quick Reference
 
 ```bash
 # Build and run Hive
-cd hive && go build . && ./hive --sim <simulator> --client core-geth
+cd /workspaces/etc-nexus/hive
+go build .
+./hive --sim <simulator> --client core-geth
 
 # See available simulators
 ls simulators/
@@ -107,4 +108,7 @@ ls simulators/
 
 # Logs location
 workspace/logs/
+
+# Check client logs
+ls workspace/logs/core-geth/
 ```

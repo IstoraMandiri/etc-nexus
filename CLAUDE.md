@@ -14,9 +14,30 @@ This helps future sessions avoid repeating the same mistakes.
 
 ## Lessons Learned
 
-<!-- Add entries here as issues are encountered -->
-<!-- Format: ### Issue Title -->
-<!-- Brief description of the problem and solution -->
+### Hive Legacy Tests Fail Due to Post-Merge Configuration (2026-01-27)
+
+**Problem:** Running `./hive --sim ethereum/consensus --sim.limit legacy` results in all pre-merge tests (Homestead, Byzantium, etc.) failing, even though they should work for ETC.
+
+**Root Cause:** The Hive test framework sets `HIVE_TERMINAL_TOTAL_DIFFICULTY` (TTD) in chain configs, which causes core-geth to enter post-merge "beacon sync" mode. The client then waits for Engine API calls instead of processing PoW blocks.
+
+**Evidence:** Client logs show:
+```
+Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)
+Chain post-merge, sync via beacon client
+```
+
+**Solution Options:**
+1. Modify `hive/clients/core-geth/mapper.jq` to not set TTD for pre-merge tests
+2. Fork hive consensus simulator to support pure PoW testing
+3. Investigate if hive has a pre-merge test mode flag
+
+### Unknown Flag: `--nocompaction` in core-geth Client (2026-01-27)
+
+**Problem:** Client logs show `flag provided but not defined: -nocompaction`
+
+**Root Cause:** `hive/clients/core-geth/geth.sh:112` passes `--nocompaction` to `geth import`, but core-geth doesn't support this flag (upstream geth does).
+
+**Solution:** Remove `--nocompaction` from the import command in `geth.sh`.
 
 ## Available Skills
 

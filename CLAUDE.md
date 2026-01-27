@@ -14,30 +14,33 @@ This helps future sessions avoid repeating the same mistakes.
 
 ## Lessons Learned
 
-### Hive Legacy Tests Fail Due to Post-Merge Configuration (2026-01-27)
+### [RESOLVED] TTD and Fake PoW for Pre-Merge Tests (2026-01-27)
 
-**Problem:** Running `./hive --sim ethereum/consensus --sim.limit legacy` results in all pre-merge tests (Homestead, Byzantium, etc.) failing, even though they should work for ETC.
+**Problem:** Consensus tests failed for two reasons:
+1. TTD was always set (defaulted to max int) causing beacon sync mode
+2. Tests with `SealEngine: "NoProof"` failed PoW verification
 
-**Root Cause:** The Hive test framework sets `HIVE_TERMINAL_TOTAL_DIFFICULTY` (TTD) in chain configs, which causes core-geth to enter post-merge "beacon sync" mode. The client then waits for Engine API calls instead of processing PoW blocks.
+**Solution Applied:**
+1. Modified `mapper.jq` to only set TTD when `HIVE_TERMINAL_TOTAL_DIFFICULTY` is explicitly provided
+2. Added `HIVE_SKIP_POW` handling in `geth.sh` to enable `--fakepow` flag
 
-**Evidence:** Client logs show:
-```
-Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)
-Chain post-merge, sync via beacon client
-```
+### [RESOLVED] Unknown Flag: `--nocompaction` (2026-01-27)
 
-**Solution Options:**
-1. Modify `hive/clients/core-geth/mapper.jq` to not set TTD for pre-merge tests
-2. Fork hive consensus simulator to support pure PoW testing
-3. Investigate if hive has a pre-merge test mode flag
+**Problem:** `flag provided but not defined: -nocompaction`
 
-### Unknown Flag: `--nocompaction` in core-geth Client (2026-01-27)
+**Solution:** Removed `--nocompaction` from `geth.sh` block import command.
 
-**Problem:** Client logs show `flag provided but not defined: -nocompaction`
+### Core-geth Has `--fakepow` Flag
 
-**Root Cause:** `hive/clients/core-geth/geth.sh:112` passes `--nocompaction` to `geth import`, but core-geth doesn't support this flag (upstream geth does).
+Core-geth supports `--fakepow` to skip PoW verification during block import. This is essential for running ethereum/tests consensus tests which use `SealEngine: "NoProof"`.
 
-**Solution:** Remove `--nocompaction` from the import command in `geth.sh`.
+### Hive Environment Variables for core-geth
+
+Key environment variables the client should handle:
+- `HIVE_SKIP_POW` - Set when tests use NoProof seal engine (enable `--fakepow`)
+- `HIVE_TERMINAL_TOTAL_DIFFICULTY` - Only set for post-merge tests
+- `HIVE_CHAIN_ID`, `HIVE_NETWORK_ID` - Chain configuration
+- `HIVE_FORK_*` - Fork block numbers
 
 ## Available Skills
 

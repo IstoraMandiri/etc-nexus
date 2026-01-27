@@ -2,40 +2,27 @@
 
 ## Immediate Actions (Next Session)
 
-### 1. Fix `--nocompaction` Flag
-**File:** `hive/clients/core-geth/geth.sh:112`
-
+### 1. Run Full Consensus Test Suite
+The fixes are in place, run the complete legacy test suite to get full pass/fail counts:
 ```bash
-# Current (broken):
-(cd /blocks && $geth $FLAGS --gcmode=archive --verbosity=$HIVE_LOGLEVEL import --nocompaction `ls | sort -n`)
-
-# Fixed (remove --nocompaction):
-(cd /blocks && $geth $FLAGS --gcmode=archive --verbosity=$HIVE_LOGLEVEL import `ls | sort -n`)
-```
-
-### 2. Fix TTD Handling for Pre-Merge Tests
-**File:** `hive/clients/core-geth/mapper.jq`
-
-The mapper sets TTD even for pre-merge fork tests, causing core-geth to enter beacon sync mode. Investigation needed:
-
-Options:
-1. Check if mapper can detect pre-merge configs and skip TTD
-2. Look for hive flag to disable post-merge mode
-3. Modify genesis.json generation to omit merge config
-
-**Evidence from client logs:**
-```
-Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)
-Chain post-merge, sync via beacon client
-```
-
-### 3. Re-run Consensus Tests After Fixes
-Once TTD issue is resolved:
-```bash
+cd /workspaces/etc-nexus/hive
 ./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
 ```
 
-### 4. File Bug for debug_getRaw* Crash
+### 2. Run Additional Test Suites
+Now that consensus tests work, try other test suites:
+```bash
+# GraphQL tests
+./hive --sim ethereum/graphql --client core-geth
+
+# Sync tests (may still have issues)
+./hive --sim ethereum/sync --client core-geth
+
+# devp2p eth protocol (was blocked by TTD issue)
+./hive --sim devp2p/eth --client core-geth
+```
+
+### 3. File Bug for debug_getRaw* Crash
 **Issue:** `debug_getRawBlock`, `debug_getRawHeader`, `debug_getRawReceipts` return "method handler crashed" for non-genesis blocks.
 
 **Evidence:**
@@ -50,26 +37,38 @@ Once TTD issue is resolved:
 ### Passing Tests (ETC Baseline)
 | Test | Pass | Fail | Status |
 |------|------|------|--------|
-| smoke/genesis | 6 | 3 | ✅ (3 Cancun expected) |
-| smoke/network | 2 | 0 | ✅ |
-| devp2p/discv4 | 16 | 0 | ✅ |
+| smoke/genesis | 6 | 3 | Good (3 Cancun expected) |
+| smoke/network | 2 | 0 | Full pass |
+| devp2p/discv4 | 16 | 0 | Full pass |
+| ethereum/consensus (legacy) | 157+ | 0 | Working (Byzantium subset tested) |
 
 ### Partially Working
 | Test | Pass | Fail | Notes |
 |------|------|------|-------|
 | ethereum/rpc-compat | 33 | 167 | 91 eth_simulateV1 expected |
 
-### Blocked (Need TTD Fix)
-| Test | Issue |
-|------|-------|
-| ethereum/consensus (legacy) | Beacon sync mode |
-| devp2p/eth | Engine API required |
-| ethereum/sync | Post-merge tests |
-
 ### Not Applicable to ETC
 - ethereum/engine - Post-merge only
 - eth2/* - Beacon chain
 - portal/ - Experimental
+
+---
+
+## Fixes Applied This Session
+
+### 1. Removed `--nocompaction` Flag
+**File:** `hive/clients/core-geth/geth.sh:112`
+- Removed unsupported `--nocompaction` flag from block import command
+
+### 2. Fixed TTD Handling for Pre-Merge Tests
+**File:** `hive/clients/core-geth/mapper.jq`
+- Changed TTD to only be set when `HIVE_TERMINAL_TOTAL_DIFFICULTY` is explicitly provided
+- Changed `terminalTotalDifficultyPassed` to only be `true` when TTD is set
+
+### 3. Added Fake PoW Support
+**File:** `hive/clients/core-geth/geth.sh`
+- Added handling for `HIVE_SKIP_POW` environment variable
+- Enables `--fakepow` flag for tests with `SealEngine: "NoProof"`
 
 ---
 

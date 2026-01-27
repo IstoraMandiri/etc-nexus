@@ -1,0 +1,6 @@
+[submodule "hive"]
+	path = hive
+	url = https://github.com/IstoraMandiri/hive.git
+[submodule "core-geth"]
+	path = core-geth
+	url = https://github.com/IstoraMandiri/core-geth.git

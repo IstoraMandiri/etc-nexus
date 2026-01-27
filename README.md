@@ -1,0 +1,86 @@
+# ETC Nexus
+
+> **Work in Progress** - This project is in early development. See [TODO.md](TODO.md) for current status and next steps.
+
+A workspace for developing and testing Ethereum Classic protocol changes using the Hive testing framework.
+
+## Purpose
+
+ETC Nexus enables AI-assisted development and testing of ECIP implementations. By submoduling both the Hive testing framework and ETC clients, an agent can:
+
+- Implement protocol changes in client code
+- Create corresponding test cases in Hive
+- Run tests and iterate
+- Push changes to respective repositories
+
+Currently focused on:
+- **ECIP-1120** implementation and testing
+- **ECIP-1121** implementation and testing
+
+## Architecture
+
+```
+etc-nexus/
+├── hive/                 # Fork of ethereum/hive
+│   ├── clients/
+│   │   └── core-geth/    # ETC client definition
+│   └── simulators/
+│       └── etc/          # ETC-specific test suites
+├── core-geth/            # Fork of etclabscore/core-geth
+└── .devcontainer/        # Docker-in-Docker dev environment
+```
+
+All submodules are forks, allowing the agent to make and push changes.
+
+## Submodules
+
+| Submodule | Upstream | Fork | Purpose |
+|-----------|----------|------|---------|
+| `hive/` | [ethereum/hive](https://github.com/ethereum/hive) | [IstoraMandiri/hive](https://github.com/IstoraMandiri/hive) | Test orchestration, ETC simulators |
+| `core-geth/` | [etclabscore/core-geth](https://github.com/etclabscore/core-geth) | [IstoraMandiri/core-geth](https://github.com/IstoraMandiri/core-geth) | ECIP implementation |
+
+Future clients:
+- Hyperledger Besu
+- [Fukuii](https://github.com/chippr-robotics/fukuii) (Rust)
+
+## Workflow
+
+1. **Implement** - Modify client code in `core-geth/` to implement ECIP
+2. **Define** - Add/update client definition in `hive/clients/core-geth/`
+3. **Test** - Create test simulator in `hive/simulators/etc/`
+4. **Run** - Execute tests via Hive
+5. **Iterate** - Fix issues, re-run tests
+6. **Push** - Commit and push to respective forks
+
+## Multi-Version Testing
+
+Hive supports testing different client versions against each other. Using `Dockerfile.git`, we can specify branches:
+
+```yaml
+clients:
+  - client: core-geth
+    dockerfile: git
+    build_args:
+      github: etclabscore/core-geth
+      tag: master
+
+  - client: core-geth-ecip1121
+    dockerfile: git
+    build_args:
+      github: IstoraMandiri/core-geth
+      tag: ecip-1121
+```
+
+This validates that ECIP implementations maintain consensus pre-fork and correctly diverge post-fork.
+
+## Prior Art
+
+Built on [Ethereum Hive](https://github.com/ethereum/hive), the integration testing framework used by the Ethereum Foundation. See [ETC Community Call #45](https://cc.ethereumclassic.org/calls/45) for background discussion on adapting Hive for ETC.
+
+## Development
+
+Requires VS Code with Dev Containers extension, or a Docker-capable environment.
+
+## License
+
+MIT

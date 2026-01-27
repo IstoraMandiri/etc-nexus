@@ -2,6 +2,29 @@
 
 This file contains context and instructions for AI agents working on this project.
 
+## Evolving This Document
+
+**This file should evolve over time.** When you encounter issues, gotchas, or discover important patterns:
+
+1. **Document problems and solutions** - If you hit an error or unexpected behavior, add it to the "Lessons Learned" section below
+2. **Update outdated information** - If instructions no longer work, fix them
+3. **Add missing context** - If you needed information that wasn't here, add it for next time
+
+This helps future sessions avoid repeating the same mistakes.
+
+## Lessons Learned
+
+<!-- Add entries here as issues are encountered -->
+<!-- Format: ### Issue Title -->
+<!-- Brief description of the problem and solution -->
+
+## Available Skills
+
+Project-specific skills are defined in `.claude/skills/`:
+
+- `/submodule-push [name]` - Push submodule changes to fork
+- `/hive-run [simulator] [--client name]` - Build and run Hive integration tests
+
 ## GitHub Access
 
 The `gh` CLI is configured with a fine-grained Personal Access Token scoped to specific repositories.
@@ -16,21 +39,8 @@ The `gh` CLI is configured with a fine-grained Personal Access Token scoped to s
 
 - **Contents**: Read and write (push commits, create branches)
 - **Metadata**: Read (required)
-- **Pull requests**: Read and write (create PRs)
 
-### Usage
-
-```bash
-# Check auth status
-gh auth status
-
-# Push to submodules
-cd hive && git push origin <branch>
-cd core-geth && git push origin <branch>
-
-# Create PRs
-gh pr create --repo IstoraMandiri/hive --title "..." --body "..."
-```
+Use `/submodule-push` skill for pushing changes in submodules.
 
 ## Project Structure
 
@@ -39,20 +49,11 @@ etc-nexus/
 ├── hive/           # Submodule: IstoraMandiri/hive (fork of ethereum/hive)
 ├── core-geth/      # Submodule: IstoraMandiri/core-geth (fork of etclabscore/core-geth)
 ├── .devcontainer/  # Docker-in-Docker dev environment
+├── .claude/skills/ # Project-specific Claude skills
 ├── CLAUDE.md       # This file
 ├── TODO.md         # Current tasks and next steps
 └── README.md       # Project overview
 ```
-
-## Submodule Workflow
-
-When making changes to submodules:
-
-1. Navigate into the submodule directory
-2. Create a branch, make changes, commit
-3. Push to the fork using `git push origin <branch>`
-4. Optionally create a PR via `gh pr create`
-5. Update the parent repo's submodule reference if needed
 
 ## Key Context
 
@@ -64,11 +65,10 @@ When making changes to submodules:
 
 ## Hive Basics
 
-- Build: `cd hive && go build .`
-- Run: `./hive --sim <simulator> --client <client>`
 - Client definitions live in `hive/clients/<name>/`
 - Simulators live in `hive/simulators/<category>/<name>/`
 - Clients are Docker containers configured via environment variables (HIVE_*)
+- Use `/hive-run` skill to build and run tests
 
 ## References
 

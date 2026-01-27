@@ -150,13 +150,48 @@ The consensus tests support these pre-merge forks (all applicable to ETC):
 - `Shanghai` - Withdrawals
 - `Cancun` - Blobs, KZG
 
-#### Test Suites
+#### Test Suites and Counts
 
-| Suite | ETC Status | Notes |
-|-------|------------|-------|
-| `consensus` | **PARTIAL** | Runs newest fork (Cancun) by default |
-| `legacy` | ⚠️ **BLOCKED** | Pre-merge tests fail due to post-merge config |
-| `legacy-cancun` | **NOT APPLICABLE** | Cancun legacy tests |
+Tests are loaded from the [ethereum/tests](https://github.com/ethereum/tests) repository (including [LegacyTests](https://github.com/ethereum/legacytests) submodule).
+
+| Suite | Path | Total Tests | ETC Relevant | Notes |
+|-------|------|-------------|--------------|-------|
+| `consensus` | `BlockchainTests/` | 1,148 | 571 | Only Cancun tests (571); Prague (571) not supported |
+| `legacy` | `LegacyTests/Constantinople/BlockchainTests/` | **32,615** | **32,615** | ✅ All pre-merge, fully relevant |
+| `legacy-cancun` | `LegacyTests/Cancun/BlockchainTests/` | 111,983 | ~27,000 | Istanbul+Berlin relevant; post-merge not applicable |
+| **Total** | | **145,746** | **~60,000** | |
+
+##### `legacy` Suite Breakdown (32,615 tests) - **Primary ETC Target**
+
+| Network | Tests | ETC Status |
+|---------|-------|------------|
+| Constantinople | 10,807 | ✅ Relevant |
+| ConstantinopleFix | 10,802 | ✅ Relevant |
+| Byzantium | 5,000 | ✅ Relevant |
+| Homestead | 2,184 | ✅ Relevant |
+| Frontier | 1,303 | ✅ Relevant |
+| EIP158 | 1,260 | ✅ Relevant |
+| EIP150 | 1,259 | ✅ Relevant |
+
+##### `legacy-cancun` Suite Breakdown (111,983 tests)
+
+| Network | Tests | ETC Status |
+|---------|-------|------------|
+| Cancun | 21,849 | ❌ Post-merge |
+| Shanghai | 20,689 | ❌ Post-merge |
+| Paris | 20,369 | ❌ Post-merge |
+| London | 20,337 | ⚠️ Partial (ETC Magneto excludes EIP-1559) |
+| Berlin | 14,026 | ✅ Relevant |
+| Istanbul | 12,968 | ✅ Relevant |
+| Constantinople/earlier | ~1,500 | ✅ Relevant |
+| Transition tests | ~245 | ⚠️ Some relevant |
+
+##### `consensus` Suite Breakdown (1,148 tests)
+
+| Network | Tests | ETC Status |
+|---------|-------|------------|
+| Cancun | 571 | ⚠️ Post-merge but tests may work |
+| Prague | 571 | ❌ Not supported in forks.go |
 
 #### Critical Issue: Legacy Tests Fail
 

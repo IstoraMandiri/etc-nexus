@@ -1,8 +1,25 @@
 # ETC Nexus
 
-> **Work in Progress** - This project is in early development. See [TODO.md](TODO.md) for current status and next steps.
+A workspace for developing and testing Ethereum Classic protocol changes using the Hive testing framework, with a focus on AI-assisted development.
 
-A workspace for developing and testing Ethereum Classic protocol changes using the Hive testing framework.
+## Project Status
+
+**Current Focus**: Getting baseline Hive test suites passing for core-geth before implementing ECIPs.
+
+### Working
+- core-geth client builds from fork in Hive
+- devp2p tests: 16/16 passing
+- smoke/genesis tests: 6/6 passing
+- Consensus tests infrastructure (with `--fakepow` for NoProof tests)
+
+### In Progress
+- Phase 1: Validate baseline test suites (see [HIVE-TEST-ANALYSIS.md](HIVE-TEST-ANALYSIS.md))
+  - `legacy` suite: 32,615 tests (Constantinople and earlier)
+  - `consensus` suite: 1,148 tests (Cancun/Prague)
+  - `legacy-cancun` suite: 111,983 tests (full fork coverage)
+- Phase 2: Develop ETC-specific test configuration
+
+See [TODO.md](TODO.md) for detailed next steps and [SITREP.md](SITREP.md) for current state.
 
 ## Purpose
 
@@ -10,12 +27,12 @@ ETC Nexus enables AI-assisted development and testing of ECIP implementations. B
 
 - Implement protocol changes in client code
 - Create corresponding test cases in Hive
-- Run tests and iterate
+- Run tests and iterate on fixes
 - Push changes to respective repositories
 
-Currently focused on:
-- **ECIP-1120** implementation and testing
-- **ECIP-1121** implementation and testing
+Target ECIPs:
+- **ECIP-1120** - Implementation and testing
+- **ECIP-1121** - Implementation and testing
 
 ## Architecture
 
@@ -25,12 +42,12 @@ etc-nexus/
 │   ├── clients/
 │   │   └── core-geth/    # ETC client definition
 │   └── simulators/
-│       └── etc/          # ETC-specific test suites
+│       └── etc/          # ETC-specific test suites (planned)
 ├── core-geth/            # Fork of etclabscore/core-geth
+├── .claude/
+│   └── skills/           # Claude Code skills for workflow automation
 └── .devcontainer/        # Docker-in-Docker dev environment
 ```
-
-All submodules are forks, allowing the agent to make and push changes.
 
 ## Submodules
 
@@ -51,6 +68,19 @@ Future clients:
 4. **Run** - Execute tests via Hive
 5. **Iterate** - Fix issues, re-run tests
 6. **Push** - Commit and push to respective forks
+
+## Claude Skills
+
+This project includes Claude Code skills for session management:
+
+| Skill | Description |
+|-------|-------------|
+| `/pickup` | Resume work from previous session (loads SITREP.md, TODO.md) |
+| `/handoff` | Prepare for context handoff (update docs, commit) |
+| `/wrapup` | End session (run promptlog, commit all changes) |
+| `/promptlog` | Generate PROMPTLOG.md from session history |
+| `/hive-run` | Build and run Hive integration tests |
+| `/submodule-push` | Push submodule changes to fork |
 
 ## Multi-Version Testing
 

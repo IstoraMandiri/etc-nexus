@@ -1,16 +1,31 @@
 # TODO
 
-## Immediate Actions (Next Session)
+## Currently Running
 
-### 1. Run Full Consensus Test Suite
-The fixes are in place, run the complete legacy test suite to get full pass/fail counts:
+**Legacy consensus test suite in progress:**
 ```bash
-cd /workspaces/etc-nexus/hive
 ./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
 ```
+- Progress: ~15,373 / 32,615 tests (~47%)
+- Status: All tests passing so far
+- Rate: ~68 tests/minute (~8 hours for full suite)
+- Estimated time remaining: ~4.2 hours
 
-### 2. Run Additional Test Suites
-Now that consensus tests work, try other test suites:
+---
+
+## Immediate Actions (After Current Run)
+
+### 1. Analyze Legacy Test Results
+Once the current run completes, document final pass/fail counts.
+
+### 2. Run Istanbul/Berlin Tests
+The `legacy-cancun` suite has ~27,000 ETC-relevant tests (Istanbul + Berlin):
+```bash
+cd /workspaces/etc-nexus/hive
+./hive --sim ethereum/consensus --sim.limit legacy-cancun --client core-geth
+```
+
+### 3. Run Additional Test Suites
 ```bash
 # GraphQL tests
 ./hive --sim ethereum/graphql --client core-geth
@@ -22,13 +37,24 @@ Now that consensus tests work, try other test suites:
 ./hive --sim devp2p/eth --client core-geth
 ```
 
-### 3. File Bug for debug_getRaw* Crash
+### 4. File Bug for debug_getRaw* Crash
 **Issue:** `debug_getRawBlock`, `debug_getRawHeader`, `debug_getRawReceipts` return "method handler crashed" for non-genesis blocks.
 
 **Evidence:**
 ```json
 {"jsonrpc":"2.0","id":1,"error":{"code":-32603,"message":"method handler crashed"}}
 ```
+
+---
+
+## Test Suite Reference (ethereum/tests)
+
+| Suite | Total Tests | ETC Relevant | Notes |
+|-------|-------------|--------------|-------|
+| `legacy` | 32,615 | 32,615 (100%) | Constantinople and earlier - **Running** |
+| `legacy-cancun` | 111,983 | ~27,000 | Istanbul + Berlin relevant |
+| `consensus` | 1,148 | 571 | Cancun only (Prague not supported) |
+| **Total** | **145,746** | **~60,000** | |
 
 ---
 
@@ -40,7 +66,7 @@ Now that consensus tests work, try other test suites:
 | smoke/genesis | 6 | 3 | Good (3 Cancun expected) |
 | smoke/network | 2 | 0 | Full pass |
 | devp2p/discv4 | 16 | 0 | Full pass |
-| ethereum/consensus (legacy) | 157+ | 0 | Working (Byzantium subset tested) |
+| ethereum/consensus (legacy) | ~15,373+ | 0 | Running (~47%, ~4.2h remaining) |
 
 ### Partially Working
 | Test | Pass | Fail | Notes |

@@ -4,7 +4,19 @@ Last updated: 2026-01-27
 
 ## Summary
 
-Hive integration with core-geth is **working**. Consensus tests now pass after fixing three issues: TTD handling, `--nocompaction` flag, and fake PoW support.
+Hive integration with core-geth is **working**. Full legacy consensus test suite currently running (~12,766 of 32,615 tests completed, ~39% done).
+
+## Current Activity
+
+**Running:** `./hive --sim ethereum/consensus --sim.limit legacy --client core-geth`
+- Suite: `legacy` (LegacyTests/Constantinople/BlockchainTests)
+- Progress: ~15,373 / 32,615 tests (~47%)
+- Status: All tests passing so far
+- Rate: ~68 tests/minute
+- Estimated time remaining: ~4.2 hours
+- Estimated total suite time: ~8 hours
+
+Note: Computer hibernated from 15:21 to 22:36 UTC (~7h gap, excluded from estimates).
 
 ## Repository Status
 
@@ -16,13 +28,13 @@ Hive integration with core-geth is **working**. Consensus tests now pass after f
 
 ## What's Working
 
-### Passing Tests (Phase 1 Complete)
+### Passing Tests (Phase 1)
 | Test | Result | Notes |
 |------|--------|-------|
 | **smoke/genesis** | 6/9 | Core tests pass; 3 Cancun failures expected |
 | **smoke/network** | 2/2 | Full pass |
 | **devp2p/discv4** | 16/16 | Full pass |
-| **ethereum/consensus (legacy)** | 157+/0 | Byzantium subset verified, full suite should pass |
+| **ethereum/consensus (legacy)** | ~15,373 / 32,615 | Running (~47%, ~4.2h remaining) |
 
 ### Build Pipeline
 - core-geth builds from `IstoraMandiri/core-geth` (~2 min)
@@ -79,7 +91,16 @@ cd /workspaces/etc-nexus/hive
 
 ## Next Session Should
 
-1. **Run full legacy consensus test suite** to get complete pass/fail counts
-2. **Test additional simulators** (graphql, sync, devp2p/eth)
-3. **File bug** for `debug_getRaw*` method handler crash
-4. **Commit changes** to hive fork
+1. **Check legacy test results** - Suite is running (~39% complete as of last check)
+2. **Run Istanbul/Berlin tests** from `legacy-cancun` suite (~27,000 ETC-relevant tests)
+3. **Test additional simulators** (graphql, sync, devp2p/eth)
+4. **File bug** for `debug_getRaw*` method handler crash
+
+## Test Suite Reference (ethereum/tests)
+
+| Suite | Total Tests | ETC Relevant | Notes |
+|-------|-------------|--------------|-------|
+| `legacy` | 32,615 | 32,615 (100%) | Constantinople and earlier - **Running now** |
+| `legacy-cancun` | 111,983 | ~27,000 | Istanbul + Berlin relevant |
+| `consensus` | 1,148 | 571 | Cancun only (Prague not supported) |
+| **Total** | **145,746** | **~60,000** | |

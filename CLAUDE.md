@@ -4,7 +4,7 @@ This file contains context and instructions for AI agents working on this projec
 
 ## Evolving This Document
 
-**This file should evolve over time.** When you encounter issues, gotchas, or discover important patterns:
+**This file (CLAUDE.md) should evolve over time.** When you encounter issues, gotchas, or discover important patterns:
 
 1. **Document problems and solutions** - If you hit an error or unexpected behavior, add it to the "Lessons Learned" section below
 2. **Update outdated information** - If instructions no longer work, fix them
@@ -22,8 +22,14 @@ This helps future sessions avoid repeating the same mistakes.
 
 Project-specific skills are defined in `.claude/skills/`:
 
+- `/pickup` - Resume work from previous session: load SITREP.md, TODO.md, summarize state
+- `/handoff` - Prepare for context handoff: update SITREP.md, TODO.md, and commit (run when context is getting full)
+- `/wrapup [message]` - Update prompt log and commit all changes (run at end of significant sessions)
+- `/promptlog` - Generate PROMPTLOG.md from session history
 - `/submodule-push [name]` - Push submodule changes to fork
 - `/hive-run [simulator] [--client name]` - Build and run Hive integration tests
+
+**End of session:** Run `/wrapup` to commit changes, or `/handoff` if context is full and work will continue in a new session.
 
 ## GitHub Access
 
@@ -49,9 +55,13 @@ etc-nexus/
 ├── hive/           # Submodule: IstoraMandiri/hive (fork of ethereum/hive)
 ├── core-geth/      # Submodule: IstoraMandiri/core-geth (fork of etclabscore/core-geth)
 ├── .devcontainer/  # Docker-in-Docker dev environment
-├── .claude/skills/ # Project-specific Claude skills
+├── .claude/
+│   ├── skills/     # Project-specific Claude skills
+│   ├── hooks/      # Hook scripts (session reminders, etc.)
+│   └── settings.json
 ├── CLAUDE.md       # This file
 ├── TODO.md         # Current tasks and next steps
+├── PROMPTLOG.md    # Session prompt history
 └── README.md       # Project overview
 ```
 

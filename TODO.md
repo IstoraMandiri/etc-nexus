@@ -1,71 +1,6 @@
 # TODO
 
-## Current Status
-
-- [x] Project structure created
-- [x] Hive fork submoduled (`hive/`)
-- [x] core-geth fork submoduled (`core-geth/`)
-- [x] GitHub CLI configured with fine-grained PAT
-- [x] Walking skeleton: Hive running with core-geth
-
-## Next Steps: Walking Skeleton
-
-The immediate goal is to get Hive running with core-geth as a client, proving the integration works before making any ECIP changes.
-
-### 1. Create core-geth client definition in Hive
-
-Copy and adapt `hive/clients/go-ethereum/` to `hive/clients/core-geth/`:
-
-- [x] `Dockerfile` - For pre-built images
-- [x] `Dockerfile.git` - Build from source (primary)
-- [x] `hive.yaml` - Client metadata (roles: eth1, eth1_snap)
-- [x] `geth.sh` - Startup script (adapted from go-ethereum)
-- [x] `enode.sh` - Enode retrieval script
-- [x] `mapper.jq` - Genesis transformation
-- [x] `genesis.json` - Default genesis
-
-Branch: `istora-core-geth-client` pushed to IstoraMandiri/hive
-
-Key differences from go-ethereum:
-- Repository: `etclabscore/core-geth` (or `IstoraMandiri/core-geth`)
-- May need ETC-specific fork environment variables (ECIP blocks)
-- Network ID defaults (ETC mainnet: 1, Mordor: 7)
-
-### 2. Build and test Hive
-
-```bash
-cd hive
-go build .
-```
-
-- [x] Hive builds successfully
-
-### 3. Run a simple test
-
-```bash
-# Test with upstream core-geth
-./hive --sim ethereum/sync --client core-geth
-
-# Or build from our fork
-./hive --sim ethereum/sync --client core-geth --client.core-geth.dockerfile git
-```
-
-- [x] devp2p discv4 tests pass (16/16) with core-geth
-
-### 4. Verify multi-version testing
-
-Test that we can run different core-geth versions against each other:
-- Upstream core-geth vs our fork
-- Different branches of our fork
-
-## Future Work
-
-### ETC-Specific Simulators
-
-Create `hive/simulators/etc/` with:
-- Fork transition tests (ECIP activation)
-- ETC consensus rule validation
-- Multi-client sync tests
+## Next Up
 
 ### ECIP Implementation
 
@@ -74,13 +9,41 @@ Create `hive/simulators/etc/` with:
 - [ ] ECIP-1121 implementation in core-geth
 - [ ] ECIP-1121 test cases in Hive
 
-### Additional Clients
+### ETC-Specific Hive Simulators
+
+Create `hive/simulators/etc/` with:
+- Fork transition tests (ECIP activation)
+- ETC consensus rule validation
+- Multi-client sync tests
+
+### Additional Clients (Later)
 
 - [ ] Hyperledger Besu client definition
 - [ ] Fukuii client definition (when ready)
 
-## Notes
+## Quick Reference
 
-- Hive uses Docker extensively; the devcontainer has Docker-in-Docker enabled
-- Client containers communicate via environment variables (HIVE_FORK_*, HIVE_NETWORK_ID, etc.)
-- Test results are written to `hive/workspace/logs/`
+### Running Hive Tests
+
+```bash
+cd hive
+go build .
+./hive --sim devp2p --client core-geth
+```
+
+### Submodule Branches
+
+| Repo | Branch |
+|------|--------|
+| hive | `istora-core-geth-client` |
+| core-geth | `master` (no changes yet) |
+
+### Key Files
+
+- `hive/clients/core-geth/` - Hive client definition (builds from IstoraMandiri/core-geth)
+- `hive/clients/core-geth/mapper.jq` - Genesis config transformation (add ECIP forks here)
+- `core-geth/params/config_classic.go` - ETC chain config with ECIP block numbers
+
+### Hive Environment Variables
+
+Clients receive fork configuration via `HIVE_FORK_*` env vars. For ETC-specific forks, we may need to add new variables and handle them in `mapper.jq` and `geth.sh`.

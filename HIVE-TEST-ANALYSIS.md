@@ -1,54 +1,75 @@
 # Hive Test Analysis for Ethereum Classic
 
-This document analyzes all Hive integration tests for their applicability to Ethereum Classic (ETC) testing with core-geth.
+This document analyzes Hive integration tests for Ethereum Classic (ETC) testing with core-geth.
 
-## Executive Summary
+## Current Status (2026-01-28)
 
-Hive contains **5 simulator categories** with **~15 distinct test suites**. The framework is heavily focused on **post-merge Ethereum** (Proof of Stake), while ETC remains **pre-merge** (Proof of Work). This creates a fundamental compatibility gap.
+**Legacy consensus tests running:** 17,899 / 32,615 (55%) - all passing
 
-### Quick Reference
-
-| Category | ETC Applicable | Not Applicable | Notes |
-|----------|---------------|----------------|-------|
-| smoke/ | 3/3 | 0/3 | ✅ All basic tests work |
-| devp2p/ | 1/2 | 1/2 | ✅ discv4 works, eth needs Engine API |
-| ethereum/consensus | Partial | Partial | ⚠️ Legacy tests fail due to post-merge config |
-| ethereum/rpc-compat | Partial | Partial | ⚠️ 33/200 pass, most failures expected |
-| ethereum/engine | 0/all | All | Post-merge only |
-| ethereum/sync | Maybe | Maybe | Needs investigation |
-| eth2/* | 0/all | All | Beacon chain - not applicable |
+| Metric | Value |
+|--------|-------|
+| Suite | `legacy` (Constantinople and earlier) |
+| Progress | 17,899 / 32,615 tests (55%) |
+| Status | All tests passing |
+| Rate | ~70 tests/minute |
+| ETA | ~3.5 hours remaining |
 
 ---
 
-## Test Execution Results (2026-01-27)
+## Executive Summary
 
-### Phase 1: Baseline Validation
+ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge Ethereum** (Proof of Stake). After fixing TTD handling, consensus tests now work.
+
+### ETC-Relevant Test Counts
+
+| Suite | Total | ETC Relevant | Status |
+|-------|-------|--------------|--------|
+| **`legacy`** | 32,615 | **32,615** (100%) | Running - 55% complete |
+| `legacy-cancun` (Istanbul+Berlin) | 111,983 | ~27,000 | Pending |
+| `consensus` (Cancun) | 1,148 | 571 | Pending |
+| **Total** | **145,746** | **~60,000** | |
+
+### Quick Reference
+
+| Category | Status | Notes |
+|----------|--------|-------|
+| smoke/ | ✅ **24/24** | All basic tests pass |
+| devp2p/discv4 | ✅ **16/16** | Node discovery works |
+| ethereum/consensus | ✅ **Running** | 17,899/32,615 passing (55%) |
+| ethereum/rpc-compat | ⚠️ **33/200** | 91 `eth_simulateV1` expected failures |
+| ethereum/engine | ❌ Skip | Post-merge only |
+| eth2/* | ❌ Skip | Beacon chain - not applicable |
+
+---
+
+## Test Execution Results
+
+### Phase 1: Baseline Validation (Complete)
 
 | Test | Result | Status |
 |------|--------|--------|
-| smoke/genesis | **6/9** (6 core + 3 Cancun failures) | ✅ Core tests pass |
+| smoke/genesis | **6/9** | ✅ Core pass (3 Cancun expected) |
 | smoke/network | **2/2** | ✅ PASS |
 | devp2p/discv4 | **16/16** | ✅ PASS |
-| ethereum/rpc-compat | **33/200** | ⚠️ Expected failures |
+| ethereum/rpc-compat | **33/200** | ⚠️ Expected (91 eth_simulateV1) |
+
+### Phase 2: Consensus Testing (In Progress)
+
+| Test | Result | Status |
+|------|--------|--------|
+| ethereum/consensus (legacy) | **17,899/32,615** | ✅ Running (55%, ~3.5h remaining) |
+| ethereum/consensus (legacy-cancun) | Pending | Next: Istanbul+Berlin (~27k tests) |
 
 ### Key Findings
 
-#### 1. Core-geth Client Definition Issues
+#### 1. [RESOLVED] Core-geth Client Definition Issues
 
-The `hive/clients/core-geth/` client definition has some issues:
-- **Unknown flag**: `-nocompaction` is not recognized by core-geth
-- **Post-merge mode**: Chain configs with TTD trigger "sync via beacon client" mode
+Fixed in `hive/clients/core-geth/`:
+- ✅ Removed unsupported `--nocompaction` flag
+- ✅ Fixed TTD handling to only set when explicitly provided
+- ✅ Added `HIVE_SKIP_POW` → `--fakepow` support
 
-#### 2. Consensus Tests Issue
-
-Legacy/pre-merge consensus tests (Homestead, Byzantium, etc.) **fail** because:
-- Hive sets `HIVE_TERMINAL_TOTAL_DIFFICULTY` in chain config
-- Core-geth sees TTD and enters post-merge beacon sync mode
-- Client waits for Engine API calls instead of processing PoW blocks
-
-**Root Cause**: The consensus test harness always includes merge configuration even for pre-merge fork tests.
-
-#### 3. RPC Compatibility Breakdown
+#### 2. RPC Compatibility Breakdown
 
 **Passing Methods (33 tests):**
 - `eth_getBlockReceipts` (5)
@@ -193,38 +214,26 @@ Tests are loaded from the [ethereum/tests](https://github.com/ethereum/tests) re
 | Cancun | 571 | ⚠️ Post-merge but tests may work |
 | Prague | 571 | ❌ Not supported in forks.go |
 
-#### Critical Issue: Legacy Tests Fail
+#### [RESOLVED] Legacy Tests Now Working
 
-**Status:** Legacy consensus tests (Homestead, Byzantium, Constantinople, etc.) **fail** even though they are pre-merge tests.
+**Previous Issue:** Legacy consensus tests failed because TTD was always set, causing beacon sync mode.
 
-**Root Cause:** The consensus test harness configures chains with `HIVE_TERMINAL_TOTAL_DIFFICULTY`, which causes core-geth to enter post-merge beacon sync mode. The client log shows:
+**Fix Applied (2026-01-27):**
+1. Modified `mapper.jq` to only set TTD when `HIVE_TERMINAL_TOTAL_DIFFICULTY` is explicitly provided
+2. Added `HIVE_SKIP_POW` handling in `geth.sh` to enable `--fakepow` flag
+3. Removed unsupported `--nocompaction` flag
 
-```
-Chain ID:  1 (mainnet)
-Consensus: Beacon (proof-of-stake), merged from Ethash (proof-of-work)
-TTD: 9223372036854775807
-...
-Chain post-merge, sync via beacon client
-```
-
-**The client waits for Engine API (beacon) to drive chain progress instead of processing the PoW test blocks.**
-
-**Observed Behavior:**
-- Cancun tests (suite 1): Pass - client expects post-merge
-- Legacy tests (suite 0): Fail - client is in beacon mode, ignores PoW blocks
+**Current Status:** Legacy tests running successfully - 17,899/32,615 passing (55%)
 
 #### How to Run Pre-Merge Tests
 
 ```bash
-# These currently FAIL due to post-merge chain config issue:
-./hive --sim ethereum/consensus --sim.limit "legacy" --client core-geth  # Fails
-./hive --sim ethereum/consensus --sim.limit "Berlin" --client core-geth  # No tests match
-```
+# Run the full legacy suite (32,615 tests, ~8 hours)
+./hive --sim ethereum/consensus --sim.limit "legacy" --client core-geth
 
-**Action Required:**
-1. ~~Run consensus tests with pre-merge fork filters~~ - BLOCKED
-2. **Modify hive client definition or test harness** to avoid setting TTD for pre-merge tests
-3. Consider forking hive simulator to support pure pre-merge testing
+# Run Istanbul+Berlin from legacy-cancun (~27,000 ETC-relevant tests)
+./hive --sim ethereum/consensus --sim.limit "legacy-cancun" --client core-geth
+```
 
 ---
 
@@ -402,11 +411,16 @@ Portal Network is experimental/research phase. Not relevant for ETC client testi
 |------|--------|-------|
 | RPC Compat | **33/200** | Client doesn't sync test chain; 91 `eth_simulateV1` expected failures |
 
-### Tests Currently Blocked ❌
+### Tests In Progress 🔄
+
+| Test | Progress | Notes |
+|------|----------|-------|
+| ethereum/consensus (legacy) | 17,899/32,615 (55%) | All passing, ~3.5h remaining |
+
+### Tests To Investigate ❓
 
 | Test | Issue | Action Required |
 |------|-------|-----------------|
-| ethereum/consensus (legacy) | Post-merge chain config | Fix TTD handling in client or harness |
 | devp2p/eth | Engine API required | Check for pre-merge test mode |
 | ethereum/sync | May need Engine API | Examine test code |
 | GraphQL | Untested | Run and verify |
@@ -509,22 +523,18 @@ Consider creating:
 
 ## Next Steps
 
-1. [x] Run Phase 1 baseline tests and document results - **COMPLETED**
-2. [ ] ~~Run Phase 2 consensus tests per fork~~ - **BLOCKED** (post-merge config issue)
-3. [ ] Investigate devp2p/eth and sync test requirements
-4. [x] Categorize rpc-compat failures (expected vs bug) - **COMPLETED**
-5. [ ] Define minimum required test coverage for ETC releases
-6. [ ] Consider creating `simulators/etc/` for ECIP testing
+1. [x] Run Phase 1 baseline tests - **COMPLETED**
+2. [x] Fix consensus test compatibility - **COMPLETED** (TTD, fakepow, nocompaction fixes)
+3. [x] Categorize rpc-compat failures - **COMPLETED**
+4. [x] Run legacy consensus suite - **IN PROGRESS** (55% complete)
+5. [ ] Run Istanbul+Berlin tests from legacy-cancun (~27,000 tests)
+6. [ ] Investigate devp2p/eth and sync test requirements
+7. [ ] Define minimum required test coverage for ETC releases
+8. [ ] Consider creating `simulators/etc/` for ECIP testing
 
 ### Immediate Priorities
 
-1. **Fix consensus test compatibility** - The main blocker is that Hive sets TTD for all chains, causing core-geth to enter beacon sync mode. Options:
-   - Modify `hive/clients/core-geth/` to handle pre-merge configs differently
-   - Fork hive consensus simulator to support pure PoW testing
-   - Investigate if hive has a pre-merge test mode
-
-2. **Fix `-nocompaction` flag** - Remove unknown flag from client definition
-
+1. **Wait for legacy suite to complete** (~3.5 hours remaining)
+2. **Run legacy-cancun Istanbul+Berlin tests** - Next batch of ETC-relevant tests
 3. **Investigate debug_getRaw* crash** - Method handler crashes for non-genesis blocks
-
-4. **Test graphql and sync simulators** - Determine if they have similar post-merge issues
+4. **Test graphql and sync simulators** - Determine if they work for pre-merge

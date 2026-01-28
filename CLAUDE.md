@@ -47,7 +47,8 @@ Key environment variables the client should handle:
 Project-specific skills are defined in `.claude/skills/`:
 
 - `/pickup` - Resume work from previous session: load SITREP.md, TODO.md, summarize state
-- `/handoff` - Prepare for context handoff: update SITREP.md, TODO.md, and commit (run when context is getting full)
+- `/handoff` - Prepare for context handoff: sync docs, update promptlog, commit (run when context is full)
+- `/sync-docs [--commit]` - Synchronize SITREP.md, TODO.md, HIVE-TEST-ANALYSIS.md with current state
 - `/wrapup [message]` - Update prompt log and commit all changes (run at end of significant sessions)
 - `/promptlog` - Generate PROMPTLOG.md from session history
 - `/submodule-push [name]` - Push submodule changes to fork

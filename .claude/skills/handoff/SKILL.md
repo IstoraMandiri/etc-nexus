@@ -1,3 +1,8 @@
+---
+name: handoff
+description: Prepare for context handoff when running low on context. Syncs docs and commits so a fresh agent can continue.
+---
+
 # Handoff Skill
 
 Prepare for context handoff when running low on context. Updates documentation so a fresh agent can seamlessly continue the work.
@@ -13,66 +18,81 @@ Run this when:
 - You're about to start a new session
 - Switching to a different task and want to preserve state
 
-## When Invoked
+## Workflow
 
-### Step 1: Summarize current state
+### Step 1: Sync Documentation
 
-Reflect on what was accomplished in this session:
-- What tasks were completed?
-- What's currently in progress?
-- What problems were encountered?
-- What decisions were made and why?
+First, run `/sync-docs` to ensure all documentation is current:
+- Updates SITREP.md with current state
+- Updates TODO.md with progress
+- Updates HIVE-TEST-ANALYSIS.md if tests are running
 
-### Step 2: Update SITREP.md
+### Step 2: Add Session Context
 
-Update the situation report with:
-- **Current State**: What's working, what's not
-- **Recent Changes**: What was modified in this session
-- **Blockers/Issues**: Any problems the next agent should know about
-- **Key Decisions**: Important choices made and their rationale
+After sync-docs, enhance the docs with session-specific context:
 
-### Step 3: Update TODO.md
+**SITREP.md** - Add to "Current Activity":
+- What was accomplished this session
+- Any problems encountered
+- Key decisions made and why
 
-Ensure TODO.md reflects:
-- **Completed items**: Remove or mark done
-- **In-progress work**: Clear description of where things stand
-- **Next steps**: Specific, actionable items for the next agent
-- **Context needed**: Any non-obvious information the next agent needs
+**TODO.md** - Ensure it has:
+- Clear "Next Steps" for the incoming agent
+- Any context the next agent needs that isn't obvious
+- Specific, actionable first task
 
-### Step 4: Update PROMPTLOG.md (subagent)
+### Step 3: Update PROMPTLOG.md
 
-Use the Task tool to run the promptlog skill in a subagent:
+Use the Task tool to run promptlog in a subagent:
 
 ```
-Task tool with subagent_type="general-purpose", prompt="Run /promptlog to update PROMPTLOG.md with this session's prompts"
+Task tool with subagent_type="general-purpose", prompt="Run /promptlog to update PROMPTLOG.md"
 ```
 
-Wait for the subagent to complete before proceeding.
+Wait for completion before proceeding.
 
-### Step 5: Commit all changes
-1. Stage SITREP.md, TODO.md, PROMPTLOG.md, and any other relevant files
-2. Create a commit with message: "Update docs for session handoff"
+### Step 4: Commit All Changes
 
-### Step 6: Report handoff summary
+Stage and commit all documentation:
 
-Output a brief summary for the user:
+```bash
+git add SITREP.md TODO.md HIVE-TEST-ANALYSIS.md PROMPTLOG.md
+git commit -m "Update docs for session handoff
+
+[Brief summary of session accomplishments]"
+```
+
+### Step 5: Report Handoff Summary
+
+Output a summary for the user:
 
 ```
 Handoff prepared:
-- SITREP.md: Updated with [summary]
-- TODO.md: [N] items ready for next session
+- SITREP.md: [what was updated]
+- TODO.md: [N] items, first task: [description]
 - PROMPTLOG.md: Updated with [N] prompts
 - Committed: [hash]
 
-Next agent should start with: "check @TODO.md and @SITREP.md and continue"
+Next agent should run: /pickup
 ```
 
-## Tips for Next Agent
+## For the Next Agent
 
-The recommended prompt to continue work is:
+The recommended way to continue work is:
+
+```
+/pickup
+```
+
+Or manually:
 
 ```
 check @TODO.md and @SITREP.md and continue
 ```
 
-This loads both files into context and gives the agent clear direction.
+## Related Skills
+
+- `/sync-docs` - Update docs without full handoff
+- `/pickup` - Resume work from previous session
+- `/promptlog` - Update prompt history
+- `/hive-progress` - Check test progress specifically

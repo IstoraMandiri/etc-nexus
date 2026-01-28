@@ -52,6 +52,7 @@ Project-specific skills are defined in `.claude/skills/`:
 - `/promptlog` - Generate PROMPTLOG.md from session history
 - `/submodule-push [name]` - Push submodule changes to fork
 - `/hive-run [simulator] [--client name]` - Build and run Hive integration tests
+- `/hive-progress [--update]` - Check progress of running Hive tests and update docs with estimates
 
 **End of session:** Run `/wrapup` to commit changes, or `/handoff` if context is full and work will continue in a new session.
 

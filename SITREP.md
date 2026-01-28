@@ -10,11 +10,11 @@ Hive integration with core-geth is **working**. Full legacy consensus test suite
 
 **Running:** `./hive --sim ethereum/consensus --sim.limit legacy --client core-geth`
 - Suite: `legacy` (LegacyTests/Constantinople/BlockchainTests)
-- Progress: ~15,373 / 32,615 tests (~47%)
+- Progress: ~17,468 / 32,615 tests (~54%)
 - Status: All tests passing so far
-- Rate: ~68 tests/minute
-- Estimated time remaining: ~4.2 hours
-- Estimated total suite time: ~8 hours
+- Rate: ~70 tests/minute
+- Estimated time remaining: ~3.6 hours
+- Estimated total suite time: ~7.8 hours
 
 Note: Computer hibernated from 15:21 to 22:36 UTC (~7h gap, excluded from estimates).
 

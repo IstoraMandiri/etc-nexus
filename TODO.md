@@ -6,10 +6,10 @@
 ```bash
 ./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
 ```
-- Progress: ~15,373 / 32,615 tests (~47%)
+- Progress: ~17,468 / 32,615 tests (~54%)
 - Status: All tests passing so far
-- Rate: ~68 tests/minute (~8 hours for full suite)
-- Estimated time remaining: ~4.2 hours
+- Rate: ~70 tests/minute (~7.8 hours for full suite)
+- Estimated time remaining: ~3.6 hours
 
 ---
 
@@ -66,7 +66,7 @@ cd /workspaces/etc-nexus/hive
 | smoke/genesis | 6 | 3 | Good (3 Cancun expected) |
 | smoke/network | 2 | 0 | Full pass |
 | devp2p/discv4 | 16 | 0 | Full pass |
-| ethereum/consensus (legacy) | ~15,373+ | 0 | Running (~47%, ~4.2h remaining) |
+| ethereum/consensus (legacy) | ~17,468+ | 0 | Running (~54%, ~3.6h remaining) |
 
 ### Partially Working
 | Test | Pass | Fail | Notes |

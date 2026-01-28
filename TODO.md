@@ -2,14 +2,14 @@
 
 ## Currently Running
 
-**Legacy consensus test suite in progress:**
+**Legacy consensus test suite restarting:**
 ```bash
 ./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
 ```
-- Progress: ~17,468 / 32,615 tests (~54%)
-- Status: All tests passing so far
+- Previous run: Reached 18,732 / 32,615 tests (57%) before power outage
+- Status: Restarting from scratch
 - Rate: ~70 tests/minute (~7.8 hours for full suite)
-- Estimated time remaining: ~3.6 hours
+- Estimated time remaining: ~7.8 hours
 
 ---
 
@@ -66,7 +66,7 @@ cd /workspaces/etc-nexus/hive
 | smoke/genesis | 6 | 3 | Good (3 Cancun expected) |
 | smoke/network | 2 | 0 | Full pass |
 | devp2p/discv4 | 16 | 0 | Full pass |
-| ethereum/consensus (legacy) | ~17,468+ | 0 | Running (~54%, ~3.6h remaining) |
+| ethereum/consensus (legacy) | 0 | 0 | Restarting after power outage |
 
 ### Partially Working
 | Test | Pass | Fail | Notes |

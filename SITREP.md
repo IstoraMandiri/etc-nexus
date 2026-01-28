@@ -1,22 +1,19 @@
 # Situation Report
 
-Last updated: 2026-01-27
+Last updated: 2026-01-28
 
 ## Summary
 
-Hive integration with core-geth is **working**. Full legacy consensus test suite currently running (~12,766 of 32,615 tests completed, ~39% done).
+Hive integration with core-geth is **working**. Legacy consensus test suite restarting after power outage (previously reached 57%).
 
 ## Current Activity
 
-**Running:** `./hive --sim ethereum/consensus --sim.limit legacy --client core-geth`
+**Restarting:** `./hive --sim ethereum/consensus --sim.limit legacy --client core-geth`
 - Suite: `legacy` (LegacyTests/Constantinople/BlockchainTests)
-- Progress: ~17,468 / 32,615 tests (~54%)
-- Status: All tests passing so far
+- Previous progress: 18,732 / 32,615 tests (57%) before power outage
+- Status: Restarting from scratch
 - Rate: ~70 tests/minute
-- Estimated time remaining: ~3.6 hours
 - Estimated total suite time: ~7.8 hours
-
-Note: Computer hibernated from 15:21 to 22:36 UTC (~7h gap, excluded from estimates).
 
 ## Repository Status
 
@@ -34,7 +31,7 @@ Note: Computer hibernated from 15:21 to 22:36 UTC (~7h gap, excluded from estima
 | **smoke/genesis** | 6/9 | Core tests pass; 3 Cancun failures expected |
 | **smoke/network** | 2/2 | Full pass |
 | **devp2p/discv4** | 16/16 | Full pass |
-| **ethereum/consensus (legacy)** | ~15,373 / 32,615 | Running (~47%, ~4.2h remaining) |
+| **ethereum/consensus (legacy)** | 0 / 32,615 | Restarting after power outage |
 
 ### Build Pipeline
 - core-geth builds from `IstoraMandiri/core-geth` (~2 min)
@@ -89,9 +86,9 @@ cd /workspaces/etc-nexus/hive
 ./hive --sim ethereum/rpc-compat --client core-geth
 ```
 
-## Next Session Should
+## Next Steps
 
-1. **Check legacy test results** - Suite is running (~39% complete as of last check)
+1. **Run legacy test suite** - Restarting after power outage (~7.8 hours)
 2. **Run Istanbul/Berlin tests** from `legacy-cancun` suite (~27,000 ETC-relevant tests)
 3. **Test additional simulators** (graphql, sync, devp2p/eth)
 4. **File bug** for `debug_getRaw*` method handler crash

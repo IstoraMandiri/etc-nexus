@@ -4,15 +4,15 @@ This document analyzes Hive integration tests for Ethereum Classic (ETC) testing
 
 ## Current Status (2026-01-28)
 
-**Legacy consensus tests running:** 17,899 / 32,615 (55%) - all passing
+**Legacy consensus tests restarting:** Previous run reached 18,732 / 32,615 (57%) before power outage
 
 | Metric | Value |
 |--------|-------|
 | Suite | `legacy` (Constantinople and earlier) |
-| Progress | 17,899 / 32,615 tests (55%) |
-| Status | All tests passing |
+| Progress | Restarting (prev: 18,732 / 32,615, 57%) |
+| Status | Restarting after power outage |
 | Rate | ~70 tests/minute |
-| ETA | ~3.5 hours remaining |
+| ETA | ~7.8 hours total |
 
 ---
 
@@ -24,7 +24,7 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 
 | Suite | Total | ETC Relevant | Status |
 |-------|-------|--------------|--------|
-| **`legacy`** | 32,615 | **32,615** (100%) | Running - 55% complete |
+| **`legacy`** | 32,615 | **32,615** (100%) | Restarting after power outage |
 | `legacy-cancun` (Istanbul+Berlin) | 111,983 | ~27,000 | Pending |
 | `consensus` (Cancun) | 1,148 | 571 | Pending |
 | **Total** | **145,746** | **~60,000** | |
@@ -35,7 +35,7 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 |----------|--------|-------|
 | smoke/ | ✅ **24/24** | All basic tests pass |
 | devp2p/discv4 | ✅ **16/16** | Node discovery works |
-| ethereum/consensus | ✅ **Running** | 17,899/32,615 passing (55%) |
+| ethereum/consensus | 🔄 **Restarting** | 0/32,615 (power outage) |
 | ethereum/rpc-compat | ⚠️ **33/200** | 91 `eth_simulateV1` expected failures |
 | ethereum/engine | ❌ Skip | Post-merge only |
 | eth2/* | ❌ Skip | Beacon chain - not applicable |
@@ -57,7 +57,7 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 
 | Test | Result | Status |
 |------|--------|--------|
-| ethereum/consensus (legacy) | **17,899/32,615** | ✅ Running (55%, ~3.5h remaining) |
+| ethereum/consensus (legacy) | **0/32,615** | 🔄 Restarting after power outage |
 | ethereum/consensus (legacy-cancun) | Pending | Next: Istanbul+Berlin (~27k tests) |
 
 ### Key Findings
@@ -223,7 +223,7 @@ Tests are loaded from the [ethereum/tests](https://github.com/ethereum/tests) re
 2. Added `HIVE_SKIP_POW` handling in `geth.sh` to enable `--fakepow` flag
 3. Removed unsupported `--nocompaction` flag
 
-**Current Status:** Legacy tests running successfully - 17,899/32,615 passing (55%)
+**Current Status:** Legacy tests restarting after power outage (prev: 18,732/32,615 passing, 57%)
 
 #### How to Run Pre-Merge Tests
 
@@ -415,7 +415,7 @@ Portal Network is experimental/research phase. Not relevant for ETC client testi
 
 | Test | Progress | Notes |
 |------|----------|-------|
-| ethereum/consensus (legacy) | 17,899/32,615 (55%) | All passing, ~3.5h remaining |
+| ethereum/consensus (legacy) | 0/32,615 | Restarting after power outage (~7.8h total) |
 
 ### Tests To Investigate ❓
 
@@ -526,7 +526,7 @@ Consider creating:
 1. [x] Run Phase 1 baseline tests - **COMPLETED**
 2. [x] Fix consensus test compatibility - **COMPLETED** (TTD, fakepow, nocompaction fixes)
 3. [x] Categorize rpc-compat failures - **COMPLETED**
-4. [x] Run legacy consensus suite - **IN PROGRESS** (55% complete)
+4. [x] Run legacy consensus suite - **RESTARTING** (power outage at 57%)
 5. [ ] Run Istanbul+Berlin tests from legacy-cancun (~27,000 tests)
 6. [ ] Investigate devp2p/eth and sync test requirements
 7. [ ] Define minimum required test coverage for ETC releases
@@ -534,7 +534,7 @@ Consider creating:
 
 ### Immediate Priorities
 
-1. **Wait for legacy suite to complete** (~3.5 hours remaining)
+1. **Restart legacy suite** (~7.8 hours total after power outage)
 2. **Run legacy-cancun Istanbul+Berlin tests** - Next batch of ETC-relevant tests
 3. **Investigate debug_getRaw* crash** - Method handler crashes for non-genesis blocks
 4. **Test graphql and sync simulators** - Determine if they work for pre-merge

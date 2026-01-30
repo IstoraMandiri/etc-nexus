@@ -54,6 +54,8 @@ Project-specific skills are defined in `.claude/skills/`:
 - `/submodule-push [name]` - Push submodule changes to fork
 - `/hive-run [simulator] [--client name]` - Build and run Hive integration tests
 - `/hive-progress [--update]` - Check progress of running Hive tests and update docs with estimates
+- `/hourly-monitor [--max-iterations N]` - Start automated hourly loop to monitor tests, update docs, and commit
+- `/report <topic>` - Create structured reports with Discord-friendly summaries
 
 **End of session:** Run `/wrapup` to commit changes, or `/handoff` if context is full and work will continue in a new session.
 

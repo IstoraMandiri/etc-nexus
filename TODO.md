@@ -44,8 +44,12 @@ Both test runs were interrupted. Migrating to cloud deployment for reliability.
 
 ## Immediate Actions (After Current Run)
 
-### 1. Investigate CREATE2 Failures
+### 1. ~~Investigate CREATE2 Failures~~ RESOLVED
 21 tests failing in legacy suite - all related to CREATE2 collision handling.
+
+**Resolution:** These are EIP-7610 edge cases targeting "ghost accounts" (pre-EIP-161 accounts with storage but no code/nonce). Exploiting requires keccak256 preimage attack - computationally infeasible. Safe to exclude from ETC test suite.
+
+See: [CREATE2 Collision Resolution Report](reports/260130_CREATE2_COLLISION_RESOLUTION.md)
 
 ### 3. Run Additional Test Suites
 ```bash

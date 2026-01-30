@@ -52,11 +52,13 @@ Legacy consensus test suite completed:
 - Passed: 32,595 (99.94%)
 - Failed: 21 tests
 
-**Failed tests** (all CREATE2 collision edge cases):
+**Failed tests** (all CREATE2 collision edge cases - **RESOLVED**):
 - `InitCollision_*` (8 tests) - Constantinople/ConstantinopleFix
 - `create2collisionStorage_*` (6 tests)
 - `RevertInCreateInInit*` (5 tests)
 - `dynamicAccountOverwriteEmpty_*` (2 tests)
+
+**Resolution:** EIP-7610 edge cases targeting "ghost accounts" - safe to exclude from ETC testing. See [resolution report](reports/260130_CREATE2_COLLISION_RESOLUTION.md).
 
 ## Repository Status
 
@@ -148,10 +150,11 @@ cd /workspaces/etc-nexus/hive
 
 ## Next Steps
 
-1. **Investigate CREATE2 failures** - 21 tests failing in legacy suite
-2. **Run Istanbul/Berlin tests** from `legacy-cancun` suite (~27,000 ETC-relevant tests)
-3. **Test additional simulators** (graphql, sync, devp2p/eth)
-4. **File bug** for `debug_getRaw*` method handler crash
+1. ~~**Investigate CREATE2 failures**~~ - **RESOLVED** (EIP-7610 edge cases, safe to exclude)
+2. **Create ETC-specific test exclusion list** in Hive fork for the 21 EIP-7610 tests
+3. **Run Istanbul/Berlin tests** from `legacy-cancun` suite (~27,000 ETC-relevant tests)
+4. **Test additional simulators** (graphql, sync, devp2p/eth)
+5. **File bug** for `debug_getRaw*` method handler crash
 
 ## Test Suite Reference (ethereum/tests)
 

@@ -1,5 +1,7 @@
 # CREATE2 Collision Test Failures Analysis
 
+> **RESOLVED:** See [CREATE2 Collision Resolution](260130_CREATE2_COLLISION_RESOLUTION.md) - These failures are EIP-7610 edge cases that are safe to exclude from ETC testing.
+
 <!-- DISCORD SUMMARY (paste everything between the markers) -->
 ## Hive Legacy Consensus Tests: 99.94% Pass Rate
 

@@ -1,20 +1,48 @@
 # Situation Report
 
-Last updated: 2026-01-28
+Last updated: 2026-01-30
 
 ## Summary
 
-Hive integration with core-geth is **working**. Legacy consensus test suite completed with 99.94% pass rate (32,595/32,616).
+Hive integration with core-geth is **working**. Legacy consensus test suite completed with 99.94% pass rate (32,595/32,616). Added **besu-etc** client for multi-client testing.
 
-## Session Summary (2026-01-28)
+## Currently Running (2026-01-30)
 
-This session restarted the legacy consensus test suite after a power outage (previous run reached 57%). The suite completed successfully with:
+**Test:** `legacy-cancun` consensus test suite
 
-- **Total runtime:** ~12 hours
+```bash
+./hive --sim ethereum/consensus --sim.limit legacy-cancun --client core-geth
+```
+
+| Metric | Value |
+|--------|-------|
+| Progress | ~370 / 111,983 (~0.3%) |
+| Rate | ~46 tests/minute |
+| Estimated total time | ~40 hours |
+
+**Issue:** The full `legacy-cancun` suite includes 111,983 tests across all forks (Byzantium through Cancun), but only **~27,000 tests are ETC-relevant** (Istanbul + Berlin). The remaining ~85,000 tests are for post-Berlin forks that don't apply to ETC.
+
+**Recommendation:** For future runs, filter to just ETC-relevant forks:
+```bash
+./hive --sim ethereum/consensus --sim.limit "Istanbul|Berlin" --client core-geth
+```
+This would reduce runtime from ~40 hours to ~10 hours.
+
+---
+
+## Session Summary (2026-01-30)
+
+Added Besu ETC client to Hive:
+- Created `hive/clients/besu-etc/` using standard `hyperledger/besu` image (native ETC support)
+- Modified `mapper.jq` to handle ETC-specific forks (Atlantis, Agharta, Phoenix, Thanos, Magneto, Mystique, Spiral)
+- Smoke tests pass: genesis (6/6), network (2/2)
+- Committed: `271ae4c`
+
+## Previous Session (2026-01-28)
+
+Legacy consensus test suite completed:
 - **Result:** 99.94% pass rate (32,595/32,616)
 - **Key finding:** 21 failures all related to CREATE2 collision edge cases
-
-The failures appear to be core-geth specific behavior around CREATE2 address collision handling.
 
 ## Latest Results
 
@@ -40,7 +68,13 @@ The failures appear to be core-geth specific behavior around CREATE2 address col
 
 ## What's Working
 
-### Passing Tests (Phase 1)
+### Clients
+| Client | Status | Notes |
+|--------|--------|-------|
+| **core-geth** | Working | Primary ETC client |
+| **besu-etc** | Working | Smoke tests pass (8/8) |
+
+### Passing Tests (core-geth)
 | Test | Result | Notes |
 |------|--------|-------|
 | **smoke/genesis** | 6/9 | Core tests pass; 3 Cancun failures expected |

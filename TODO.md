@@ -1,6 +1,13 @@
 # TODO
 
-## Latest Results
+## Latest Update (2026-01-30)
+
+**Added besu-etc client** - Besu for Ethereum Classic using `hyperledger/besu` image.
+- Smoke tests pass: genesis (6/6), network (2/2)
+- Location: `hive/clients/besu-etc/`
+- Commit: `271ae4c`
+
+## Latest Test Results (core-geth)
 
 **Legacy consensus test suite completed:**
 ```bash
@@ -18,7 +25,7 @@
 
 ---
 
-## Immediate Actions (After Current Run)
+## Immediate Actions
 
 ### 1. Investigate CREATE2 Failures
 21 tests failing in legacy suite - all related to CREATE2 collision handling.
@@ -65,7 +72,13 @@ cd /workspaces/etc-nexus/hive
 
 ## Test Status Summary
 
-### Passing Tests (ETC Baseline)
+### Clients Available
+| Client | Status |
+|--------|--------|
+| core-geth | Working - primary ETC client |
+| besu-etc | Working - smoke tests pass |
+
+### Passing Tests (core-geth)
 | Test | Pass | Fail | Status |
 |------|------|------|--------|
 | smoke/genesis | 6 | 3 | Good (3 Cancun expected) |

@@ -6,27 +6,27 @@ Last updated: 2026-01-30
 
 Hive integration with core-geth is **working**. Legacy consensus test suite completed with 99.94% pass rate (32,595/32,616). Added **besu-etc** client for multi-client testing.
 
-## Currently Running (2026-01-30)
+## Currently Running (2026-01-30 07:45 UTC)
 
-**Test:** `legacy-cancun` consensus test suite
-
-```bash
-./hive --sim ethereum/consensus --sim.limit legacy-cancun --client core-geth
-```
+### core-geth: `legacy-cancun` suite
 
 | Metric | Value |
 |--------|-------|
-| Progress | ~370 / 111,983 (~0.3%) |
+| Progress | 641 / 111,983 (0.6%) |
 | Rate | ~46 tests/minute |
-| Estimated total time | ~40 hours |
+| ETA | ~40 hours |
+| Started | 2026-01-30 07:31 UTC |
 
-**Issue:** The full `legacy-cancun` suite includes 111,983 tests across all forks (Byzantium through Cancun), but only **~27,000 tests are ETC-relevant** (Istanbul + Berlin). The remaining ~85,000 tests are for post-Berlin forks that don't apply to ETC.
+**Note:** Only ~27,000 tests are ETC-relevant (Istanbul + Berlin). Future runs should use `--sim.limit "Istanbul|Berlin"`.
 
-**Recommendation:** For future runs, filter to just ETC-relevant forks:
-```bash
-./hive --sim ethereum/consensus --sim.limit "Istanbul|Berlin" --client core-geth
-```
-This would reduce runtime from ~40 hours to ~10 hours.
+### besu-etc: `legacy` suite
+
+| Metric | Value |
+|--------|-------|
+| Progress | 21 / 32,616 (0.06%) |
+| Rate | ~19 tests/minute |
+| ETA | ~28 hours |
+| Started | 2026-01-30 07:43 UTC |
 
 ---
 
@@ -90,8 +90,8 @@ Legacy consensus test suite completed:
 
 | Suite | core-geth | besu-etc | nethermind | fukuii |
 |-------|-----------|----------|------------|--------|
-| legacy (32,616) | 99.94% | - | - | - |
-| legacy-cancun (~27k) | 🔄 Running | - | - | - |
+| legacy (32,616) | 99.94% | 🔄 0.06% (~28h) | - | - |
+| legacy-cancun (~27k) | 🔄 0.6% (~40h) | - | - | - |
 
 ### Build Pipeline
 - core-geth builds from `IstoraMandiri/core-geth` (~2 min)

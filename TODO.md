@@ -1,26 +1,24 @@
 # TODO
 
-## Currently Running (2026-01-30)
+## Currently Running (2026-01-30 07:45 UTC)
 
-**`legacy-cancun` consensus test suite:**
-
-```bash
-./hive --sim ethereum/consensus --sim.limit legacy-cancun --client core-geth
-```
+### core-geth: `legacy-cancun` suite
 
 | Metric | Value |
 |--------|-------|
-| Progress | ~370 / 111,983 (~0.3%) |
+| Progress | 641 / 111,983 (0.6%) |
 | Rate | ~46 tests/minute |
-| Estimated time | ~40 hours |
+| ETA | ~40 hours |
 
-**Issue:** Running full suite (111,983 tests) but only **~27,000 are ETC-relevant** (Istanbul + Berlin). The remaining ~85,000 tests are for post-Berlin forks (London, Paris, Shanghai, Cancun) that don't apply to ETC.
+**Note:** Only ~27k tests are ETC-relevant. Future runs: `--sim.limit "Istanbul|Berlin"`
 
-**For future runs**, filter to just ETC-relevant forks:
-```bash
-./hive --sim ethereum/consensus --sim.limit "Istanbul|Berlin" --client core-geth
-```
-This would reduce runtime from ~40 hours to ~10 hours.
+### besu-etc: `legacy` suite
+
+| Metric | Value |
+|--------|-------|
+| Progress | 21 / 32,616 (0.06%) |
+| Rate | ~19 tests/minute |
+| ETA | ~28 hours |
 
 ---
 
@@ -108,7 +106,8 @@ This would reduce runtime from ~40 hours to ~10 hours.
 
 | Suite | core-geth | besu-etc | nethermind | fukuii |
 |-------|-----------|----------|------------|--------|
-| legacy (32,616) | 99.94% | - | - | - |
+| legacy (32,616) | 99.94% | 🔄 0.06% | - | - |
+| legacy-cancun (~27k) | 🔄 0.6% | - | - | - |
 | legacy-cancun (~27k) | 🔄 Running | - | - | - |
 
 ### Not Applicable to ETC

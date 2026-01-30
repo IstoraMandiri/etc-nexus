@@ -6,29 +6,27 @@ Last updated: 2026-01-30
 
 Hive integration with core-geth is **working**. Legacy consensus test suite completed with 99.94% pass rate (32,595/32,616). Added **besu-etc** client for multi-client testing.
 
-## Currently Running (2026-01-30 22:01 UTC)
+## ⚠️ INTERRUPTED: Power Outage (2026-01-30 ~22:30 UTC)
 
-### core-geth: `legacy-cancun` suite
+Both test runs were interrupted by a power outage. Migrating to cloud deployment.
+
+### core-geth: `legacy-cancun` suite (INTERRUPTED)
 
 | Metric | Value |
 |--------|-------|
-| Progress | 37,944 / 111,983 (33.9%) |
+| Progress at interruption | 37,944 / 111,983 (33.9%) |
 | Passed | 37,908 |
 | Failed | 36 (CREATE2 collision tests - expected) |
-| Rate | ~45 tests/minute |
-| ETA | ~27 hours remaining |
-| Started | 2026-01-30 07:31 UTC |
+| Status | **INTERRUPTED - power outage** |
 
-**Note:** Only ~27,000 tests are ETC-relevant (Istanbul + Berlin). Future runs should use `--sim.limit "Istanbul|Berlin"`.
-
-### besu-etc: `legacy` suite
+### besu-etc: `legacy` suite (INTERRUPTED)
 
 | Metric | Value |
 |--------|-------|
-| Progress | 9,788 / 32,616 (30.0%) |
-| Rate | ~12 tests/minute |
-| ETA | ~33 hours |
-| Started | 2026-01-30 07:43 UTC |
+| Progress at interruption | 9,788 / 32,616 (30.0%) |
+| Status | **INTERRUPTED - power outage** |
+
+**Next steps:** Re-run tests on cloud infrastructure for reliability.
 
 ---
 

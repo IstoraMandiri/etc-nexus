@@ -1,24 +1,22 @@
 # TODO
 
-## Currently Running (2026-01-30 22:01 UTC)
+## ⚠️ INTERRUPTED: Power Outage (2026-01-30 ~22:30 UTC)
 
-### core-geth: `legacy-cancun` suite
+Both test runs were interrupted. Migrating to cloud deployment for reliability.
 
-| Metric | Value |
-|--------|-------|
-| Progress | 37,944 / 111,983 (33.9%) |
-| Rate | ~45 tests/minute |
-| ETA | ~27 hours |
-
-**Note:** Only ~27k tests are ETC-relevant. Future runs: `--sim.limit "Istanbul|Berlin"`
-
-### besu-etc: `legacy` suite
+### core-geth: `legacy-cancun` suite (INTERRUPTED)
 
 | Metric | Value |
 |--------|-------|
-| Progress | 9,788 / 32,616 (30.0%) |
-| Rate | ~12 tests/minute |
-| ETA | ~33 hours |
+| Progress at interruption | 37,944 / 111,983 (33.9%) |
+| Status | **Needs restart on cloud** |
+
+### besu-etc: `legacy` suite (INTERRUPTED)
+
+| Metric | Value |
+|--------|-------|
+| Progress at interruption | 9,788 / 32,616 (30.0%) |
+| Status | **Needs restart on cloud** |
 
 ---
 

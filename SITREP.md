@@ -4,16 +4,21 @@ Last updated: 2026-01-28
 
 ## Summary
 
-Hive integration with core-geth is **working**. Legacy consensus test suite restarting after power outage (previously reached 57%).
+Hive integration with core-geth is **working**. Legacy consensus test suite completed with 99.94% pass rate (32,595/32,616).
 
-## Current Activity
+## Latest Results
 
-**Restarting:** `./hive --sim ethereum/consensus --sim.limit legacy --client core-geth`
+**Completed:** Legacy consensus test suite
 - Suite: `legacy` (LegacyTests/Constantinople/BlockchainTests)
-- Previous progress: 18,732 / 32,615 tests (57%) before power outage
-- Status: Restarting from scratch
-- Rate: ~70 tests/minute
-- Estimated total suite time: ~7.8 hours
+- Total tests: 32,616
+- Passed: 32,595 (99.94%)
+- Failed: 21 tests
+
+**Failed tests** (all CREATE2 collision edge cases):
+- `InitCollision_*` (8 tests) - Constantinople/ConstantinopleFix
+- `create2collisionStorage_*` (6 tests)
+- `RevertInCreateInInit*` (5 tests)
+- `dynamicAccountOverwriteEmpty_*` (2 tests)
 
 ## Repository Status
 
@@ -31,7 +36,7 @@ Hive integration with core-geth is **working**. Legacy consensus test suite rest
 | **smoke/genesis** | 6/9 | Core tests pass; 3 Cancun failures expected |
 | **smoke/network** | 2/2 | Full pass |
 | **devp2p/discv4** | 16/16 | Full pass |
-| **ethereum/consensus (legacy)** | 0 / 32,615 | Restarting after power outage |
+| **ethereum/consensus (legacy)** | 32,595 / 32,616 | 99.94% pass - 21 CREATE2 failures |
 
 ### Build Pipeline
 - core-geth builds from `IstoraMandiri/core-geth` (~2 min)
@@ -88,7 +93,7 @@ cd /workspaces/etc-nexus/hive
 
 ## Next Steps
 
-1. **Run legacy test suite** - Restarting after power outage (~7.8 hours)
+1. **Investigate CREATE2 failures** - 21 tests failing in legacy suite
 2. **Run Istanbul/Berlin tests** from `legacy-cancun` suite (~27,000 ETC-relevant tests)
 3. **Test additional simulators** (graphql, sync, devp2p/eth)
 4. **File bug** for `debug_getRaw*` method handler crash
@@ -97,7 +102,7 @@ cd /workspaces/etc-nexus/hive
 
 | Suite | Total Tests | ETC Relevant | Notes |
 |-------|-------------|--------------|-------|
-| `legacy` | 32,615 | 32,615 (100%) | Constantinople and earlier - **Running now** |
+| `legacy` | 32,616 | 32,616 (100%) | Constantinople and earlier - **99.94% pass** |
 | `legacy-cancun` | 111,983 | ~27,000 | Istanbul + Berlin relevant |
 | `consensus` | 1,148 | 571 | Cancun only (Prague not supported) |
 | **Total** | **145,746** | **~60,000** | |

@@ -1,22 +1,27 @@
 # TODO
 
-## Currently Running
+## Latest Results
 
-**Legacy consensus test suite restarting:**
+**Legacy consensus test suite completed:**
 ```bash
 ./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
 ```
-- Previous run: Reached 18,732 / 32,615 tests (57%) before power outage
-- Status: Restarting from scratch
-- Rate: ~70 tests/minute (~7.8 hours for full suite)
-- Estimated time remaining: ~7.8 hours
+- Total: 32,616 tests
+- Passed: 32,595 (99.94%)
+- Failed: 21 tests (CREATE2 collision edge cases)
+
+**Failed tests:**
+- `InitCollision_*` (8) - Constantinople/ConstantinopleFix
+- `create2collisionStorage_*` (6)
+- `RevertInCreateInInit*` (5)
+- `dynamicAccountOverwriteEmpty_*` (2)
 
 ---
 
 ## Immediate Actions (After Current Run)
 
-### 1. Analyze Legacy Test Results
-Once the current run completes, document final pass/fail counts.
+### 1. Investigate CREATE2 Failures
+21 tests failing in legacy suite - all related to CREATE2 collision handling.
 
 ### 2. Run Istanbul/Berlin Tests
 The `legacy-cancun` suite has ~27,000 ETC-relevant tests (Istanbul + Berlin):
@@ -51,7 +56,7 @@ cd /workspaces/etc-nexus/hive
 
 | Suite | Total Tests | ETC Relevant | Notes |
 |-------|-------------|--------------|-------|
-| `legacy` | 32,615 | 32,615 (100%) | Constantinople and earlier - **Running** |
+| `legacy` | 32,616 | 32,616 (100%) | Constantinople and earlier - **99.94% pass** |
 | `legacy-cancun` | 111,983 | ~27,000 | Istanbul + Berlin relevant |
 | `consensus` | 1,148 | 571 | Cancun only (Prague not supported) |
 | **Total** | **145,746** | **~60,000** | |
@@ -66,7 +71,7 @@ cd /workspaces/etc-nexus/hive
 | smoke/genesis | 6 | 3 | Good (3 Cancun expected) |
 | smoke/network | 2 | 0 | Full pass |
 | devp2p/discv4 | 16 | 0 | Full pass |
-| ethereum/consensus (legacy) | 0 | 0 | Restarting after power outage |
+| ethereum/consensus (legacy) | 32,595 | 21 | 99.94% pass - CREATE2 failures |
 
 ### Partially Working
 | Test | Pass | Fail | Notes |

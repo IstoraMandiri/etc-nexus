@@ -4,15 +4,20 @@ This document analyzes Hive integration tests for Ethereum Classic (ETC) testing
 
 ## Current Status (2026-01-28)
 
-**Legacy consensus tests restarting:** Previous run reached 18,732 / 32,615 (57%) before power outage
+**Legacy consensus tests completed:** 32,595 / 32,616 (99.94% pass rate)
 
 | Metric | Value |
 |--------|-------|
 | Suite | `legacy` (Constantinople and earlier) |
-| Progress | Restarting (prev: 18,732 / 32,615, 57%) |
-| Status | Restarting after power outage |
-| Rate | ~70 tests/minute |
-| ETA | ~7.8 hours total |
+| Total tests | 32,616 |
+| Passed | 32,595 (99.94%) |
+| Failed | 21 (CREATE2 collision edge cases) |
+
+**Failed Tests (21):**
+- `InitCollision_*` (8) - Constantinople/ConstantinopleFix
+- `create2collisionStorage_*` (6)
+- `RevertInCreateInInit*` (5)
+- `dynamicAccountOverwriteEmpty_*` (2)
 
 ---
 
@@ -24,7 +29,7 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 
 | Suite | Total | ETC Relevant | Status |
 |-------|-------|--------------|--------|
-| **`legacy`** | 32,615 | **32,615** (100%) | Restarting after power outage |
+| **`legacy`** | 32,616 | **32,616** (100%) | ✅ **99.94% pass** (21 CREATE2 failures) |
 | `legacy-cancun` (Istanbul+Berlin) | 111,983 | ~27,000 | Pending |
 | `consensus` (Cancun) | 1,148 | 571 | Pending |
 | **Total** | **145,746** | **~60,000** | |
@@ -35,7 +40,7 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 |----------|--------|-------|
 | smoke/ | ✅ **24/24** | All basic tests pass |
 | devp2p/discv4 | ✅ **16/16** | Node discovery works |
-| ethereum/consensus | 🔄 **Restarting** | 0/32,615 (power outage) |
+| ethereum/consensus | ✅ **99.94% pass** | 32,595/32,616 (21 CREATE2 failures) |
 | ethereum/rpc-compat | ⚠️ **33/200** | 91 `eth_simulateV1` expected failures |
 | ethereum/engine | ❌ Skip | Post-merge only |
 | eth2/* | ❌ Skip | Beacon chain - not applicable |
@@ -53,11 +58,11 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 | devp2p/discv4 | **16/16** | ✅ PASS |
 | ethereum/rpc-compat | **33/200** | ⚠️ Expected (91 eth_simulateV1) |
 
-### Phase 2: Consensus Testing (In Progress)
+### Phase 2: Consensus Testing (Complete)
 
 | Test | Result | Status |
 |------|--------|--------|
-| ethereum/consensus (legacy) | **0/32,615** | 🔄 Restarting after power outage |
+| ethereum/consensus (legacy) | **32,595/32,616** | ✅ 99.94% pass (21 CREATE2 failures) |
 | ethereum/consensus (legacy-cancun) | Pending | Next: Istanbul+Berlin (~27k tests) |
 
 ### Key Findings
@@ -223,7 +228,7 @@ Tests are loaded from the [ethereum/tests](https://github.com/ethereum/tests) re
 2. Added `HIVE_SKIP_POW` handling in `geth.sh` to enable `--fakepow` flag
 3. Removed unsupported `--nocompaction` flag
 
-**Current Status:** Legacy tests restarting after power outage (prev: 18,732/32,615 passing, 57%)
+**Current Status:** Legacy tests completed - 32,595/32,616 passing (99.94%)
 
 #### How to Run Pre-Merge Tests
 
@@ -411,11 +416,11 @@ Portal Network is experimental/research phase. Not relevant for ETC client testi
 |------|--------|-------|
 | RPC Compat | **33/200** | Client doesn't sync test chain; 91 `eth_simulateV1` expected failures |
 
-### Tests In Progress 🔄
+### Tests Completed ✅
 
-| Test | Progress | Notes |
-|------|----------|-------|
-| ethereum/consensus (legacy) | 0/32,615 | Restarting after power outage (~7.8h total) |
+| Test | Result | Notes |
+|------|--------|-------|
+| ethereum/consensus (legacy) | 32,595/32,616 | 99.94% pass - 21 CREATE2 failures |
 
 ### Tests To Investigate ❓
 
@@ -526,7 +531,7 @@ Consider creating:
 1. [x] Run Phase 1 baseline tests - **COMPLETED**
 2. [x] Fix consensus test compatibility - **COMPLETED** (TTD, fakepow, nocompaction fixes)
 3. [x] Categorize rpc-compat failures - **COMPLETED**
-4. [x] Run legacy consensus suite - **RESTARTING** (power outage at 57%)
+4. [x] Run legacy consensus suite - **COMPLETED** (99.94% pass, 21 CREATE2 failures)
 5. [ ] Run Istanbul+Berlin tests from legacy-cancun (~27,000 tests)
 6. [ ] Investigate devp2p/eth and sync test requirements
 7. [ ] Define minimum required test coverage for ETC releases
@@ -534,7 +539,7 @@ Consider creating:
 
 ### Immediate Priorities
 
-1. **Restart legacy suite** (~7.8 hours total after power outage)
+1. **Investigate CREATE2 failures** - 21 tests failing (collision/revert edge cases)
 2. **Run legacy-cancun Istanbul+Berlin tests** - Next batch of ETC-relevant tests
 3. **Investigate debug_getRaw* crash** - Method handler crashes for non-genesis blocks
 4. **Test graphql and sync simulators** - Determine if they work for pre-merge

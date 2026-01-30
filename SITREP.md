@@ -6,6 +6,16 @@ Last updated: 2026-01-28
 
 Hive integration with core-geth is **working**. Legacy consensus test suite completed with 99.94% pass rate (32,595/32,616).
 
+## Session Summary (2026-01-28)
+
+This session restarted the legacy consensus test suite after a power outage (previous run reached 57%). The suite completed successfully with:
+
+- **Total runtime:** ~12 hours
+- **Result:** 99.94% pass rate (32,595/32,616)
+- **Key finding:** 21 failures all related to CREATE2 collision edge cases
+
+The failures appear to be core-geth specific behavior around CREATE2 address collision handling.
+
 ## Latest Results
 
 **Completed:** Legacy consensus test suite

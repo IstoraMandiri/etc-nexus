@@ -1,58 +1,12 @@
 # TODO
 
-## ✅ Cloud Deployment Complete (2026-01-30 ~23:45 UTC)
+> **Note:** For current test progress and status, see [SITREP.md](SITREP.md).
+> This file focuses on planned future work.
 
-Successfully migrated to cloud infrastructure after power outage. Both clients verified working.
+## Immediate Actions
 
-### Cloud Setup Verified
-
-| Client | smoke/genesis | smoke/network | Status |
-|--------|---------------|---------------|--------|
-| core-geth | 6/6 ✓ | 2/2 ✓ | **Ready** |
-| besu-etc | 6/6 ✓ | 2/2 ✓ | **Ready** |
-
-### Interrupted Test Runs - Ready to Resume
-
-**core-geth: `legacy-cancun` suite**
-- Progress at interruption: 37,944 / 111,983 (33.9%)
-- Status: **Ready to resume**
-
-**besu-etc: `legacy` suite**
-- Progress at interruption: 9,788 / 32,616 (30.0%)
-- Status: **Ready to resume**
-
----
-
-## Latest Update (2026-01-30)
-
-**Added besu-etc client** - Besu for Ethereum Classic using `hyperledger/besu` image.
-- Smoke tests pass: genesis (6/6), network (2/2)
-- Location: `hive/clients/besu-etc/`
-- Commit: `271ae4c`
-
-## Latest Test Results (core-geth)
-
-**Legacy consensus test suite completed:**
-- Total: 32,616 tests
-- Passed: 32,595 (99.94%)
-- Failed: 21 tests (CREATE2 collision edge cases)
-
-**Failed tests:**
-- `InitCollision_*` (8) - Constantinople/ConstantinopleFix
-- `create2collisionStorage_*` (6)
-- `RevertInCreateInInit*` (5)
-- `dynamicAccountOverwriteEmpty_*` (2)
-
----
-
-## Immediate Actions (After Current Run)
-
-### 1. ~~Investigate CREATE2 Failures~~ RESOLVED
-21 tests failing in legacy suite - all related to CREATE2 collision handling.
-
-**Resolution:** These are EIP-7610 edge cases targeting "ghost accounts" (pre-EIP-161 accounts with storage but no code/nonce). Exploiting requires keccak256 preimage attack - computationally infeasible. Safe to exclude from ETC test suite.
-
-See: [CREATE2 Collision Resolution Report](reports/260130_CREATE2_COLLISION_RESOLUTION.md)
+### 1. Resume Interrupted Test Runs
+Resume the test runs that were interrupted by power outage (now on reliable cloud infrastructure).
 
 ### 3. Run Additional Test Suites
 ```bash
@@ -62,7 +16,7 @@ See: [CREATE2 Collision Resolution Report](reports/260130_CREATE2_COLLISION_RESO
 # Sync tests (may still have issues)
 ./hive --sim ethereum/sync --client core-geth
 
-# devp2p eth protocol (was blocked by TTD issue)
+# devp2p eth protocol
 ./hive --sim devp2p/eth --client core-geth
 ```
 
@@ -85,68 +39,6 @@ See: [CREATE2 Collision Resolution Report](reports/260130_CREATE2_COLLISION_RESO
 | `consensus` | 1,148 | 571 | Cancun only (Prague not supported) |
 | **Total** | **145,746** | **~60,000** | |
 
----
-
-## Multi-Client Test Status
-
-### Client Overview
-
-| Client | Status | Notes |
-|--------|--------|-------|
-| **core-geth** | ✅ Working | Primary ETC client (Go) |
-| **besu-etc** | ✅ Working | Smoke tests pass |
-| **nethermind** | 📋 Planned | .NET client |
-| **fukuii** | 📋 Planned | Rust client |
-
-### Baseline Tests (smoke, devp2p)
-
-| Test | core-geth | besu-etc | nethermind | fukuii |
-|------|-----------|----------|------------|--------|
-| smoke/genesis | 6/6 ✓ | 6/6 ✓ | - | - |
-| smoke/network | 2/2 ✓ | 2/2 ✓ | - | - |
-| devp2p/discv4 | 16/16 ✓ | - | - | - |
-| ethereum/rpc-compat | 33/200 | - | - | - |
-
-### Consensus Tests
-
-| Suite | core-geth | besu-etc | nethermind | fukuii |
-|-------|-----------|----------|------------|--------|
-| legacy (32,616) | 99.94% | 🔄 30.0% (~33h) | - | - |
-| legacy-cancun (~27k) | 🔄 33.9% (~27h) | - | - | - |
-
-### Not Applicable to ETC
-- ethereum/engine - Post-merge only
-- eth2/* - Beacon chain
-- portal/ - Experimental
-
----
-
-## Fixes Applied This Session
-
-### 1. Removed `--nocompaction` Flag
-**File:** `hive/clients/core-geth/geth.sh:112`
-- Removed unsupported `--nocompaction` flag from block import command
-
-### 2. Fixed TTD Handling for Pre-Merge Tests
-**File:** `hive/clients/core-geth/mapper.jq`
-- Changed TTD to only be set when `HIVE_TERMINAL_TOTAL_DIFFICULTY` is explicitly provided
-- Changed `terminalTotalDifficultyPassed` to only be `true` when TTD is set
-
-### 3. Added Fake PoW Support
-**File:** `hive/clients/core-geth/geth.sh`
-- Added handling for `HIVE_SKIP_POW` environment variable
-- Enables `--fakepow` flag for tests with `SealEngine: "NoProof"`
-
----
-
-## Documentation Status
-
-- [x] `HIVE-TEST-ANALYSIS.md` - Comprehensive analysis complete
-- [x] `CLAUDE.md` - Lessons learned documented
-- [x] `SITREP.md` - Updated with current state
-- [x] `TODO.md` - This file
-
----
 
 ## Future: ECIP Testing
 

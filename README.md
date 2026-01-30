@@ -4,22 +4,11 @@ A workspace for developing and testing Ethereum Classic protocol changes using t
 
 ## Project Status
 
-**Current Focus**: Getting baseline Hive test suites passing for core-geth before implementing ECIPs.
+**See [SITREP.md](SITREP.md)** for current test progress, what's working, and recent updates.
 
-### Working
-- core-geth client builds from fork in Hive
-- devp2p tests: 16/16 passing
-- smoke/genesis tests: 6/6 passing
-- Consensus tests infrastructure (with `--fakepow` for NoProof tests)
+**See [TODO.md](TODO.md)** for planned next steps and future work.
 
-### In Progress
-- Phase 1: Validate baseline test suites (see [HIVE-TEST-ANALYSIS.md](HIVE-TEST-ANALYSIS.md))
-  - `legacy` suite: 32,615 tests (Constantinople and earlier)
-  - `consensus` suite: 1,148 tests (Cancun/Prague)
-  - `legacy-cancun` suite: 111,983 tests (full fork coverage)
-- Phase 2: Develop ETC-specific test configuration
-
-See [TODO.md](TODO.md) for detailed next steps and [SITREP.md](SITREP.md) for current state.
+**Current Focus**: Validating baseline Hive test suites for core-geth and besu-etc before implementing ECIPs.
 
 ## Purpose
 

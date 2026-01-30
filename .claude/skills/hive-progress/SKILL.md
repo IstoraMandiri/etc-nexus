@@ -20,8 +20,10 @@ Monitor the progress of a running Hive consensus test suite and optionally updat
 3. Analyzes client log timestamps to calculate actual running time (excluding hibernation gaps)
 4. Estimates remaining time based on test rate
 5. Displays progress summary
-6. If `--update` passed: automatically updates SITREP.md and TODO.md
-7. If no args: asks user "Would you like me to update SITREP.md and TODO.md with this progress?"
+6. If `--update` passed: automatically updates **SITREP.md only**
+7. If no args: asks user "Would you like me to update SITREP.md with this progress?"
+
+**Note:** Only SITREP.md is updated. TODO.md is for future plans only.
 
 ## How to Find Test Progress
 
@@ -78,19 +80,18 @@ remaining_time = remaining_tests / rate
 ## Update Documentation
 
 After displaying progress:
-- If `--update` flag was passed: automatically update the docs
-- Otherwise: ask the user "Would you like me to update SITREP.md and TODO.md with this progress?"
+- If `--update` flag was passed: automatically update SITREP.md
+- Otherwise: ask the user "Would you like me to update SITREP.md with this progress?"
 
-Files to update:
+### SITREP.md (Only File to Update)
 
-### SITREP.md
-Update the "Current Activity" section with:
+Update the test progress section with:
 - Progress: X / Y tests (Z%)
 - Rate: ~N tests/minute
 - Estimated time remaining: ~H hours
+- Status: Running / Completed / Interrupted
 
-### TODO.md
-Update the "Currently Running" section and test status table.
+**Do NOT update TODO.md** - It's for future plans only.
 
 ## Example Output
 

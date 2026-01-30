@@ -196,3 +196,59 @@ go build .
 | `legacy-cancun` | 111,983 | ~27,000 | Istanbul + Berlin relevant |
 | `consensus` | 1,148 | 571 | Cancun only (Prague not supported) |
 | **Total** | **145,746** | **~60,000** | |
+
+---
+
+## Operation Log
+
+Reverse chronological log of resolved items and completed work.
+
+### 2026-01-30: Cloud Deployment
+**Status:** ✅ Complete
+
+Migrated to cloud infrastructure after power outage. Both clients verified working.
+- core-geth smoke tests: genesis (6/6), network (2/2)
+- besu-etc smoke tests: genesis (6/6), network (2/2)
+- Test runs ready to resume
+
+### 2026-01-30: CREATE2 Collision Failures
+**Status:** ✅ Resolved
+
+21 tests failing in legacy suite - all related to CREATE2 collision handling.
+
+**Resolution:** These are EIP-7610 edge cases targeting "ghost accounts" (pre-EIP-161 accounts with storage but no code/nonce). Exploiting requires keccak256 preimage attack - computationally infeasible. Safe to exclude from ETC test suite.
+
+**Reference:** [CREATE2 Collision Resolution Report](reports/260130_CREATE2_COLLISION_RESOLUTION.md)
+
+### 2026-01-30: Added besu-etc Client
+**Status:** ✅ Complete
+
+Created `hive/clients/besu-etc/` using standard `hyperledger/besu` image (native ETC support).
+- Modified `mapper.jq` to handle ETC-specific forks (Atlantis, Agharta, Phoenix, Thanos, Magneto, Mystique, Spiral)
+- Smoke tests pass: genesis (6/6), network (2/2)
+- Committed: `271ae4c`
+
+### 2026-01-28: Legacy Consensus Test Suite
+**Status:** ✅ Complete
+
+Completed full legacy consensus test suite for core-geth.
+- Total: 32,616 tests
+- Passed: 32,595 (99.94%)
+- Failed: 21 (CREATE2 collision edge cases - see above)
+
+### 2026-01-27: Fixed TTD and Fake PoW Handling
+**Status:** ✅ Complete
+
+Fixed two issues blocking consensus tests:
+
+**TTD Handling (mapper.jq):**
+- Problem: TTD was always set (defaulted to max int), causing post-merge mode
+- Fix: Only set TTD when `HIVE_TERMINAL_TOTAL_DIFFICULTY` is explicitly provided
+
+**Fake PoW Support (geth.sh):**
+- Problem: Tests with `SealEngine: "NoProof"` failed PoW verification
+- Fix: Added `HIVE_SKIP_POW` handling to enable `--fakepow` flag
+
+**Removed --nocompaction flag:**
+- Problem: Flag not supported by core-geth
+- Fix: Removed from block import command

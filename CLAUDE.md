@@ -42,19 +42,43 @@ Key environment variables the client should handle:
 - `HIVE_CHAIN_ID`, `HIVE_NETWORK_ID` - Chain configuration
 - `HIVE_FORK_*` - Fork block numbers
 
+## Documentation Pattern
+
+**SITREP.md** is the **single source of truth** for current status:
+- Current test progress and results
+- What's working / broken
+- Recent session updates
+- **Operation Log** at the end: Reverse chronological log of completed work
+
+**TODO.md** contains **only future work**:
+- Planned next steps
+- Known issues to address
+- Future features/improvements
+- NO current progress, NO resolved items
+
+**README.md** is a brief overview:
+- Links to SITREP.md for status
+- Links to TODO.md for plans
+- NO duplication of status or progress
+
+**When work is completed:**
+1. Remove from TODO.md
+2. Add entry to Operation Log in SITREP.md (reverse chronological)
+3. Skills update SITREP.md with progress; TODO.md is manually curated
+
 ## Available Skills
 
 Project-specific skills are defined in `.claude/skills/`:
 
 - `/pickup` - Resume work from previous session: load SITREP.md, TODO.md, summarize state
 - `/handoff` - Prepare for context handoff: sync docs, update promptlog, commit (run when context is full)
-- `/sync-docs [--commit]` - Synchronize SITREP.md, TODO.md, HIVE-TEST-ANALYSIS.md with current state
+- `/sync-docs [--commit]` - Synchronize SITREP.md (status) and TODO.md (future plans only)
 - `/wrapup [message]` - Update prompt log and commit all changes (run at end of significant sessions)
 - `/promptlog` - Generate PROMPTLOG.md from session history
 - `/submodule-push [name]` - Push submodule changes to fork
 - `/hive-run [simulator] [--client name]` - Build and run Hive integration tests
-- `/hive-progress [--update]` - Check progress of running Hive tests and update docs with estimates
-- `/hourly-monitor [--max-iterations N]` - Start automated hourly loop to monitor tests, update docs, and commit
+- `/hive-progress [--update]` - Check progress of running Hive tests and update SITREP.md
+- `/hourly-monitor [--max-iterations N]` - Start automated hourly loop to monitor tests, update SITREP.md, and commit
 - `/report <topic>` - Create structured reports with Discord-friendly summaries
 
 **End of session:** Run `/wrapup` to commit changes, or `/handoff` if context is full and work will continue in a new session.
@@ -87,10 +111,12 @@ etc-nexus/
 │   ├── skills/     # Project-specific Claude skills
 │   ├── hooks/      # Hook scripts (session reminders, etc.)
 │   └── settings.json
-├── CLAUDE.md       # This file
-├── TODO.md         # Current tasks and next steps
+├── CLAUDE.md       # This file - Agent instructions
+├── SITREP.md       # Single source of truth for current status
+├── TODO.md         # Future work only (no current progress)
+├── README.md       # Brief overview with links
 ├── PROMPTLOG.md    # Session prompt history
-└── README.md       # Project overview
+└── reports/        # Technical reports and analysis
 ```
 
 ## Key Context

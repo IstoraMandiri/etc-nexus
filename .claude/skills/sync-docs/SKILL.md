@@ -1,25 +1,48 @@
 ---
 name: sync-docs
-description: Synchronize documentation with current project state. Updates SITREP.md, TODO.md, and HIVE-TEST-ANALYSIS.md.
+description: Synchronize documentation with current project state. Updates SITREP.md (status) and TODO.md (future plans).
 argument-hint: "[--commit]"
 ---
 
 # Sync Documentation
 
-Update project documentation to reflect the current state. This ensures docs are accurate before handoffs or at any checkpoint.
+Update project documentation to reflect the current state and future plans. SITREP.md is the single source of truth for current status; TODO.md contains only future work.
 
 ## Arguments
 
 - `--commit`: Automatically commit changes after syncing (optional)
 - (no args): Sync docs but ask before committing
 
+## Documentation Pattern
+
+**SITREP.md** is the **single source of truth** for current status and progress:
+- Current test runs and progress
+- What's working / what's broken
+- Recent changes and updates
+- Baseline test results
+
+**TODO.md** focuses on **future work only**:
+- Planned next steps
+- Future features/improvements
+- Known issues to address later
+- NO current progress, NO resolved items
+
+**Operation Log** at end of SITREP.md:
+- Reverse chronological log of completed work
+- When a task is completed, remove from TODO.md and add entry to Operation Log
+- Format: Date, status, brief description, reference links
+
+**README.md** links to both:
+- Brief overview only
+- Links to SITREP.md for status
+- Links to TODO.md for plans
+
 ## Files Updated
 
-| File | Purpose | What to Check |
-|------|---------|---------------|
-| `SITREP.md` | Current situation | Running tests, recent changes, blockers |
-| `TODO.md` | Task tracking | Progress, completed items, next steps |
-| `HIVE-TEST-ANALYSIS.md` | Test analysis | Test progress, status updates |
+| File | Purpose | What to Update |
+|------|---------|----------------|
+| `SITREP.md` | Current status (ONLY source of truth) | Test progress, running tests, recent changes, what's working |
+| `TODO.md` | Future plans only | Add/remove planned tasks, update future work items |
 
 ## Workflow
 
@@ -54,55 +77,47 @@ git status --short
 git log --oneline -5
 ```
 
-### Step 3: Update SITREP.md
+### Step 3: Update SITREP.md (Single Source of Truth)
 
-Update the "Current Activity" section with:
-- What's currently running (tests, builds, etc.)
-- Progress metrics (X/Y tests, Z% complete)
-- Rate and ETA if applicable
-- Any blockers or issues
+Update with ALL current status information:
+- **Cloud Deployment status** (if running tests interrupted)
+- **Test progress** for all active runs (X/Y tests, Z% complete, rate, ETA)
+- **Baseline test results** table
+- **What's Working** section if status has changed
+- **Recent session summary** with any new work done
 
-Update "What's Working" section if status has changed.
+### Step 4: Update TODO.md (Future Work Only)
 
-### Step 4: Update TODO.md
+Update ONLY future-focused content:
+- Add new planned tasks discovered during work
+- Remove tasks that are now completed (don't track progress here)
+- Update "Immediate Actions" if priorities changed
+- NO test progress, NO current status
 
-Update the "Currently Running" section with:
-- Current progress numbers
-- Updated time estimates
-- Mark any completed items
-
-Update "Test Status Summary" table with latest results.
-
-### Step 5: Update HIVE-TEST-ANALYSIS.md
-
-If test progress has changed significantly (>5%), update:
-- "Current Status" section at the top
-- Phase 2 progress table
-- Any status changes in Quick Reference
-
-### Step 6: Review Changes
+### Step 5: Review Changes
 
 Show a summary of what was updated:
 
 ```
 Docs synced:
 - SITREP.md: Updated test progress to X/Y (Z%)
-- TODO.md: Updated progress, ETA now ~N hours
-- HIVE-TEST-ANALYSIS.md: Updated current status
+- TODO.md: Added new planned task for <feature>
 
 Changes ready to commit. Proceed? (or use --commit to auto-commit)
 ```
 
-### Step 7: Commit (if requested)
+### Step 6: Commit (if requested)
 
 If `--commit` flag or user confirms:
 
 ```bash
-git add SITREP.md TODO.md HIVE-TEST-ANALYSIS.md
-git commit -m "Sync docs with current state
+git add SITREP.md TODO.md
+git commit -m "Docs: sync with current state
 
-- Test progress: X/Y (Z%)
-- ETA: ~N hours remaining"
+- SITREP: Test progress X/Y (Z%)
+- TODO: Updated future plans
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
 ```
 
 ## Reference: Test Suite Totals

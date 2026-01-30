@@ -16,8 +16,10 @@ Check Hive test progress, update documentation, and commit changes with a standa
 ## What This Skill Does
 
 1. Checks progress of running Hive tests (core-geth, besu-etc, etc.)
-2. Updates SITREP.md, TODO.md, and HIVE-TEST-ANALYSIS.md with current progress
+2. Updates **SITREP.md only** with current progress (single source of truth)
 3. Commits changes with message format: `Docs: hourly update (HH:MM UTC)`
+
+**Note:** Only SITREP.md is updated with progress. TODO.md is for future plans only.
 
 ## Workflow
 
@@ -51,24 +53,26 @@ Calculate:
 
 ### Step 3: Update Documentation
 
-**SITREP.md** - Update current activity section:
+**SITREP.md only** - Update test progress sections:
 ```
 ### core-geth: `legacy-cancun` suite
 
 | Metric | Value |
 |--------|-------|
 | Progress | X / Y (Z%) |
+| Rate | ~N tests/min |
+| ETA | ~H hours |
 | Status | Running / Completed / Interrupted |
 ```
 
-**TODO.md** - Update test status tables
+Also update baseline test results table if any tests completed.
 
-**HIVE-TEST-ANALYSIS.md** - Update if significant change (>5%)
+**Do NOT update TODO.md** - It's for future plans only, not current progress.
 
 ### Step 4: Commit (unless --no-commit)
 
 ```bash
-git add SITREP.md TODO.md HIVE-TEST-ANALYSIS.md
+git add SITREP.md
 git commit -m "$(cat <<'EOF'
 Docs: hourly update (HH:MM UTC)
 

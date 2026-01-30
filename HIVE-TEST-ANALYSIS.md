@@ -38,8 +38,8 @@ This document analyzes Hive integration tests for Ethereum Classic (ETC) clients
 
 | Client | Status | smoke/genesis | smoke/network | devp2p/discv4 | consensus (legacy) | consensus (legacy-cancun) |
 |--------|--------|---------------|---------------|---------------|--------------------|-----------------------------|
-| **core-geth** | ✅ Working | 6/9 | 2/2 | 16/16 | 99.94% (32,595/32,616) | 🔄 21.8% (~33h) |
-| **besu-etc** | ✅ Working | 6/6 | 2/2 | - | 🔄 19.3% (~37h) | - |
+| **core-geth** | ✅ Working | 6/9 | 2/2 | 16/16 | 99.94% (32,595/32,616) | 🔄 24.2% (~32h) |
+| **besu-etc** | ✅ Working | 6/6 | 2/2 | - | 🔄 21.5% (~37h) | - |
 | **nethermind** | 📋 Planned | - | - | - | - | - |
 | **fukuii** | 📋 Planned | - | - | - | - | - |
 
@@ -120,12 +120,12 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 | devp2p/discv4 | - | Pending |
 | ethereum/rpc-compat | - | Pending |
 
-### Phase 2: Consensus Testing (Updated 2026-01-30 16:55 UTC)
+### Phase 2: Consensus Testing (Updated 2026-01-30 17:57 UTC)
 
 | Client | legacy (32,616) | legacy-cancun (~27k relevant) | Status |
 |--------|-----------------|-------------------------------|--------|
-| **core-geth** | 99.94% (32,595/32,616) | 🔄 21.8% (~33h ETA) | 21 CREATE2 failures |
-| **besu-etc** | 🔄 19.3% (~37h ETA) | - | Running |
+| **core-geth** | 99.94% (32,595/32,616) | 🔄 24.2% (~32h ETA) | 21 CREATE2 failures |
+| **besu-etc** | 🔄 21.5% (~37h ETA) | - | Running |
 | **nethermind** | - | - | Planned |
 | **fukuii** | - | - | Planned |
 

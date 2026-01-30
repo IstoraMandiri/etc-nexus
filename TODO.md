@@ -1,14 +1,14 @@
 # TODO
 
-## Currently Running (2026-01-30 16:55 UTC)
+## Currently Running (2026-01-30 17:57 UTC)
 
 ### core-geth: `legacy-cancun` suite
 
 | Metric | Value |
 |--------|-------|
-| Progress | 24,369 / 111,983 (21.8%) |
+| Progress | 27,106 / 111,983 (24.2%) |
 | Rate | ~44 tests/minute |
-| ETA | ~33 hours |
+| ETA | ~32 hours |
 
 **Note:** Only ~27k tests are ETC-relevant. Future runs: `--sim.limit "Istanbul|Berlin"`
 
@@ -16,7 +16,7 @@
 
 | Metric | Value |
 |--------|-------|
-| Progress | 6,310 / 32,616 (19.3%) |
+| Progress | 7,007 / 32,616 (21.5%) |
 | Rate | ~12 tests/minute |
 | ETA | ~37 hours |
 
@@ -106,8 +106,8 @@
 
 | Suite | core-geth | besu-etc | nethermind | fukuii |
 |-------|-----------|----------|------------|--------|
-| legacy (32,616) | 99.94% | 🔄 19.3% (~37h) | - | - |
-| legacy-cancun (~27k) | 🔄 21.8% (~33h) | - | - | - |
+| legacy (32,616) | 99.94% | 🔄 21.5% (~37h) | - | - |
+| legacy-cancun (~27k) | 🔄 24.2% (~32h) | - | - | - |
 
 ### Not Applicable to ETC
 - ethereum/engine - Post-merge only

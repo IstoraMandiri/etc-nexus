@@ -6,33 +6,57 @@ Last updated: 2026-01-30
 
 Hive integration with core-geth is **working**. Legacy consensus test suite completed with 99.94% pass rate (32,595/32,616). Added **besu-etc** client for multi-client testing.
 
-## ⚠️ INTERRUPTED: Power Outage (2026-01-30 ~22:30 UTC)
+## ✅ Cloud Deployment Complete (2026-01-30 ~23:45 UTC)
 
-Both test runs were interrupted by a power outage. Migrating to cloud deployment.
+Successfully migrated to cloud infrastructure after power outage. Both clients verified working.
 
-### core-geth: `legacy-cancun` suite (INTERRUPTED)
+### Cloud Smoke Tests - Both Clients Passing
 
-| Metric | Value |
-|--------|-------|
-| Progress at interruption | 37,944 / 111,983 (33.9%) |
-| Passed | 37,908 |
-| Failed | 36 (CREATE2 collision tests - expected) |
-| Status | **INTERRUPTED - power outage** |
+| Client | smoke/genesis | smoke/network |
+|--------|---------------|---------------|
+| core-geth | 6/6 ✓ | 2/2 ✓ |
+| besu-etc | 6/6 ✓ | 2/2 ✓ |
 
-### besu-etc: `legacy` suite (INTERRUPTED)
+### Interrupted Test Runs - Ready to Resume
 
-| Metric | Value |
-|--------|-------|
-| Progress at interruption | 9,788 / 32,616 (30.0%) |
-| Status | **INTERRUPTED - power outage** |
+**core-geth: `legacy-cancun` suite**
+- Progress at interruption: 37,944 / 111,983 (33.9%)
+- Passed: 37,908 | Failed: 36 (CREATE2 collision tests - expected)
+- Status: **Ready to resume on cloud**
 
-**Next steps:** Re-run tests on cloud infrastructure for reliability.
+**besu-etc: `legacy` suite**
+- Progress at interruption: 9,788 / 32,616 (30.0%)
+- Status: **Ready to resume on cloud**
 
 ---
 
 ## Session Summary (2026-01-30)
 
-Added Besu ETC client to Hive:
+**Cloud Deployment:**
+- Migrated to cloud infrastructure for reliability after power outage
+- Verified both core-geth and besu-etc clients working on cloud
+- All smoke tests passing (genesis 6/6, network 2/2 for both clients)
+
+**Cloud Setup Process:**
+```bash
+# Initialize submodules
+git submodule update --init --recursive
+
+# Checkout correct hive branch
+cd hive && git checkout istora-core-geth-client && git pull
+
+# Fix Docker permissions
+sudo chmod 666 /var/run/docker.sock
+
+# Build and run
+cd /workspaces/nexus/hive
+export PATH=$PATH:/usr/local/go/bin
+go build .
+./hive --sim smoke/genesis --client core-geth
+./hive --sim smoke/genesis --client besu-etc
+```
+
+**Added Besu ETC client to Hive:**
 - Created `hive/clients/besu-etc/` using standard `hyperledger/besu` image (native ETC support)
 - Modified `mapper.jq` to handle ETC-specific forks (Atlantis, Agharta, Phoenix, Thanos, Magneto, Mystique, Spiral)
 - Smoke tests pass: genesis (6/6), network (2/2)
@@ -83,9 +107,9 @@ Legacy consensus test suite completed:
 
 | Test | core-geth | besu-etc | nethermind | fukuii |
 |------|-----------|----------|------------|--------|
-| smoke/genesis | 6/9 | 6/6 | - | - |
-| smoke/network | 2/2 | 2/2 | - | - |
-| devp2p/discv4 | 16/16 | - | - | - |
+| smoke/genesis | 6/6 ✓ | 6/6 ✓ | - | - |
+| smoke/network | 2/2 ✓ | 2/2 ✓ | - | - |
+| devp2p/discv4 | 16/16 ✓ | - | - | - |
 | rpc-compat | 33/200 | - | - | - |
 
 ### Consensus Tests
@@ -136,11 +160,19 @@ Legacy consensus test suite completed:
 
 ```bash
 # Navigate to hive
-cd /workspaces/etc-nexus/hive
+cd /workspaces/nexus/hive
+
+# Add Go to PATH (required on fresh cloud instances)
+export PATH=$PATH:/usr/local/go/bin
+
+# Build Hive
+go build .
 
 # Passing tests (run these to verify setup)
-./hive --sim smoke/genesis --client core-geth      # 6/9
+./hive --sim smoke/genesis --client core-geth      # 6/6
+./hive --sim smoke/genesis --client besu-etc       # 6/6
 ./hive --sim smoke/network --client core-geth      # 2/2
+./hive --sim smoke/network --client besu-etc       # 2/2
 ./hive --sim devp2p --sim.limit discv4 --client core-geth  # 16/16
 ./hive --sim ethereum/consensus --sim.limit legacy --client core-geth  # Working!
 

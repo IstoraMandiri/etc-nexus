@@ -1,22 +1,25 @@
 # TODO
 
-## ⚠️ INTERRUPTED: Power Outage (2026-01-30 ~22:30 UTC)
+## ✅ Cloud Deployment Complete (2026-01-30 ~23:45 UTC)
 
-Both test runs were interrupted. Migrating to cloud deployment for reliability.
+Successfully migrated to cloud infrastructure after power outage. Both clients verified working.
 
-### core-geth: `legacy-cancun` suite (INTERRUPTED)
+### Cloud Setup Verified
 
-| Metric | Value |
-|--------|-------|
-| Progress at interruption | 37,944 / 111,983 (33.9%) |
-| Status | **Needs restart on cloud** |
+| Client | smoke/genesis | smoke/network | Status |
+|--------|---------------|---------------|--------|
+| core-geth | 6/6 ✓ | 2/2 ✓ | **Ready** |
+| besu-etc | 6/6 ✓ | 2/2 ✓ | **Ready** |
 
-### besu-etc: `legacy` suite (INTERRUPTED)
+### Interrupted Test Runs - Ready to Resume
 
-| Metric | Value |
-|--------|-------|
-| Progress at interruption | 9,788 / 32,616 (30.0%) |
-| Status | **Needs restart on cloud** |
+**core-geth: `legacy-cancun` suite**
+- Progress at interruption: 37,944 / 111,983 (33.9%)
+- Status: **Ready to resume**
+
+**besu-etc: `legacy` suite**
+- Progress at interruption: 9,788 / 32,616 (30.0%)
+- Status: **Ready to resume**
 
 ---
 
@@ -99,9 +102,9 @@ See: [CREATE2 Collision Resolution Report](reports/260130_CREATE2_COLLISION_RESO
 
 | Test | core-geth | besu-etc | nethermind | fukuii |
 |------|-----------|----------|------------|--------|
-| smoke/genesis | 6/9 | 6/6 | - | - |
-| smoke/network | 2/2 | 2/2 | - | - |
-| devp2p/discv4 | 16/16 | - | - | - |
+| smoke/genesis | 6/6 ✓ | 6/6 ✓ | - | - |
+| smoke/network | 2/2 ✓ | 2/2 ✓ | - | - |
+| devp2p/discv4 | 16/16 ✓ | - | - | - |
 | ethereum/rpc-compat | 33/200 | - | - | - |
 
 ### Consensus Tests
@@ -159,9 +162,10 @@ Once baseline is established:
 
 ```bash
 # Build and run Hive
-cd /workspaces/etc-nexus/hive
+cd /workspaces/nexus/hive
+export PATH=$PATH:/usr/local/go/bin  # Add Go to PATH
 go build .
-./hive --sim <simulator> --client core-geth
+./hive --sim <simulator> --client <core-geth|besu-etc>
 
 # See available simulators
 ls simulators/
@@ -174,4 +178,5 @@ workspace/logs/
 
 # Check client logs
 ls workspace/logs/core-geth/
+ls workspace/logs/besu-etc/
 ```

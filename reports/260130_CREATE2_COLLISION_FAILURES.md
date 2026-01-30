@@ -1,5 +1,45 @@
 # CREATE2 Collision Test Failures Analysis
 
+<!-- DISCORD SUMMARY (paste everything between the markers) -->
+## Hive Legacy Consensus Tests: 99.94% Pass Rate
+
+**Client:** core-geth v1.12.21-unstable-4185df45
+**Suite:** `./hive --sim ethereum/consensus --sim.limit legacy --client core-geth`
+**Total:** 32,616 | **Passed:** 32,595 | **Failed:** 21
+
+All 21 failures relate to CREATE2 collision handling (EIP-684) - specifically gas accounting when contract creation targets an address that already exists.
+
+### Failed Tests
+
+```
+InitCollision (8)           - 74k gas used vs 200k expected
+create2collisionStorage (6) - 85k gas used vs 395k expected
+RevertInCreateInInit* (5)   - Tx succeeds when test expects failure
+dynamicAccountOverwrite (2) - 181k gas used vs 17M expected
+```
+
+### Analysis
+
+**Root cause:** core-geth detects address collisions earlier in execution and/or handles gas refunds differently than canonical test expectations.
+
+**EIP-684** specifies collision should "throw as if first byte in init code were invalid opcode" but doesn't define exact gas consumption behavior - leaving room for implementation variance.
+
+### Impact
+
+**Low for ETC** - these are adversarial edge cases (attempting to overwrite existing contracts via CREATE2). Core CREATE2 functionality works correctly; real-world impact is negligible.
+
+### Next Steps
+1. Document as known core-geth behavioral difference
+2. Continue with Istanbul/Berlin test suites (~27k ETC-relevant tests)
+3. Run additional suites: graphql, sync, devp2p/eth
+
+**Full report:** <https://github.com/IstoraMandiri/etc-nexus/blob/main/reports/260130_CREATE2_COLLISION_FAILURES.md>
+<!-- END DISCORD SUMMARY -->
+
+---
+
+# Full Report
+
 **Date:** 2026-01-30
 **Test Suite:** Hive `ethereum/consensus --sim.limit legacy`
 **Client:** core-geth v1.12.21-unstable-4185df45

@@ -6,15 +6,15 @@ Last updated: 2026-01-30
 
 Hive integration with core-geth is **working**. Legacy consensus test suite completed with 99.94% pass rate (32,595/32,616). Added **besu-etc** client for multi-client testing.
 
-## Currently Running (2026-01-30 07:45 UTC)
+## Currently Running (2026-01-30 08:46 UTC)
 
 ### core-geth: `legacy-cancun` suite
 
 | Metric | Value |
 |--------|-------|
-| Progress | 641 / 111,983 (0.6%) |
-| Rate | ~46 tests/minute |
-| ETA | ~40 hours |
+| Progress | 3,271 / 111,983 (2.9%) |
+| Rate | ~44 tests/minute |
+| ETA | ~41 hours |
 | Started | 2026-01-30 07:31 UTC |
 
 **Note:** Only ~27,000 tests are ETC-relevant (Istanbul + Berlin). Future runs should use `--sim.limit "Istanbul|Berlin"`.
@@ -23,9 +23,9 @@ Hive integration with core-geth is **working**. Legacy consensus test suite comp
 
 | Metric | Value |
 |--------|-------|
-| Progress | 21 / 32,616 (0.06%) |
-| Rate | ~19 tests/minute |
-| ETA | ~28 hours |
+| Progress | 731 / 32,616 (2.2%) |
+| Rate | ~12 tests/minute |
+| ETA | ~44 hours |
 | Started | 2026-01-30 07:43 UTC |
 
 ---
@@ -90,8 +90,8 @@ Legacy consensus test suite completed:
 
 | Suite | core-geth | besu-etc | nethermind | fukuii |
 |-------|-----------|----------|------------|--------|
-| legacy (32,616) | 99.94% | 🔄 0.06% (~28h) | - | - |
-| legacy-cancun (~27k) | 🔄 0.6% (~40h) | - | - | - |
+| legacy (32,616) | 99.94% | 🔄 2.2% (~44h) | - | - |
+| legacy-cancun (~27k) | 🔄 2.9% (~41h) | - | - | - |
 
 ### Build Pipeline
 - core-geth builds from `IstoraMandiri/core-geth` (~2 min)

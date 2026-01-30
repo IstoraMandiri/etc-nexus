@@ -1,5 +1,29 @@
 # TODO
 
+## Currently Running (2026-01-30)
+
+**`legacy-cancun` consensus test suite:**
+
+```bash
+./hive --sim ethereum/consensus --sim.limit legacy-cancun --client core-geth
+```
+
+| Metric | Value |
+|--------|-------|
+| Progress | ~370 / 111,983 (~0.3%) |
+| Rate | ~46 tests/minute |
+| Estimated time | ~40 hours |
+
+**Issue:** Running full suite (111,983 tests) but only **~27,000 are ETC-relevant** (Istanbul + Berlin). The remaining ~85,000 tests are for post-Berlin forks (London, Paris, Shanghai, Cancun) that don't apply to ETC.
+
+**For future runs**, filter to just ETC-relevant forks:
+```bash
+./hive --sim ethereum/consensus --sim.limit "Istanbul|Berlin" --client core-geth
+```
+This would reduce runtime from ~40 hours to ~10 hours.
+
+---
+
 ## Latest Update (2026-01-30)
 
 **Added besu-etc client** - Besu for Ethereum Classic using `hyperledger/besu` image.
@@ -10,9 +34,6 @@
 ## Latest Test Results (core-geth)
 
 **Legacy consensus test suite completed:**
-```bash
-./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
-```
 - Total: 32,616 tests
 - Passed: 32,595 (99.94%)
 - Failed: 21 tests (CREATE2 collision edge cases)
@@ -25,17 +46,10 @@
 
 ---
 
-## Immediate Actions
+## Immediate Actions (After Current Run)
 
 ### 1. Investigate CREATE2 Failures
 21 tests failing in legacy suite - all related to CREATE2 collision handling.
-
-### 2. Run Istanbul/Berlin Tests
-The `legacy-cancun` suite has ~27,000 ETC-relevant tests (Istanbul + Berlin):
-```bash
-cd /workspaces/etc-nexus/hive
-./hive --sim ethereum/consensus --sim.limit legacy-cancun --client core-geth
-```
 
 ### 3. Run Additional Test Suites
 ```bash
@@ -70,26 +84,32 @@ cd /workspaces/etc-nexus/hive
 
 ---
 
-## Test Status Summary
+## Multi-Client Test Status
 
-### Clients Available
-| Client | Status |
-|--------|--------|
-| core-geth | Working - primary ETC client |
-| besu-etc | Working - smoke tests pass |
+### Client Overview
 
-### Passing Tests (core-geth)
-| Test | Pass | Fail | Status |
-|------|------|------|--------|
-| smoke/genesis | 6 | 3 | Good (3 Cancun expected) |
-| smoke/network | 2 | 0 | Full pass |
-| devp2p/discv4 | 16 | 0 | Full pass |
-| ethereum/consensus (legacy) | 32,595 | 21 | 99.94% pass - CREATE2 failures |
+| Client | Status | Notes |
+|--------|--------|-------|
+| **core-geth** | ✅ Working | Primary ETC client (Go) |
+| **besu-etc** | ✅ Working | Smoke tests pass |
+| **nethermind** | 📋 Planned | .NET client |
+| **fukuii** | 📋 Planned | Rust client |
 
-### Partially Working
-| Test | Pass | Fail | Notes |
-|------|------|------|-------|
-| ethereum/rpc-compat | 33 | 167 | 91 eth_simulateV1 expected |
+### Baseline Tests (smoke, devp2p)
+
+| Test | core-geth | besu-etc | nethermind | fukuii |
+|------|-----------|----------|------------|--------|
+| smoke/genesis | 6/9 | 6/6 | - | - |
+| smoke/network | 2/2 | 2/2 | - | - |
+| devp2p/discv4 | 16/16 | - | - | - |
+| ethereum/rpc-compat | 33/200 | - | - | - |
+
+### Consensus Tests
+
+| Suite | core-geth | besu-etc | nethermind | fukuii |
+|-------|-----------|----------|------------|--------|
+| legacy (32,616) | 99.94% | - | - | - |
+| legacy-cancun (~27k) | 🔄 Running | - | - | - |
 
 ### Not Applicable to ETC
 - ethereum/engine - Post-merge only

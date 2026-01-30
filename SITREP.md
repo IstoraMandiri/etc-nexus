@@ -68,19 +68,30 @@ Legacy consensus test suite completed:
 
 ## What's Working
 
-### Clients
+### Client Status
+
 | Client | Status | Notes |
 |--------|--------|-------|
-| **core-geth** | Working | Primary ETC client |
-| **besu-etc** | Working | Smoke tests pass (8/8) |
+| **core-geth** | ✅ Working | Primary ETC client (Go) |
+| **besu-etc** | ✅ Working | Smoke tests pass |
+| **nethermind** | 📋 Planned | .NET client with ETC support |
+| **fukuii** | 📋 Planned | Rust client |
 
-### Passing Tests (core-geth)
-| Test | Result | Notes |
-|------|--------|-------|
-| **smoke/genesis** | 6/9 | Core tests pass; 3 Cancun failures expected |
-| **smoke/network** | 2/2 | Full pass |
-| **devp2p/discv4** | 16/16 | Full pass |
-| **ethereum/consensus (legacy)** | 32,595 / 32,616 | 99.94% pass - 21 CREATE2 failures |
+### Baseline Tests
+
+| Test | core-geth | besu-etc | nethermind | fukuii |
+|------|-----------|----------|------------|--------|
+| smoke/genesis | 6/9 | 6/6 | - | - |
+| smoke/network | 2/2 | 2/2 | - | - |
+| devp2p/discv4 | 16/16 | - | - | - |
+| rpc-compat | 33/200 | - | - | - |
+
+### Consensus Tests
+
+| Suite | core-geth | besu-etc | nethermind | fukuii |
+|-------|-----------|----------|------------|--------|
+| legacy (32,616) | 99.94% | - | - | - |
+| legacy-cancun (~27k) | 🔄 Running | - | - | - |
 
 ### Build Pipeline
 - core-geth builds from `IstoraMandiri/core-geth` (~2 min)

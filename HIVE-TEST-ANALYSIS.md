@@ -1,10 +1,23 @@
 # Hive Test Analysis for Ethereum Classic
 
-This document analyzes Hive integration tests for Ethereum Classic (ETC) testing with core-geth.
+This document analyzes Hive integration tests for Ethereum Classic (ETC) clients.
 
-## Current Status (2026-01-28)
+## Current Status (2026-01-30)
 
-**Legacy consensus tests completed:** 32,595 / 32,616 (99.94% pass rate)
+**Currently running:** `legacy-cancun` consensus test suite
+
+| Metric | Value |
+|--------|-------|
+| Suite | `legacy-cancun` (Istanbul through Cancun) |
+| Progress | ~370 / 111,983 (~0.3%) |
+| Rate | ~46 tests/min |
+| ETA | ~40 hours |
+
+**Note:** Only ~27,000 tests are ETC-relevant (Istanbul + Berlin). Future runs should filter with `--sim.limit "Istanbul|Berlin"` to reduce runtime to ~10 hours.
+
+---
+
+**Previously completed:** `legacy` consensus tests - 32,595 / 32,616 (99.94% pass rate)
 
 | Metric | Value |
 |--------|-------|
@@ -21,6 +34,26 @@ This document analyzes Hive integration tests for Ethereum Classic (ETC) testing
 
 ---
 
+## Client Status Overview
+
+| Client | Status | smoke/genesis | smoke/network | devp2p/discv4 | consensus (legacy) | consensus (legacy-cancun) |
+|--------|--------|---------------|---------------|---------------|--------------------|-----------------------------|
+| **core-geth** | ✅ Working | 6/9 | 2/2 | 16/16 | 99.94% (32,595/32,616) | 🔄 Running |
+| **besu-etc** | ✅ Working | 6/6 | 2/2 | - | - | - |
+| **nethermind** | 📋 Planned | - | - | - | - | - |
+| **fukuii** | 📋 Planned | - | - | - | - | - |
+
+### Client Definitions
+
+| Client | Location | Image | Notes |
+|--------|----------|-------|-------|
+| core-geth | `hive/clients/core-geth/` | Built from source | Primary ETC client (Go) |
+| besu-etc | `hive/clients/besu-etc/` | `hyperledger/besu` | Native ETC support |
+| nethermind | TBD | TBD | .NET client with ETC support |
+| fukuii | TBD | TBD | Rust client |
+
+---
+
 ## Executive Summary
 
 ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge Ethereum** (Proof of Stake). After fixing TTD handling, consensus tests now work.
@@ -30,7 +63,7 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 | Suite | Total | ETC Relevant | Status |
 |-------|-------|--------------|--------|
 | **`legacy`** | 32,616 | **32,616** (100%) | ✅ **99.94% pass** (21 CREATE2 failures) |
-| `legacy-cancun` (Istanbul+Berlin) | 111,983 | ~27,000 | Pending |
+| `legacy-cancun` (Istanbul+Berlin) | 111,983 | ~27,000 | 🔄 Running (~40h ETA) |
 | `consensus` (Cancun) | 1,148 | 571 | Pending |
 | **Total** | **145,746** | **~60,000** | |
 
@@ -49,7 +82,9 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 
 ## Test Execution Results
 
-### Phase 1: Baseline Validation (Complete)
+### Phase 1: Baseline Validation
+
+#### core-geth
 
 | Test | Result | Status |
 |------|--------|--------|
@@ -58,12 +93,41 @@ ETC is **pre-merge** (Proof of Work), while most Hive tests target **post-merge 
 | devp2p/discv4 | **16/16** | ✅ PASS |
 | ethereum/rpc-compat | **33/200** | ⚠️ Expected (91 eth_simulateV1) |
 
-### Phase 2: Consensus Testing (Complete)
+#### besu-etc
 
 | Test | Result | Status |
 |------|--------|--------|
-| ethereum/consensus (legacy) | **32,595/32,616** | ✅ 99.94% pass (21 CREATE2 failures) |
-| ethereum/consensus (legacy-cancun) | Pending | Next: Istanbul+Berlin (~27k tests) |
+| smoke/genesis | **6/6** | ✅ PASS |
+| smoke/network | **2/2** | ✅ PASS |
+| devp2p/discv4 | - | Pending |
+| ethereum/rpc-compat | - | Pending |
+
+#### nethermind (Planned)
+
+| Test | Result | Status |
+|------|--------|--------|
+| smoke/genesis | - | Pending |
+| smoke/network | - | Pending |
+| devp2p/discv4 | - | Pending |
+| ethereum/rpc-compat | - | Pending |
+
+#### fukuii (Planned)
+
+| Test | Result | Status |
+|------|--------|--------|
+| smoke/genesis | - | Pending |
+| smoke/network | - | Pending |
+| devp2p/discv4 | - | Pending |
+| ethereum/rpc-compat | - | Pending |
+
+### Phase 2: Consensus Testing
+
+| Client | legacy (32,616) | legacy-cancun (~27k relevant) | Status |
+|--------|-----------------|-------------------------------|--------|
+| **core-geth** | 99.94% (32,595/32,616) | 🔄 Running (~40h ETA) | 21 CREATE2 failures |
+| **besu-etc** | - | - | Pending |
+| **nethermind** | - | - | Planned |
+| **fukuii** | - | - | Planned |
 
 ### Key Findings
 

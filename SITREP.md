@@ -21,21 +21,23 @@ Multi-agent test infrastructure established. Both test suites running.
 ### Test Progress (01:32 UTC)
 
 **besu-etc: Cancun BlockchainTests**
-- Progress: 2,364 tests completed
-- Passing: 2,364 (100%)
+- Progress: 2,367 tests completed
+- Passing: 2,367 (100%)
 - Failing: 0
-- Rate: ~35 tests/min
+- Rate: ~33 tests/min
+- Started: 00:22 UTC
 - Status: **Running**
 
 **besu-etc: Constantinople BlockchainTests (legacy)**
-- Progress: 391 / 32,616 (1.2%)
-- Passing: 391 (100%)
+- Progress: 392 / 32,616 (1.2%)
+- Passing: 392 (100%)
 - Failing: 0
-- Rate: ~5 tests/min
-- ETA: ~107 hours at current rate
+- Rate: ~5.7 tests/min
+- Started: 00:24 UTC
+- ETA: ~94 hours at current rate
 - Status: **Running**
 
-**Active containers:** 7 (2 simulators, 5 besu-etc clients)
+**Active containers:** 7 (2 simulators, client instances)
 
 *Background monitor agent running for hourly updates.*
 
@@ -148,8 +150,8 @@ Legacy consensus test suite completed:
 
 | Suite | core-geth | besu-etc | nethermind | fukuii |
 |-------|-----------|----------|------------|--------|
-| legacy (32,616) | 99.94% | 🔄 0.0% (~34h) | - | - |
-| legacy-cancun (~27k) | 🔄 0.0% (~27h) | - | - | - |
+| legacy (32,616) | 99.94% | 🔄 1.2% (~94h) | - | - |
+| legacy-cancun (~27k) | 🔄 Running | - | - | - |
 
 ### Build Pipeline
 - core-geth builds from `IstoraMandiri/core-geth` (~2 min)

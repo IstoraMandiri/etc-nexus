@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-01-31 16:00 UTC
+Last updated: 2026-01-31 17:00 UTC
 
 ## Summary
 
@@ -18,23 +18,23 @@ Multi-agent test infrastructure established. Both test suites running.
 | test-besu | Run besu-etc tests | 🔄 Running | `legacy` (32,616 tests) |
 | reporter | Monitor & report | ✅ Active | Hourly updates |
 
-### Test Progress (16:00 UTC)
+### Test Progress (17:00 UTC)
 
 **besu-etc: Cancun BlockchainTests**
-- Progress: 29,825 tests completed
-- Passing: 29,825 (100%)
+- Progress: 31,778 tests completed
+- Passing: 31,778 (100%)
 - Failing: 0
 - Rate: ~32 tests/min
-- Started: 00:22 UTC (15h 38m elapsed)
+- Started: 00:22 UTC (16h 38m elapsed)
 - Status: **Running**
 
 **besu-etc: Constantinople BlockchainTests (legacy)**
-- Progress: 5,076 / 32,616 (15.6%)
-- Passing: 5,076 (100%)
+- Progress: 5,408 / 32,616 (16.6%)
+- Passing: 5,408 (100%)
 - Failing: 0
 - Rate: ~5.4 tests/min
-- Started: 00:24 UTC (15h 36m elapsed)
-- ETA: ~85 hours at current rate
+- Started: 00:24 UTC (16h 36m elapsed)
+- ETA: ~84 hours at current rate
 - Status: **Running**
 
 **Active containers:** 8 (2 simulators, client instances)
@@ -150,7 +150,7 @@ Legacy consensus test suite completed:
 
 | Suite | core-geth | besu-etc | nethermind | fukuii |
 |-------|-----------|----------|------------|--------|
-| legacy (32,616) | 99.94% | 🔄 15.6% (~85h) | - | - |
+| legacy (32,616) | 99.94% | 🔄 16.6% (~84h) | - | - |
 | legacy-cancun (~27k) | 🔄 Running | - | - | - |
 
 ### Build Pipeline

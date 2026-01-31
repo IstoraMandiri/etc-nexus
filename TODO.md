@@ -3,6 +3,28 @@
 > **Note:** For current test progress and status, see [SITREP.md](SITREP.md).
 > This file focuses on planned future work.
 
+## Agent Pickup Points
+
+### test-geth
+Resume core-geth `legacy-cancun` suite (interrupted at 37,944/111,983, ~33.9%).
+```bash
+cd /workspaces/nexus/hive && ./hive --sim ethereum/consensus --sim.limit legacy-cancun --client core-geth
+```
+Use `/hourly-monitor` for automated progress updates.
+
+### test-besu
+Resume besu-etc `legacy` suite (interrupted at 9,788/32,616, ~30.0%).
+```bash
+cd /workspaces/nexus/hive && ./hive --sim ethereum/consensus --sim.limit legacy --client besu-etc
+```
+Use `/hourly-monitor` for automated progress updates.
+
+### reporter
+Monitor both test runs. When complete, create analysis reports using `/report`:
+- besu-etc legacy results (compare with core-geth 99.94% baseline)
+- core-geth Istanbul/Berlin subset from legacy-cancun
+- Multi-client validation summary
+
 ## Immediate Actions
 
 ### 1. Resume Interrupted Test Runs

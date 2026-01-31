@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-01-30
+Last updated: 2026-01-31 00:04 UTC
 
 ## Summary
 
@@ -17,16 +17,19 @@ Successfully migrated to cloud infrastructure after power outage. Both clients v
 | core-geth | 6/6 ✓ | 2/2 ✓ |
 | besu-etc | 6/6 ✓ | 2/2 ✓ |
 
-### Interrupted Test Runs - Ready to Resume
+### Active Test Runs (Started 2026-01-31 00:01 UTC)
 
 **core-geth: `legacy-cancun` suite**
-- Progress at interruption: 37,944 / 111,983 (33.9%)
-- Passed: 37,908 | Failed: 36 (CREATE2 collision tests - expected)
-- Status: **Ready to resume on cloud**
+- Progress: 0 / 111,983 (0.0%) - just started
+- Rate: ~70 tests/min (estimated)
+- ETA: ~27 hours
+- Status: **Running**
 
 **besu-etc: `legacy` suite**
-- Progress at interruption: 9,788 / 32,616 (30.0%)
-- Status: **Ready to resume on cloud**
+- Progress: 0 / 32,616 (0.0%) - just started
+- Rate: ~16 tests/min (estimated)
+- ETA: ~34 hours
+- Status: **Running**
 
 ---
 
@@ -116,8 +119,8 @@ Legacy consensus test suite completed:
 
 | Suite | core-geth | besu-etc | nethermind | fukuii |
 |-------|-----------|----------|------------|--------|
-| legacy (32,616) | 99.94% | 🔄 30.0% (~33h) | - | - |
-| legacy-cancun (~27k) | 🔄 33.9% (~27h) | - | - | - |
+| legacy (32,616) | 99.94% | 🔄 0.0% (~34h) | - | - |
+| legacy-cancun (~27k) | 🔄 0.0% (~27h) | - | - | - |
 
 ### Build Pipeline
 - core-geth builds from `IstoraMandiri/core-geth` (~2 min)

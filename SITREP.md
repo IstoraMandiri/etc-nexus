@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-01-31 00:25 UTC
+Last updated: 2026-01-31 01:30 UTC
 
 ## Summary
 
@@ -18,20 +18,21 @@ Multi-agent test infrastructure established. Both test suites running.
 | test-besu | Run besu-etc tests | 🔄 Running | `legacy` (32,616 tests) |
 | reporter | Monitor & report | ✅ Active | Hourly updates |
 
-### Test Progress (00:25 UTC)
+### Test Progress (01:30 UTC)
 
-**core-geth: legacy-cancun suite**
-- Progress: 89 / 111,983 (0.08%)
-- Passing: 89
+**besu-etc: Cancun BlockchainTests**
+- Progress: 2,289 tests completed
+- Passing: 2,289 (100%)
 - Failing: 0
-- Rate: ~55 tests/min (accelerating)
-- ETA: ~34 hours
 - Status: **Running**
-- Note: Suite includes all forks (Cancun, Shanghai, Paris, Berlin, Istanbul). Only Istanbul/Berlin (~27k tests) are ETC-relevant.
 
-**besu-etc: legacy suite**
-- Progress: ~7 / 32,616
-- Status: **Running** (monitored by test-besu agent)
+**besu-etc: Constantinople BlockchainTests**
+- Progress: 379 tests completed
+- Passing: 379 (100%)
+- Failing: 0
+- Status: **Running**
+
+**Active containers:** 7 (2 simulators, 5 besu-etc clients)
 
 ### Infrastructure Verified ✓
 

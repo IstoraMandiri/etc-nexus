@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-01-31 00:21 UTC
+Last updated: 2026-01-31 00:25 UTC
 
 ## Summary
 
@@ -8,7 +8,7 @@ Hive integration with core-geth is **working**. Legacy consensus test suite comp
 
 ## 🔄 Parallel Test Agents (2026-01-31)
 
-Multi-agent test infrastructure established. Reporter agent monitoring both test runners.
+Multi-agent test infrastructure established. Both test suites running.
 
 ### Agent Status
 
@@ -18,20 +18,20 @@ Multi-agent test infrastructure established. Reporter agent monitoring both test
 | test-besu | Run besu-etc tests | 🔄 Running | `legacy` (32,616 tests) |
 | reporter | Monitor & report | ✅ Active | Hourly updates |
 
-### Test Progress (00:21 UTC)
+### Test Progress (00:25 UTC)
 
-**Active containers:** 5 (1 simulator, 2 core-geth, 2 besu-etc)
-
-**Test Run 1: Constantinople BlockchainTests**
-- Total processed: 17,328 tests
-- Successful: 10
-- Can't launch: 17,318 (unsupported forks: London, Paris, Shanghai, Cancun)
-- Note: Many tests target post-merge forks not supported by core-geth
-
-**Test Run 2: Cancun BlockchainTests (besu-etc)**
-- Total processed: 6 tests
-- Successful: 6/6 (100%)
+**core-geth: legacy-cancun suite**
+- Progress: 89 / 111,983 (0.08%)
+- Passing: 89
+- Failing: 0
+- Rate: ~55 tests/min (accelerating)
+- ETA: ~34 hours
 - Status: **Running**
+- Note: Suite includes all forks (Cancun, Shanghai, Paris, Berlin, Istanbul). Only Istanbul/Berlin (~27k tests) are ETC-relevant.
+
+**besu-etc: legacy suite**
+- Progress: ~7 / 32,616
+- Status: **Running** (monitored by test-besu agent)
 
 ### Infrastructure Verified ✓
 

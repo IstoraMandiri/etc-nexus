@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-01-31 00:14 UTC
+Last updated: 2026-01-31 00:21 UTC
 
 ## Summary
 
@@ -14,9 +14,24 @@ Multi-agent test infrastructure established. Reporter agent monitoring both test
 
 | Agent | Role | Status | Target Suite |
 |-------|------|--------|--------------|
-| test-geth | Run core-geth tests | ⏳ Warming up | `legacy-cancun` (111,983 tests) |
-| test-besu | Run besu-etc tests | ⏳ Warming up | `legacy` (32,616 tests) |
+| test-geth | Run core-geth tests | 🔄 Running | `legacy-cancun` (111,983 tests) |
+| test-besu | Run besu-etc tests | 🔄 Running | `legacy` (32,616 tests) |
 | reporter | Monitor & report | ✅ Active | Hourly updates |
+
+### Test Progress (00:21 UTC)
+
+**Active containers:** 5 (1 simulator, 2 core-geth, 2 besu-etc)
+
+**Test Run 1: Constantinople BlockchainTests**
+- Total processed: 17,328 tests
+- Successful: 10
+- Can't launch: 17,318 (unsupported forks: London, Paris, Shanghai, Cancun)
+- Note: Many tests target post-merge forks not supported by core-geth
+
+**Test Run 2: Cancun BlockchainTests (besu-etc)**
+- Total processed: 6 tests
+- Successful: 6/6 (100%)
+- Status: **Running**
 
 ### Infrastructure Verified ✓
 
@@ -27,20 +42,6 @@ Multi-agent test infrastructure established. Reporter agent monitoring both test
 | besu-etc image | ✓ Ready (849MB) |
 | Docker | ✓ Running |
 | Go 1.25.6 | ✓ Available |
-
-### Test Progress
-
-**core-geth: `legacy-cancun` suite**
-- Progress: Awaiting start
-- Total: 111,983 tests
-- ETC-relevant: ~27,000 (Istanbul + Berlin)
-- Status: **Pending**
-
-**besu-etc: `legacy` suite**
-- Progress: Awaiting start
-- Total: 32,616 tests
-- Baseline: core-geth 99.94%
-- Status: **Pending**
 
 ## ✅ Cloud Deployment Complete (2026-01-30 ~23:45 UTC)
 

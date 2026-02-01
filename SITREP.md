@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-01 13:16 UTC
+Last updated: 2026-02-01 14:11 UTC
 
 ## Summary
 
@@ -18,26 +18,26 @@ Multi-agent test infrastructure established. Both test suites running.
 | test-besu | Run besu-etc tests | 🔄 Running | `legacy` (32,616 tests) |
 | reporter | Monitor & report | ✅ Active | Hourly updates |
 
-### Test Progress (13:16 UTC)
+### Test Progress (14:11 UTC)
 
 **besu-etc: Cancun BlockchainTests**
-- Progress: 69,953 tests completed
-- Passing: 69,953 (100%)
+- Progress: 71,676 tests completed
+- Passing: 71,676 (100%)
 - Failing: 0
 - Rate: ~32 tests/min
 - Started: 00:22 UTC (19h 11m elapsed)
 - Status: **Running**
 
 **besu-etc: Constantinople BlockchainTests (legacy)**
-- Progress: 12,058 / 32,616 (37.0%)
-- Passing: 12,058 (100%)
+- Progress: 12,367 / 32,616 (37.9%)
+- Passing: 12,367 (100%)
 - Failing: 0
 - Rate: ~5.4 tests/min
 - Started: 00:24 UTC (19h 9m elapsed)
-- ETA: ~63 hours at current rate
+- ETA: ~62 hours at current rate
 - Status: **Running**
 
-**Active containers:** 7 (2 simulators, client instances)
+**Active containers:** 8 (2 simulators, client instances)
 
 *Background monitor agent restarted for continued hourly updates.*
 

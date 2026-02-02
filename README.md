@@ -92,6 +92,81 @@ clients:
 
 This validates that ECIP implementations maintain consensus pre-fork and correctly diverge post-fork.
 
+## Test Suites
+
+### Hive Ethereum Consensus Test Suites
+
+The `ethereum/consensus` simulator runs BlockchainTests from [ethereum/tests](https://github.com/ethereum/tests). Tests are organized into three suites:
+
+| Suite | Directory | Total Tests | Description |
+|-------|-----------|-------------|-------------|
+| `legacy` | LegacyTests/Constantinople/BlockchainTests | 32,616 | Constantinople-era tests (pre-Istanbul) |
+| `legacy-cancun` | LegacyTests/Cancun/BlockchainTests | 111,983 | Tests up to Cancun fork |
+| `consensus` | BlockchainTests | 1,148 | Current tests (Cancun/Prague) |
+| **Total** | | **145,747** | |
+
+### Fork Compatibility
+
+Tests target specific Ethereum forks. ETC clients only support pre-merge forks:
+
+| Fork | ETC Equivalent | ETC Support | Notes |
+|------|----------------|-------------|-------|
+| Frontier | Frontier | ✅ | Genesis fork |
+| Homestead | Homestead | ✅ | |
+| EIP150 (Tangerine) | Die Hard | ✅ | |
+| EIP158 (Spurious) | Gotham | ✅ | |
+| Byzantium | Atlantis | ✅ | |
+| Constantinople | Agharta | ✅ | |
+| Petersburg | Agharta | ✅ | Bundled with Constantinople in ETC |
+| Istanbul | Phoenix | ✅ | |
+| Berlin | Magneto | ✅ | |
+| London | Spiral | ⚠️ | Partial - EIP-1559 not adopted |
+| Paris (Merge) | N/A | ❌ | Proof-of-Stake transition |
+| Shanghai | N/A | ❌ | Post-merge |
+| Cancun | N/A | ❌ | Post-merge |
+
+### ETC-Applicable Test Suite
+
+Filtering Hive tests for ETC-supported forks (pre-merge only):
+
+| Test Category | Filter Pattern | Tests | Status |
+|---------------|----------------|-------|--------|
+| **Legacy Suite (Full)** | `--sim.limit legacy` | 32,616 | ✅ 99.94% pass |
+| **Berlin tests** | `--sim.limit Berlin` | ~15,000 | ✅ Available |
+| **Istanbul tests** | `--sim.limit Istanbul` | ~8,000 | ✅ Available |
+| **Constantinople tests** | `--sim.limit Constantinople` | ~5,000 | ✅ Available |
+| **Pre-merge combined** | `--sim.limit "Frontier\|Homestead\|EIP150\|EIP158\|Byzantium\|Constantinople\|Istanbul\|Berlin"` | ~60,000 | ✅ Available |
+
+**Excluded from ETC testing:**
+- Post-merge forks: Paris, Shanghai, Cancun (~50,000 tests)
+- London EIP-1559 tests (base fee mechanics)
+- DAO fork tests (ETC rejected the DAO fork)
+
+### Running ETC-Compatible Tests
+
+```bash
+# Full legacy suite (Constantinople and earlier)
+./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
+
+# Pre-merge tests from legacy-cancun suite
+./hive --sim ethereum/consensus --sim.limit legacy-cancun \
+  --sim.limit "Berlin|Istanbul" --client core-geth
+
+# All ETC-compatible forks
+./hive --sim ethereum/consensus \
+  --sim.limit "Frontier|Homestead|EIP150|EIP158|Byzantium|Constantinople|Istanbul|Berlin" \
+  --client core-geth
+```
+
+### Test Results Summary
+
+| Client | Legacy (32,616) | Berlin/Istanbul | Notes |
+|--------|-----------------|-----------------|-------|
+| core-geth | 99.94% (32,595/32,616) | 99.9% (111,803/111,893) | 21 CREATE2 edge cases excluded |
+| besu-etc | ✅ Running | - | In progress |
+
+See [SITREP.md](SITREP.md) for detailed test results and progress.
+
 ## Prior Art
 
 Built on [Ethereum Hive](https://github.com/ethereum/hive), the integration testing framework used by the Ethereum Foundation. See [ETC Community Call #45](https://cc.ethereumclassic.org/calls/45) for background discussion on adapting Hive for ETC.

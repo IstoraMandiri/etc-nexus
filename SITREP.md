@@ -1,24 +1,30 @@
 # Situation Report
 
-Last updated: 2026-02-02 22:18 UTC
+Last updated: 2026-02-02 22:33 UTC
 
 ## Summary
 
 Hive integration with core-geth is **working**. Legacy consensus test suite completed with 99.94% pass rate (32,595/32,616). Added **besu-etc** client for multi-client testing.
 
-## Test Progress (22:18 UTC)
+## Test Progress (22:33 UTC)
 
 | Client | Suite | Progress | Pass Rate | Rate | ETA | Status |
 |--------|-------|----------|-----------|------|-----|--------|
 | core-geth | legacy-cancun | 111,893/111,983 (99.9%) | 99.9% (111,803) | - | - | ✅ Complete |
-| besu-etc | legacy | 22,747/32,616 (69.7%) | >99.9% | ~5.6/min | ~35h | 🔄 Running |
+| besu-etc | legacy | 22,808/32,616 (69.9%) | >99.9% | ~5.4/min | ~30h | 🔄 Running |
+| besu-etc | full consensus | 2,031/111,983 (1.8%) | TBD | ~4.0/min | ~456h | 🔄 Running |
 
 **besu-etc: legacy BlockchainTests (Constantinople)**
-- Started: Jan 31, 00:24 UTC (~62 hours elapsed)
-- Remaining: 9,869 tests
+- Started: Jan 31, 00:24 UTC (~70 hours elapsed)
+- Remaining: 9,808 tests
 - Note: Slow rate due to Besu startup overhead per test
 
-**Active:** 1 simulator + client instances
+**besu-etc: full consensus suite (all forks)**
+- Started: Feb 2, 14:06 UTC (~8.4 hours elapsed)
+- Remaining: 109,952 tests
+- Note: Will likely fail on post-merge tests (ETC doesn't support merge)
+
+**Active:** 2 simulators + client instances
 
 ### Infrastructure Verified ✓
 

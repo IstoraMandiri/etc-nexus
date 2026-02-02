@@ -215,14 +215,6 @@ go build .
 ./hive --sim ethereum/rpc-compat --client core-geth
 ```
 
-## Next Steps
-
-1. ~~**Investigate CREATE2 failures**~~ - **RESOLVED** (EIP-7610 edge cases, safe to exclude)
-2. **Create ETC-specific test exclusion list** in Hive fork for the 21 EIP-7610 tests
-3. **Run Istanbul/Berlin tests** from `legacy-cancun` suite (~27,000 ETC-relevant tests)
-4. **Test additional simulators** (graphql, sync, devp2p/eth)
-5. **File bug** for `debug_getRaw*` method handler crash
-
 ## Test Suite Reference (ethereum/tests)
 
 | Suite | Total Tests | ETC Relevant | Notes |

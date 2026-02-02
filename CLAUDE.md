@@ -42,6 +42,37 @@ Key environment variables the client should handle:
 - `HIVE_CHAIN_ID`, `HIVE_NETWORK_ID` - Chain configuration
 - `HIVE_FORK_*` - Fork block numbers
 
+### ETC Clients Only Support Pre-Merge Forks (2026-01-31)
+
+**Problem:** Running `--sim.limit legacy` against besu-etc produces "unknown client type" errors for many tests.
+
+**Root Cause:** The "unknown client type" error is misleading. It actually means the client failed to start because it doesn't support the requested fork configuration. ETC clients (besu-etc, core-geth) only support forks up through Berlin/Spiral equivalent. They cannot run post-merge Ethereum tests like Paris, Shanghai, Cancun, etc.
+
+**Solution:** Filter consensus tests to ETC-supported forks only:
+```bash
+# For ETC clients, filter to supported forks
+./hive --client besu-etc --sim ethereum/consensus \
+  --sim.limit "Byzantium|Constantinople|Petersburg|Istanbul|Berlin"
+
+# Or use the legacy suite which targets Constantinople and earlier
+./hive --client besu-etc --sim ethereum/consensus --sim.limit legacy
+```
+
+**ETC Fork Support:**
+| ETH Fork | ETC Equivalent | Supported |
+|----------|----------------|-----------|
+| Byzantium | Atlantis | ✓ |
+| Constantinople | Agharta | ✓ |
+| Petersburg | Agharta | ✓ |
+| Istanbul | Phoenix | ✓ |
+| Berlin | Magneto/Mystique | ✓ |
+| London | Spiral (partial) | ✓ |
+| Paris (Merge) | N/A | ✗ |
+| Shanghai | N/A | ✗ |
+| Cancun | N/A | ✗ |
+
+**Note:** The `legacy` test suite (`LegacyTests/Constantinople/BlockchainTests`) may still contain tests for newer forks. Always verify the actual test content and filter appropriately.
+
 ## Documentation Pattern
 
 **SITREP.md** is the **single source of truth** for current status:

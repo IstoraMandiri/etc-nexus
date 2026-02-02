@@ -8,12 +8,12 @@ Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pa
 
 ## Test Results
 
-| Client | Suite | Tests | Passed | Failed | Pass Rate | Status |
-|--------|-------|-------|--------|--------|-----------|--------|
-| core-geth | legacy | 32,616 | 32,595 | 21 | 99.94% | ✅ Complete |
-| core-geth | legacy-cancun | 111,983 | 111,893 | 90 | 99.92% | ✅ Complete |
-| besu-etc | legacy | 32,616 | ~22,808 | TBD | ~69.9% | 🔄 Running |
-| besu-etc | full consensus | 111,983 | ~2,031 | TBD | ~1.8% | 🔄 Running |
+| Client | Suite | Tests | Passed | Failed | Pass Rate | ETA | Status |
+|--------|-------|-------|--------|--------|-----------|-----|--------|
+| core-geth | legacy | 32,616 | 32,595 | 21 | 99.94% | - | ✅ Complete |
+| core-geth | legacy-cancun | 111,983 | 111,893 | 90 | 99.92% | - | ✅ Complete |
+| besu-etc | legacy | 32,616 | ~22,808 | - | ~69.9% | ~30h | 🔄 Running |
+| besu-etc | full consensus | 111,983 | ~2,031 | - | ~1.8% | ~456h | 🔄 Running |
 
 **Notes:**
 - All failures are EIP-7610 edge cases (CREATE2 collision) - safe to exclude for ETC

@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-03 09:41 UTC
+Last updated: 2026-02-03 10:08 UTC
 
 ## Summary
 
@@ -12,8 +12,8 @@ Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pa
 |--------|-------|-------|--------|--------|-----------|-----|--------|
 | core-geth | legacy | 32,616 | 32,595 | 21 | 99.94% | - | ✅ Complete |
 | core-geth | legacy-cancun | 111,983 | 111,893 | 90 | 99.92% | - | ✅ Complete |
-| besu-etc | legacy | 32,616 | ~25459 | - | ~78.1% | ~22h | 🔄 Running |
-| besu-etc | full consensus | 111,983 | ~4710 | - | ~4.2% | ~447h | 🔄 Running |
+| besu-etc | legacy | 32,616 | ~25565 | - | ~78.4% | ~22h | 🔄 Running |
+| besu-etc | full consensus | 111,983 | ~4818 | - | ~4.3% | ~446h | 🔄 Running |
 
 **Notes:**
 - All failures are EIP-7610 edge cases (CREATE2 collision) - safe to exclude for ETC
@@ -23,11 +23,11 @@ Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pa
 ## Active Tests
 
 **besu-etc: legacy** (started Jan 31)
-- Progress: 25459 / 32,616 (78.1%)
+- Progress: 25565 / 32,616 (78.4%)
 - Rate: ~5.4 tests/min | ETA: ~22h
 
 **besu-etc: full consensus** (started Feb 2, 14:06 UTC)
-- Progress: 4710 / 111,983 (4.2%)
+- Progress: 4818 / 111,983 (4.3%)
 - Rate: ~4.0 tests/min | ETA: ~22h
 - Note: Will fail post-merge tests (expected - ETC doesn't support merge)
 

@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-03 00:41 UTC
+Last updated: 2026-02-03 01:03 UTC
 
 ## Summary
 
@@ -12,7 +12,7 @@ Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pa
 |--------|-------|-------|--------|--------|-----------|-----|--------|
 | core-geth | legacy | 32,616 | 32,595 | 21 | 99.94% | - | ✅ Complete |
 | core-geth | legacy-cancun | 111,983 | 111,893 | 90 | 99.92% | - | ✅ Complete |
-| besu-etc | legacy | 32,616 | ~23318 | - | ~71.5% | ~29h | 🔄 Running |
+| besu-etc | legacy | 32,616 | ~23406 | - | ~71.8% | ~28h | 🔄 Running |
 | besu-etc | full consensus | 111,983 | ~2544 | - | ~2.3% | ~456h | 🔄 Running |
 
 **Notes:**

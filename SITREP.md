@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-05 06:42 UTC
+Last updated: 2026-02-05 07:42 UTC
 
 ## Summary
 
@@ -13,7 +13,7 @@ Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pa
 | core-geth | legacy | 32,616 | 32,595 | 21 | 99.94% | - | ✅ Complete |
 | core-geth | legacy-cancun | 111,983 | 111,893 | 90 | 99.92% | - | ✅ Complete |
 | besu-etc | legacy | 32,616 | ~32616 | - | ~100.0% | ~0h | 🔄 Running |
-| besu-etc | full consensus | 111,983 | ~15347 | - | ~13.7% | ~403h | 🔄 Running |
+| besu-etc | full consensus | 111,983 | ~15585 | - | ~13.9% | ~402h | 🔄 Running |
 
 **Notes:**
 - All failures are EIP-7610 edge cases (CREATE2 collision) - safe to exclude for ETC
@@ -27,7 +27,7 @@ Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pa
 - Rate: ~5.4 tests/min | ETA: ~0h
 
 **besu-etc: full consensus** (started Feb 2, 14:06 UTC)
-- Progress: 15347 / 111,983 (13.7%)
+- Progress: 15585 / 111,983 (13.9%)
 - Rate: ~4.0 tests/min | ETA: ~0h
 - Note: Will fail post-merge tests (expected - ETC doesn't support merge)
 

@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-06 14:00 UTC
+Last updated: 2026-02-06 13:11 UTC
 
 ## Summary
 
@@ -44,7 +44,19 @@ The new `consensus-etc` suite filters all test directories to ETC-compatible for
 
 ## Active Tests
 
-None running.
+**consensus-etc full suite — 3 clients (started 13:07 UTC)**
+
+```
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth,besu-etc,nethermind-etc --sim.parallelism 4
+```
+
+| Client | Status | Notes |
+|--------|--------|-------|
+| core-geth | Building image | Compiling from source |
+| besu-etc | Building image | Waiting |
+| nethermind-etc | Image ready | Waiting for tests to start |
+
+Phase: Docker image builds (tests have not started yet)
 
 ## Infrastructure
 
@@ -76,9 +88,11 @@ export PATH=$PATH:/usr/local/go/bin
 ./hive --sim smoke/genesis --client nethermind-etc
 
 # ETC consensus tests (new suite) — always use --sim.parallelism
+# All three clients in one command (preferred):
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth,besu-etc,nethermind-etc --sim.parallelism 4
+
+# Single client:
 ./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth --sim.parallelism 4
-./hive --sim ethereum/consensus --sim.limit consensus-etc --client nethermind-etc --sim.parallelism 4
-./hive --sim ethereum/consensus --sim.limit consensus-etc --client besu-etc --sim.parallelism 4
 
 # Filter by fork or test category
 ./hive --sim ethereum/consensus --sim.limit "consensus-etc/Berlin" --client core-geth

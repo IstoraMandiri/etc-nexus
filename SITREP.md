@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-06 21:47 UTC
+Last updated: 2026-02-06 22:48 UTC
 
 ## Summary
 
@@ -16,19 +16,19 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 4,444 | 10 | Running |
-| besu-etc | 4,444 | 1 | Running |
-| nethermind-etc | 4,444 | 0 | Running |
+| core-geth | 4,969 | 10 | Running |
+| besu-etc | 4,969 | 1 | Running |
+| nethermind-etc | 4,969 | 0 | Running |
 
-- **Total:** 13,327 tests completed (11 failures — no new failures since ~4,000 mark)
+- **Total:** 14,904 tests completed (11 failures — stable since ~4,000 mark)
 - **Rate:** ~25 tests/min (all clients combined), ~8 tests/min per client
-- **Elapsed:** 8h 40m (started 13:07 UTC)
-- **Current test:** `NonZeroValue_CALL_ToEmpty` in `BlockchainTests/ValidBlocks`
-- **Fork coverage:** Frontier (1,150), EIP150 (879), Homestead (1,452), EIP158 (1,018), Byzantium (2,670), Constantinople (3,081), ConstantinopleFix (3,078)
-- **core-geth failures (10):** All EIP-7610/CREATE2 edge cases — `RevertInCreateInInitCreate2` (2), `create2collisionStorage` (6), `dynamicAccountOverwriteEmpty` (2)
-- **besu-etc failures (1):** `codesizeOOGInvalidSize_d0g0v0_EIP158` — known from legacy run
+- **Elapsed:** 9h 41m (started 13:07 UTC)
+- **Current test:** `modexp` precompile tests in `BlockchainTests/ValidBlocks`
+- **Fork coverage:** Frontier (1,209), EIP150 (936), Homestead (1,512), EIP158 (1,077), Byzantium (3,119), Constantinople (3,526), ConstantinopleFix (3,525)
+- **core-geth failures (10):** All EIP-7610/CREATE2 edge cases
+- **besu-etc failures (1):** `codesizeOOGInvalidSize_d0g0v0_EIP158` — known
 - **nethermind-etc: 0 failures** — perfect so far
-- **Note:** Istanbul, Berlin tests still not reached — still in first test directory (BlockchainTests)
+- **Note:** Istanbul, Berlin tests still not reached — deep in Byzantium+ precompile tests
 
 ## Test Results — Baseline (ETH test suites)
 

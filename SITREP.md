@@ -6,6 +6,25 @@ Last updated: 2026-02-06 13:24 UTC
 
 Hive integration testing for ETC clients. Three clients under test: core-geth, besu-etc, nethermind-etc. Implemented `consensus-etc` suite in Hive for streamlined ETC testing. nethermind-etc passing initial consensus tests.
 
+## Active Tests
+
+**consensus-etc full suite — 3 clients (started 13:07 UTC)**
+
+```
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth,besu-etc,nethermind-etc --sim.parallelism 4
+```
+
+| Client | Tests Done | Failures | Status |
+|--------|-----------|----------|--------|
+| core-geth | ~100 | 0 | Running |
+| besu-etc | ~100 | 0 | Running |
+| nethermind-etc | ~100 | 0 | Running |
+
+- **Total:** ~300 tests completed (0 failures), all 3 clients progressing evenly
+- **Rate:** ~20 tests/min (all clients combined), ~7 tests/min per client
+- **Phase:** Active testing (image builds complete)
+- **Note:** Total test count TBD — suite loads BlockchainTests + LegacyTests for Frontier through Berlin forks
+
 ## Test Results — Baseline (ETH test suites)
 
 Full runs using upstream Hive `legacy` and `legacy-cancun` suites.
@@ -41,25 +60,6 @@ The new `consensus-etc` suite filters all test directories to ETC-compatible for
 | core-geth | 6/6 | 2/2 | Pass |
 | besu-etc | 6/6 | 2/2 | Pass |
 | nethermind-etc | 6/6 | 2/2 | Pass |
-
-## Active Tests
-
-**consensus-etc full suite — 3 clients (started 13:07 UTC)**
-
-```
-./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth,besu-etc,nethermind-etc --sim.parallelism 4
-```
-
-| Client | Tests Done | Failures | Status |
-|--------|-----------|----------|--------|
-| core-geth | ~100 | 0 | Running |
-| besu-etc | ~100 | 0 | Running |
-| nethermind-etc | ~100 | 0 | Running |
-
-- **Total:** ~300 tests completed (0 failures), all 3 clients progressing evenly
-- **Rate:** ~20 tests/min (all clients combined), ~7 tests/min per client
-- **Phase:** Active testing (image builds complete)
-- **Note:** Total test count TBD — suite loads BlockchainTests + LegacyTests for Frontier through Berlin forks
 
 ## Infrastructure
 

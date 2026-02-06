@@ -25,7 +25,7 @@ Three ETC clients validated against the ethereum/tests consensus suite:
 |--------|----------|-------------|--------|
 | [core-geth](https://github.com/etclabscore/core-geth) | Go | Frontier — Spiral | Baseline complete |
 | [besu-etc](https://github.com/hyperledger/besu) | Java | Frontier — Berlin | Baseline complete |
-| [nethermind-etc](https://github.com/diega/nethermind_etc) | C# | Frontier — Berlin | Initial tests passing |
+| [nethermind-etc](https://github.com/ETCCooperative/nethermind-etc-plugin/releases) | C# | Frontier — Berlin | Initial tests passing |
 
 ## Purpose
 
@@ -64,7 +64,23 @@ etc-nexus/
 |-----------|----------|------|---------|
 | `hive/` | [ethereum/hive](https://github.com/ethereum/hive) | [IstoraMandiri/hive](https://github.com/IstoraMandiri/hive) | Test orchestration, ETC simulators |
 | `core-geth/` | [etclabscore/core-geth](https://github.com/etclabscore/core-geth) | [IstoraMandiri/core-geth](https://github.com/IstoraMandiri/core-geth) | ECIP implementation |
-| `nethermind-etc-plugin/` | — | [IstoraMandiri/nethermind-etc-plugin](https://github.com/IstoraMandiri/nethermind-etc-plugin) | Nethermind ETC support |
+| `nethermind-etc-plugin/` | [ETCCooperative/nethermind-etc-plugin](https://github.com/ETCCooperative/nethermind-etc-plugin) | [IstoraMandiri/nethermind-etc-plugin](https://github.com/IstoraMandiri/nethermind-etc-plugin) | Nethermind ETC support |
+
+### Fork Changes
+
+**hive** (6 commits ahead of upstream):
+- Added `core-geth` client definition with ETC-specific configuration (genesis mapper, `--fakepow` support, TTD fix for pre-merge tests)
+- Added `besu-etc` client definition with ETC fork mappings (Atlantis, Agharta, Phoenix, Thanos, Magneto, Mystique, Spiral)
+- Added `nethermind-etc` client definition using [diega/nethermind_etc](https://github.com/diega/nethermind_etc) binary with ETC plugin
+- Implemented `consensus-etc` test suite that auto-filters to ETC-compatible forks (Frontier through Berlin) and targets clients with the `etc` role
+- Added `etc_forks.go` with ETC fork environment variable mappings
+
+**core-geth** (mirror of upstream, 0 commits ahead):
+- No changes — fork exists as a stable reference for Hive client builds
+
+**nethermind-etc-plugin** (1 commit ahead of [upstream releases](https://github.com/ETCCooperative/nethermind-etc-plugin/releases)):
+- Fixed plugin conflict where `EthashChainSpecEngineParametersBase` implemented `IChainSpecEngineParameters` with EngineName "Ethash", colliding with Nethermind's built-in engine and causing "Multiple seal engines in chain spec" errors
+- Solution: removed interface from base class so only `EtchashChainSpecEngineParameters` (EngineName "Etchash") is discovered by Nethermind's type system
 
 ## Hive Test Suites
 

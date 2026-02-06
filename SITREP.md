@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-06 22:48 UTC
+Last updated: 2026-02-06 23:48 UTC
 
 ## Summary
 
@@ -16,19 +16,19 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 4,969 | 10 | Running |
-| besu-etc | 4,969 | 1 | Running |
-| nethermind-etc | 4,969 | 0 | Running |
+| core-geth | 5,496 | 10 | Running |
+| besu-etc | 5,496 | 1 | Running |
+| nethermind-etc | 5,496 | 0 | Running |
 
-- **Total:** 14,904 tests completed (11 failures — stable since ~4,000 mark)
-- **Rate:** ~25 tests/min (all clients combined), ~8 tests/min per client
-- **Elapsed:** 9h 41m (started 13:07 UTC)
-- **Current test:** `modexp` precompile tests in `BlockchainTests/ValidBlocks`
-- **Fork coverage:** Frontier (1,209), EIP150 (936), Homestead (1,512), EIP158 (1,077), Byzantium (3,119), Constantinople (3,526), ConstantinopleFix (3,525)
+- **Total:** 16,484 tests completed (11 failures — stable since ~4,000 mark)
+- **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
+- **Elapsed:** 10h 41m (started 13:07 UTC)
+- **Current test:** `modexp_49_2401` precompile tests (still in modexp variants)
+- **Fork coverage:** Frontier (1,209), EIP150 (936), Homestead (1,512), EIP158 (1,077), Byzantium (3,646), Constantinople (4,054), ConstantinopleFix (4,050)
 - **core-geth failures (10):** All EIP-7610/CREATE2 edge cases
 - **besu-etc failures (1):** `codesizeOOGInvalidSize_d0g0v0_EIP158` — known
 - **nethermind-etc: 0 failures** — perfect so far
-- **Note:** Istanbul, Berlin tests still not reached — deep in Byzantium+ precompile tests
+- **Note:** Istanbul, Berlin tests still not reached — modexp tests are massive
 
 ## Test Results — Baseline (ETH test suites)
 

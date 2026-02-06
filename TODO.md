@@ -3,9 +3,16 @@
 > **Note:** For current test progress and status, see [SITREP.md](SITREP.md).
 > This file focuses on planned future work.
 
+## Immediate (Post-Outage Recovery)
+
+1. **Fix nethermind-etc genesis smoke tests** — was intermittently failing before outage; vanilla nethermind passes but nethermind-etc regresses. Debug and fix before attempting consensus runs.
+2. **Investigate besu-etc 3 legacy failures** — these are NOT EIP-7610. Failures: `sstore_combinations_initial1_d1243g0v0_Constantinople`, `codesizeOOGInvalidSize_d0g0v0_EIP158`, `ecmul_1-2_340282366920938463463374607431768211456_21000_128_d0g1v0_ConstantinopleFix`
+3. **Run besu-etc legacy-cancun** — the "full consensus" run was misconfigured. Use `--sim.limit legacy-cancun` instead of `--sim.limit .*`
+4. **Run nethermind-etc legacy** — once genesis is fixed
+
 ## Pending Analysis
 
-When current test runs complete:
+When test runs complete:
 - [ ] Create besu-etc legacy results report (compare with core-geth baseline)
 - [ ] Analyze core-geth Istanbul/Berlin subset from legacy-cancun
 - [ ] Create multi-client validation summary

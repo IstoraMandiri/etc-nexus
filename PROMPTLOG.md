@@ -281,3 +281,397 @@ Short session to push pending commits to GitHub.
 *Pushed 3 commits to GitHub.*
 
 ---
+
+## Session 15: Cloud Deployment and Documentation Reorganization
+
+Deployed to cloud instance, verified both core-geth and besu-etc pass smoke tests, then reorganized documentation to eliminate duplication. SITREP.md became the single source of truth for progress, TODO.md was scoped to future work only, and README.md was simplified with links.
+
+> **2026-01-30 23:23** — [/pickup] you have just been deployed on a remote cloud instance. show that things are working by running the core-geth and besu-etc smoke tests
+
+*Initialized submodules, built Hive, ran smoke tests: core-geth passed smoke/genesis 6/6 and smoke/network 2/2. Besu-etc was missing from the submodule.*
+
+> **2026-01-30 23:40** — The besu-etc client exists at hive/clients/besu-etc/. The issue is likely that the hive submodule isn't initialized/updated on the remote agent's machine. [Instructions to pull latest and verify]
+
+*Updated hive submodule, confirmed besu-etc client now present.*
+
+> **2026-01-30 23:43** — What I just did: 1. Pushed the besu-etc commit (271ae4c) to the hive fork 2. Updated the parent repo to track the new hive commit. For the remote agent to get besu-etc: git pull, git submodule update, then run smoke test.
+
+*Pulled changes, rebuilt Hive, ran besu-etc smoke tests: genesis 6/6 passed, network 2/2 passed. Both clients verified working on cloud.*
+
+> **2026-01-30 23:48** — Before continuing with tests, I want to clean up my documentation a bit so that we do not repeat ourselves. We currently have the test progress listed in both the readme, the sit rep, and the to-do's. I want to only have to update the situation report, and we can link to the sit rep from the readme. And the to-do should only talk about future plans, not the current progress.
+
+*Reorganized documentation: SITREP.md as single source of truth with operation log, TODO.md scoped to future work only, README.md simplified with links. Updated all skills accordingly.*
+
+> **2026-01-30 23:55** — [/handoff] prepare mission statements for 3 new agents that I will launch with the names 'test-geth' 'test-besu' and 'reporter'
+
+*Created elaborate mission statement files for each agent (later simplified).*
+
+> **2026-01-30 23:59** — That's not really what I was after. I just wanted you to create in the TODO.md file three short sections that describe where to pick up from for each given name.
+
+*Simplified to three short sections in TODO.md with pickup instructions for test-geth, test-besu, and reporter agents.*
+
+---
+
+## Session 16: test-geth Agent - Legacy-Cancun Suite Launch
+
+Started core-geth legacy-cancun test suite on cloud. Encountered Docker image build delays while the consensus simulator cloned the ethereum/tests repository.
+
+> **2026-01-31 00:01** — [/pickup test-geth]
+
+*Picked up as test-geth agent. Found both test processes already started but struggling with Docker builds. Killed stuck processes and restarted fresh. Monitored consensus simulator image build progress.*
+
+---
+
+## Session 17: test-besu Agent - Initial Launch Attempt
+
+Attempted to start besu-etc legacy tests but ran into conflicts with concurrent Hive processes and missing simulator image.
+
+> **2026-01-31 00:01** — [/pickup test-besu]
+
+*Started besu-etc legacy suite. Discovered conflicting Hive processes and missing consensus simulator image. Test was killed (exit 143) while waiting for build. Deferred to let core-geth build complete first.*
+
+> **2026-01-31 00:06** — Hive is building the consensus simulator image. This takes a while since it needs to download test vectors.
+
+*Acknowledged build in progress, monitored Docker build activity.*
+
+---
+
+## Session 18: Reporter Agent - Hourly Monitoring Setup
+
+Set up the reporter agent with hourly monitoring. Discovered both test runs had just started with 0% progress. Created initial status reports and began automated monitoring loop.
+
+> **2026-01-31 00:01** — [/pickup reporter]
+
+*Picked up as reporter. Found both test runs just started with 0% progress.*
+
+> **2026-01-31 00:03** — use /hourly-monitor and push updates to github
+
+*Set up hourly monitoring with GitHub pushes. Updated SITREP.md with initial status.*
+
+---
+
+## Session 19: Reporter Agent - Monitoring and Test Progress
+
+Continued hourly monitoring of test suites. Managed multiple test run tracking, dealt with ETC fork compatibility issues, and maintained automated progress updates for days.
+
+> **2026-01-31 00:10** — [/pickup reporter]
+
+*Resumed monitoring. Found no active test runs - consensus tests had failed to start properly.*
+
+> **2026-01-31 00:14** — use the /report skill and update hourly reports of both agents, which are currently warming up
+
+*Created warmup status report, verified infrastructure ready for both clients.*
+
+> **2026-01-31 00:18** — remove the reports file, we dont need it -- just update the sitrep from now on. amend that last commit, and push every hour
+
+*Removed separate report file, cleaned up SITREP references.*
+
+> **2026-01-31 00:18** — ah, i told you to use the wrong skill before, my bad. you should be using /hourly-monitor
+
+*Switched to /hourly-monitor skill. Found client launch issues with core-geth on some forks. Updated SITREP with current status.*
+
+> **2026-01-31 01:30** — you missed the last hourly update! please ensure you are running this every hour!!!
+
+*Apologized and immediately checked status. Tests progressing: besu-etc Cancun 2,289 passed (100%), Constantinople 379 passed (100%).*
+
+> **2026-01-31 01:32** — in your reports, please include the estimated time to complete current test runs. AND MAKE SURE YOU RUN A BACKGROUND AGENT ALWAYS!
+
+*Started background monitoring agent. Added ETAs to SITREP: Constantinople ~107h ETA at ~5 tests/min.*
+
+*Background agent ran for ~16 hours of continuous monitoring before completing. Restarted monitoring multiple times over several days. Cancun tests completed (~32,158 passed), Constantinople progressed steadily.*
+
+> **2026-02-02 14:00** — [/report on the core-geth: legacy-cancun tests]
+
+*Attempted to create report on legacy-cancun results. Encountered confusion between core-geth and besu-etc test logs. Interrupted by user.*
+
+---
+
+## Session 20: test-besu Agent - ETC Fork Filtering Discovery
+
+Discovered that besu-etc fails on post-merge forks with misleading "unknown client type" error. Identified the need to filter tests to ETC-supported forks only. Ran filtered test suite with 100% pass rate for supported forks. Monitored for multiple days.
+
+> **2026-01-31 00:11** — [/pickup test-besu]
+
+*Picked up as test-besu. Found existing stuck Hive processes, killed and restarted clean. Encountered "unknown client type" errors for post-Constantinople forks.*
+
+> **2026-01-31 00:22** — Found the issue. The besu-etc client only supports forks up to Berlin (ETC's Spiral equivalent). The "unknown client type" error happens when the client fails to start for a fork it doesn't support. Filter tests to supported forks only. If correct, update CLAUDE.md.
+
+*Updated CLAUDE.md with ETC fork support table and lesson learned about misleading error messages. Ran filtered test suite for Byzantium/Constantinople/Petersburg/Istanbul/Berlin.*
+
+> **2026-01-31 00:26** — please only focus on besu, ignore other processes. you do not need to do any updates yourself as i'm running a dedicated updater/reporter
+
+*Acknowledged, focused monitoring on besu-etc legacy suite only.*
+
+> **2026-01-31 00:30** — as per /hive-run, we need to keep a process running to ensure the tests are running as expected, and check in every 15 mins or so
+
+*Set up 15-minute monitoring loop. Tests progressing at ~5.5 tests/min with 100% pass rate. Monitored continuously for 90+ hours from 35 tests to 9,673 tests (29.7%) and beyond.*
+
+---
+
+## Session 21: test-geth Agent - Core-geth Legacy-Cancun Monitoring
+
+Started and monitored core-geth legacy-cancun test suite with periodic 15-minute checks. The agent ran for over 36 hours tracking progress.
+
+> **2026-01-31 00:11** — [/pickup test-geth]
+
+*Picked up as test-geth. Found Hive building consensus simulator. Started monitoring loop.*
+
+> **2026-01-31 00:26** — please only focus on core-geth, ignore other processes. you do not need to do any updates yourself as im running a dedicated updater/reporter
+
+*Focused on core-geth monitoring only.*
+
+> **2026-01-31 00:26** — please ensure you're running a background process to periodically monitor
+
+*Set up background daemon for periodic monitoring.*
+
+> **2026-01-31 00:30** — as per /hive-run, we need to keep a process running to ensure the tests are running as expected, and check in every 15 mins or so
+
+*Configured 15-minute check-in loop. Monitored core-geth legacy-cancun progress.*
+
+> **2026-01-31 01:38** — make sure you start a background daemon to periodically check in with status (no need to update, just print here)
+
+*Started background monitoring daemon for ongoing status checks.*
+
+> **2026-02-01 12:27** — so whats going on now
+
+*Checked status of running test suite.*
+
+---
+
+## Session 22: Current Test Status Check
+
+Quick check on what tests are currently running.
+
+> **2026-02-02 14:03** — can you tell me what tests are running currently
+
+*Checked running Hive tests: besu-etc legacy suite actively running, core-geth legacy-cancun completed earlier.*
+
+---
+
+## Session 23: Besu-etc Hive Test Runs and Nethermind Investigation
+
+Ran besu-etc legacy-cancun tests and began investigating nethermind-etc client integration issues with Hive.
+
+> **2026-02-02 14:05** — [/hive-run besu-etc legacy-cancun]
+
+*Started besu-etc legacy-cancun test suite. Completed initial run, then started additional runs with different filters.*
+
+> **2026-02-06 00:04** — ./hive --client nethermind-etc --sim ethereum/consensus --sim.limit legacy --sim.parallelism 4 --sim.loglevel 3
+
+*Attempted to run nethermind-etc client tests. Tests failed with configuration errors.*
+
+> **2026-02-06 00:07** — hm. can you try to fix the config. stop the current run and continue until they start to pass
+
+*Investigated nethermind-etc configuration issues. Tests continued failing due to "Multiple seal engines" error in the plugin.*
+
+> **2026-02-06 00:42** — how can we report this to the nethermind-etc maintainer?
+
+*Drafted a GitHub issue for the ETCCooperative/nethermind-etc-plugin repository describing the "Multiple seal engines" error and its root cause.*
+
+---
+
+## Session 24: Legacy-Cancun Report and Documentation
+
+Generated report on completed core-geth legacy-cancun test results and pushed to GitHub.
+
+> **2026-02-02 14:06** — [/report on the recently completed core-geth: legacy-cancun BlockchainTests]
+
+*Analyzed test results: core-geth legacy-cancun 99.9% pass rate (111,803/111,893). Created report at reports/260202_LEGACY_CANCUN_RESULTS.md.*
+
+> **2026-02-02 14:10** — push it
+
+*Pushed report to GitHub.*
+
+---
+
+## Session 25: Test Suite Documentation for README
+
+Created comprehensive test suite tables in README showing existing Hive suites and proposed ETC-specific suite with test counts.
+
+> **2026-02-02 14:09** — check out the docs in this repo and help me create a table in the readme that explains the different existing test suites, and help me construct a new table for an ETC specific test suite that contains all applicable tests. include total test numbers.
+
+*Created tables showing 3 Hive consensus suites (legacy, legacy-cancun, consensus) with test counts, plus proposed ETC-specific suite targeting ~27,000 applicable tests across pre-merge forks.*
+
+> **2026-02-02 14:13** — push it
+
+*Pushed README updates to GitHub.*
+
+---
+
+## Session 26: Documentation Cleanup and TODO Planning
+
+Cleaned up duplicate information between SITREP and TODO, then researched and planned ETC-specific test suite implementation for the Hive fork.
+
+> **2026-02-02 14:15** — update TODO and SITREP, remove any duplicate information
+
+*Removed duplicated test suite reference table and stale progress from TODO. Cleaned up SITREP "Next Steps" section.*
+
+> **2026-02-02 14:17** — [/handoff]
+
+*Prepared handoff: synced docs, committed changes.*
+
+---
+
+## Session 27: ETC Test Suite Design and Future Planning
+
+Researched how to implement an ETC-specific test suite in the Hive fork, including fork name mapping and custom test support for future ECIPs.
+
+> **2026-02-02 14:18** — in @TODO.md, add a task to set up an ETC specific test suite option in our hive fork so we dont need to haphazardly run different test suites. research and be detailed in the TODO.md how to do this but dont actually implement anything yet.
+
+*Researched Hive consensus simulator internals. Added detailed implementation plan to TODO.md covering new `etc-consensus` suite with ETC fork filtering.*
+
+> **2026-02-02 14:23** — would it be possible to use the ETC names for the relevant forks?
+
+*Explained that test files use ETH fork names internally but we can expose ETC names (Atlantis, Agharta, Phoenix, Magneto, Mystique) via a mapping layer.*
+
+> **2026-02-02 14:25** — eventually, etc may diverge and require its own fork/tests -- e.g. ECIP 1120 and 1121. how would this be done? again, just make a note of it
+
+*Added notes on custom ETC test support: custom test directory structure, custom chain configs for ETC-specific ECIPs, and integration with the etc-consensus suite.*
+
+> **2026-02-02 14:26** — push it
+
+*Pushed TODO.md updates to GitHub.*
+
+---
+
+## Session 28: Hourly Monitor - Auto-Push with Test Progress
+
+Set up automated hourly monitoring with GitHub push, tracking both besu-etc test suites (Cancun and Constantinople).
+
+> **2026-02-02 14:28** — [/hourly-monitor] and auto-push, track both test runners and replace Agent Status and "Test Progress" with a single Test Progress Table showing the two current running suites
+
+*Started hourly monitoring loop with automated SITREP updates and GitHub pushes. Tracked besu-etc Cancun and Constantinople suites simultaneously.*
+
+---
+
+## Session 29: Hourly Monitor - Dual Besu Suite Tracking
+
+Continued hourly monitoring of two besu-etc test suites. Enhanced SITREP with completed test ledger, ETAs, and failure tracking. Later added nethermind-etc monitoring.
+
+> **2026-02-02 22:32** — [/hourly-monitor] we have two besu test suites running, update the test progress accordingly (currently we only show one)
+
+*Updated monitoring to track both besu-etc suites.*
+
+> **2026-02-02 22:34** — push to git recurring please every hour
+
+*Configured recurring hourly Git pushes.*
+
+> **2026-02-02 22:37** — in the SITREP, we should maintain a ledger of the test runs that are completed, separate from the current test progress. For example we completed the core geth tests before.
+
+*Added completed test results ledger to SITREP, separate from active test progress.*
+
+> **2026-02-02 22:40** — Please include a column in the test results for estimated time to completion ETD and if there's any failed test currently mark them.
+
+*Added ETA and failure columns to test progress table.*
+
+> **2026-02-06 00:05** — [/hourly-monitor] continue with your last request, but now notice we added nethermind-etc legacy. please add this into the monitoring.
+
+*Added nethermind-etc to monitoring. Tests failing with "Multiple seal engines" error.*
+
+> **2026-02-06 00:49** — we just updated the besu test to be running at 4x parallel, so it should be faster?
+
+*Acknowledged parallelism increase, updated monitoring to reflect faster test execution.*
+
+> **2026-02-06 00:53** — yeah go check if you can start nethermind?
+
+*Checked nethermind-etc status. Still failing with seal engine configuration error.*
+
+> **2026-02-06 01:13** — give me a prompt i can pass to another agent about forking the plugin and figuring out a fix.
+
+*Drafted a detailed prompt describing the nethermind-etc-plugin "Multiple seal engines" error, pointing to the Nethermind type discovery issue.*
+
+> **2026-02-06 01:13** — specify we should use submodule in this folder
+
+*Updated prompt to specify cloning as a submodule within the nexus repo.*
+
+---
+
+## Session 30: Nethermind ETC Client Integration
+
+Added nethermind-etc as a new Hive client using the ETCCooperative/nethermind-etc-plugin. Created client definition and ran smoke tests. Discovered configuration issues with the legacy test suite.
+
+> **2026-02-05 09:37** — let's add https://github.com/ETCCooperative/nethermind-etc-plugin/releases to the nexus! add it and run smoke tests
+
+*Created nethermind-etc Hive client definition with Dockerfile using pre-built Nethermind binary and ETC plugin. Ran smoke tests.*
+
+> **2026-02-06 00:03** — tell me the script i need to run to start the legacy tests for nethermind
+
+*Provided the Hive command to run nethermind-etc legacy consensus tests.*
+
+> **2026-02-06 00:06** — interesting, is besu running in parallel?
+
+*Confirmed besu-etc tests running in parallel alongside nethermind investigation.*
+
+> **2026-02-06 00:09** — there is definitely a besu test suite running on besu-etc full consensus it's taking a long time. can you check what commands that test run was started with somehow
+
+*Investigated running besu-etc test processes to determine which suite and filters were active.*
+
+> **2026-02-06 00:10** — go for it
+
+*Continued investigating test configuration.*
+
+> **2026-02-06 00:42** — hold on -- the 'unfiltered' one was actually supposed to be running the 111K tests if I understand correctly. we already ran the 32K set.
+
+*Clarified that the unfiltered run was intentional for the full 111K consensus test suite, not a duplicate of the 32K legacy set.*
+
+---
+
+## Session 31: Nethermind ETC Plugin Seal Engine Fix
+
+Investigated and fixed the "Multiple seal engines" error in the nethermind-etc plugin. The fix involved ensuring only the Etchash engine parameters class implements IChainSpecEngineParameters, preventing Nethermind's type discovery from finding multiple seal engines.
+
+> **2026-02-06 01:16** — We're running Hive integration tests for ETC clients. The nethermind-etc client fails to start with this error: System.InvalidOperationException: Multiple seal engines in chain spec at Nethermind.Specs.ChainSpecStyle.ChainSpecParametersProvider.CalculateSealEngineType()
+
+*Investigated the seal engine error across multiple fronts. Found that Nethermind's TypeDiscovery finds ALL classes implementing IChainSpecEngineParameters. Fixed by removing the interface from the base class so only EtchashChainSpecEngineParameters is discovered. Built and tested Docker image with fix.*
+
+> **2026-02-06 07:17** — so we're good. did you start the test suite for nethermind-etc?
+
+*Confirmed fix was working.*
+
+> **2026-02-06 07:18** — update our claude.md so that whenever we run a test, we do 4x parallelization, and do it for that test
+
+*Updated CLAUDE.md with parallelization guidance. Started nethermind-etc legacy tests with --sim.parallelism 4.*
+
+---
+
+## Session 32: Status Check After Power Outage
+
+Checked overall test progress after a power outage. Found all test runs had stopped. Prepared handoff documentation.
+
+> **2026-02-06 09:41** — where we at?
+
+*Reported test status: core-geth legacy/legacy-cancun both complete (99.94%/99.9%), besu-etc legacy complete (99.94%), besu-etc consensus at 87.9%, nethermind-etc legacy at 6.9%.*
+
+> **2026-02-06 09:47** — can you check the actual running stuff. we just suffered a power outage.
+
+*Checked running processes. Found no Hive processes active - all test runs stopped by power outage. Noted besu-etc consensus at 98,148/111,983 (87.7%) and nethermind-etc at 2,253/32,616 (6.9%) need to be restarted.*
+
+> **2026-02-06 09:55** — [/handoff]
+
+*Prepared handoff: synced docs, updated SITREP and TODO with current state, committed changes.*
+
+---
+
+## Session 33: ETC-Specific Test Suite Implementation
+
+Began implementing a dedicated ETC consensus test suite in the Hive fork that filters tests to ETC-supported forks only, with ETC fork name mapping.
+
+> **2026-02-06 09:48** — let's implement a new test suite that is specifically for ETC. it should run all tests for ETC up to the current fork. i created a plan document somewhere, let me know what you think
+
+*Found the implementation plan in TODO.md. Reviewed the approach: new etc-consensus suite in the Hive simulator with ETC fork filtering and name mapping. Began implementation of the suite.*
+
+> **2026-02-06 09:55** — yeah, let's implement it.
+
+*Started implementing the ETC consensus test suite: adding etcMode field to testcase struct, updating validate/run/updateEnv functions with ETC fork filtering and name mapping.*
+
+---
+
+## Session 34: Promptlog Update
+
+This session.
+
+> **2026-02-06 09:56** — Run /promptlog to update PROMPTLOG.md with the prompts from this session.
+
+*Updated PROMPTLOG.md with all sessions from the cloud deployment onwards (Sessions 15-34).*
+
+---

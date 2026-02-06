@@ -1,10 +1,10 @@
 # Situation Report
 
-Last updated: 2026-02-05 23:43 UTC
+Last updated: 2026-02-06 00:06 UTC
 
 ## Summary
 
-Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pass), besu-etc testing in progress.
+Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pass), multi-client testing in progress.
 
 ## Test Results
 
@@ -12,24 +12,30 @@ Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pa
 |--------|-------|-------|--------|--------|-----------|-----|--------|
 | core-geth | legacy | 32,616 | 32,595 | 21 | 99.94% | - | ✅ Complete |
 | core-geth | legacy-cancun | 111,983 | 111,893 | 90 | 99.92% | - | ✅ Complete |
-| besu-etc | legacy | 32,616 | ~32616 | - | ~100.0% | ~0h | 🔄 Running |
-| besu-etc | full consensus | 111,983 | ~16099 | - | ~14.4% | ~400h | 🔄 Running |
+| besu-etc | legacy | 32,616 | ~4,264 | - | ~13.1% | ~91h | 🔄 Running |
+| besu-etc | full consensus | 111,983 | ~16,099 | - | ~14.4% | ~400h | 🔄 Running |
+| nethermind-etc | legacy | 32,616 | ~30 | - | ~0.1% | ~28h | 🔄 Running |
 
 **Notes:**
 - All failures are EIP-7610 edge cases (CREATE2 collision) - safe to exclude for ETC
 - besu-etc runs ~5 tests/min (slow due to JVM startup overhead)
+- nethermind-etc runs ~19 tests/min with parallelism=4
 - Full reports: [`reports/`](reports/)
 
 ## Active Tests
 
-**besu-etc: legacy** (started Jan 31)
-- Progress: 32616 / 32,616 (100.0%)
-- Rate: ~5.4 tests/min | ETA: ~0h
+**besu-etc: legacy** (restarted Feb 5)
+- Progress: 4,264 / 32,616 (13.1%)
+- Rate: ~5 tests/min | ETA: ~91h
 
-**besu-etc: full consensus** (started Feb 2, 14:06 UTC)
-- Progress: 16099 / 111,983 (14.4%)
-- Rate: ~4.0 tests/min | ETA: ~0h
+**besu-etc: full consensus** (started Feb 2)
+- Progress: 16,099 / 111,983 (14.4%)
+- Rate: ~4 tests/min | ETA: ~400h
 - Note: Will fail post-merge tests (expected - ETC doesn't support merge)
+
+**nethermind-etc: legacy** (started Feb 6, 00:05 UTC)
+- Progress: 30 / 32,616 (0.1%)
+- Rate: ~19 tests/min | ETA: ~28h
 
 ## Infrastructure
 
@@ -38,6 +44,7 @@ Hive integration testing for ETC clients. core-geth baseline complete (99.9%+ pa
 | Hive binary | ✓ Built |
 | core-geth image | ✓ Ready |
 | besu-etc image | ✓ Ready |
+| nethermind-etc image | ✓ Ready |
 | Docker | ✓ Running |
 
 ## Repository Status
@@ -66,6 +73,10 @@ export PATH=$PATH:/usr/local/go/bin
 ---
 
 ## Operation Log
+
+### 2026-02-06: Started nethermind-etc legacy
+- Running `--sim.limit legacy` with parallelism=4
+- First ETC Nethermind client test run
 
 ### 2026-02-02: core-geth legacy-cancun Complete
 - **Result:** 99.92% pass (111,893/111,983)

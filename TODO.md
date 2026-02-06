@@ -62,8 +62,8 @@ cd /workspaces/nexus/hive
 export PATH=$PATH:/usr/local/go/bin
 go build .
 
-# ETC consensus tests (preferred) — always use --sim.parallelism
-./hive --sim ethereum/consensus --sim.limit consensus-etc --client <client> --sim.parallelism 4
+# ETC consensus tests (preferred) — multiple clients in one command
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth,besu-etc,nethermind-etc --sim.parallelism 4
 
 # Legacy suites
 ./hive --sim ethereum/consensus --sim.limit legacy --client core-geth

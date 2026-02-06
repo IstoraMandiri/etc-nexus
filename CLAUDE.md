@@ -46,13 +46,18 @@ Key environment variables the client should handle:
 
 **Preferred approach:** Use the `consensus-etc` suite, which automatically filters to ETC-compatible forks and targets only clients with the `etc` role:
 ```bash
-# Recommended: use consensus-etc suite
+# Recommended: use consensus-etc suite — pass multiple clients as comma-separated
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth,besu-etc,nethermind-etc
+
+# Single client
 ./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth
 
 # Filter by fork or test category
 ./hive --sim ethereum/consensus --sim.limit "consensus-etc/Berlin" --client nethermind-etc
 ./hive --sim ethereum/consensus --sim.limit "consensus-etc/.*bcValidBlockTest" --client besu-etc
 ```
+
+**Multiple clients:** Hive accepts comma-separated `--client` values. It builds all images and runs the suite against each client in a single invocation. Always prefer this over running separate commands per client.
 
 The legacy `--sim.limit` approach still works but requires manual fork filtering.
 

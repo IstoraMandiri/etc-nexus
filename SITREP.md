@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-06 17:51 UTC
+Last updated: 2026-02-06 18:52 UTC
 
 ## Summary
 
@@ -16,15 +16,15 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 2,365 | 0 | Running |
-| besu-etc | 2,365 | 0 | Running |
-| nethermind-etc | 2,365 | 0 | Running |
+| core-geth | 2,910 | 0 | Running |
+| besu-etc | 2,910 | 0 | Running |
+| nethermind-etc | 2,910 | 0 | Running |
 
-- **Total:** 7,090 tests completed (0 failures), all 3 clients progressing identically
+- **Total:** 8,725 tests completed (0 failures), all 3 clients progressing identically
 - **Rate:** ~25 tests/min (all clients combined), ~8 tests/min per client
-- **Elapsed:** 4h 44m (started 13:07 UTC)
-- **Current test:** `returndatacopy_following_create` in `BlockchainTests/ValidBlocks`
-- **Fork coverage:** Frontier (567), EIP150 (177), Homestead (708), EIP158 (393), Byzantium (1,566), Constantinople (1,843), ConstantinopleFix (1,837)
+- **Elapsed:** 5h 45m (started 13:07 UTC)
+- **Current test:** `RawCallMemoryGasAsk` in `BlockchainTests/ValidBlocks`
+- **Fork coverage:** Frontier (666), EIP150 (352), Homestead (918), EIP158 (525), Byzantium (1,902), Constantinople (2,183), ConstantinopleFix (2,179)
 - **Note:** Istanbul, Berlin tests not yet reached. LegacyTests directories still queued
 
 ## Test Results — Baseline (ETH test suites)

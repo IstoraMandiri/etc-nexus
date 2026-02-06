@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-06 13:11 UTC
+Last updated: 2026-02-06 13:24 UTC
 
 ## Summary
 
@@ -50,13 +50,16 @@ The new `consensus-etc` suite filters all test directories to ETC-compatible for
 ./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth,besu-etc,nethermind-etc --sim.parallelism 4
 ```
 
-| Client | Status | Notes |
-|--------|--------|-------|
-| core-geth | Building image | Compiling from source |
-| besu-etc | Building image | Waiting |
-| nethermind-etc | Image ready | Waiting for tests to start |
+| Client | Tests Done | Failures | Status |
+|--------|-----------|----------|--------|
+| core-geth | ~100 | 0 | Running |
+| besu-etc | ~100 | 0 | Running |
+| nethermind-etc | ~100 | 0 | Running |
 
-Phase: Docker image builds (tests have not started yet)
+- **Total:** ~300 tests completed (0 failures), all 3 clients progressing evenly
+- **Rate:** ~20 tests/min (all clients combined), ~7 tests/min per client
+- **Phase:** Active testing (image builds complete)
+- **Note:** Total test count TBD — suite loads BlockchainTests + LegacyTests for Frontier through Berlin forks
 
 ## Infrastructure
 

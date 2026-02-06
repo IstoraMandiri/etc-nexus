@@ -4,3 +4,6 @@
 [submodule "core-geth"]
 	path = core-geth
 	url = https://github.com/IstoraMandiri/core-geth.git
+[submodule "nethermind-etc-plugin"]
+	path = nethermind-etc-plugin
+	url = https://github.com/IstoraMandiri/nethermind-etc-plugin.git

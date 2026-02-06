@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-06 19:45 UTC
+Last updated: 2026-02-06 20:46 UTC
 
 ## Summary
 
@@ -16,18 +16,19 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 3,361 | 10 | Running |
-| besu-etc | 3,361 | 1 | Running |
-| nethermind-etc | 3,361 | 0 | Running |
+| core-geth | 3,910 | 10 | Running |
+| besu-etc | 3,910 | 1 | Running |
+| nethermind-etc | 3,910 | 0 | Running |
 
-- **Total:** 10,078 tests completed (11 failures), all 3 clients progressing identically
+- **Total:** 11,725 tests completed (11 failures), all 3 clients progressing identically
 - **Rate:** ~25 tests/min (all clients combined), ~8 tests/min per client
-- **Elapsed:** 6h 36m (started 13:07 UTC)
-- **Current test:** `log1_logMem*` in `BlockchainTests/ValidBlocks`
-- **Fork coverage:** Frontier (777), EIP150 (510), Homestead (1,076), EIP158 (645), Byzantium (2,088), Constantinople (2,494), ConstantinopleFix (2,491)
+- **Elapsed:** 7h 39m (started 13:07 UTC)
+- **Current test:** `mload32bitBound` in `BlockchainTests/ValidBlocks`
+- **Fork coverage:** Frontier (930), EIP150 (658), Homestead (1,236), EIP158 (798), Byzantium (2,433), Constantinople (2,838), ConstantinopleFix (2,833)
 - **core-geth failures (10):** All EIP-7610/CREATE2 edge cases — `RevertInCreateInInitCreate2` (2), `create2collisionStorage` (6), `dynamicAccountOverwriteEmpty` (2)
 - **besu-etc failures (1):** `codesizeOOGInvalidSize_d0g0v0_EIP158` — known from legacy run
 - **nethermind-etc: 0 failures** — perfect so far
+- **Note:** Istanbul, Berlin tests still not reached — still in first test directory (BlockchainTests)
 - **Note:** Istanbul, Berlin tests not yet reached
 
 ## Test Results — Baseline (ETH test suites)

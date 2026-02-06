@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-06 13:55 UTC
+Last updated: 2026-02-06 14:26 UTC
 
 ## Summary
 
@@ -16,15 +16,16 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 359 | 0 | Running |
-| besu-etc | 359 | 0 | Running |
-| nethermind-etc | 359 | 0 | Running |
+| core-geth | 626 | 0 | Running |
+| besu-etc | 626 | 0 | Running |
+| nethermind-etc | 626 | 0 | Running |
 
-- **Total:** 1,074 tests completed (0 failures), all 3 clients progressing evenly
+- **Total:** 1,874 tests completed (0 failures), all 3 clients progressing identically
 - **Rate:** ~25 tests/min (all clients combined), ~8 tests/min per client
-- **Elapsed:** ~48 min (started 13:07 UTC)
-- **Fork coverage so far:** Frontier (6), Homestead (39), EIP150 (6), EIP158 (40), Byzantium (330), Constantinople (330), ConstantinopleFix (328)
-- **Note:** Still processing first test directory (BlockchainTests). Istanbul, Berlin, and LegacyTests directories not yet reached — significant tests remaining
+- **Elapsed:** 1h 19m (started 13:07 UTC)
+- **Fork coverage so far:** Frontier (6), EIP150 (6), Homestead (199), EIP158 (200), Byzantium (486), Constantinople (489), ConstantinopleFix (489)
+- **Current test:** `badOpcodes` in `BlockchainTests/InvalidBlocks`
+- **Note:** Istanbul, Berlin tests not yet reached. LegacyTests directories still queued — significant tests remaining
 
 ## Test Results — Baseline (ETH test suites)
 

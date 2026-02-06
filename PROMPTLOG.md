@@ -668,10 +668,46 @@ Began implementing a dedicated ETC consensus test suite in the Hive fork that fi
 
 ## Session 34: Promptlog Update
 
-This session.
-
 > **2026-02-06 09:56** — Run /promptlog to update PROMPTLOG.md with the prompts from this session.
 
 *Updated PROMPTLOG.md with all sessions from the cloud deployment onwards (Sessions 15-34).*
+
+---
+
+## Session 35: Post-Outage Recovery and Documentation Updates
+
+Picked up after power outage. Discovered previous session had implemented consensus-etc suite and nethermind-etc client in hive (uncommitted). nethermind-etc passing 166/167 consensus tests. Committed hive submodule (701402d), updated all docs (SITREP, TODO, README, CLAUDE.md), fixed parallelism flag to --sim.parallelism 4, pushed everything.
+
+> **2026-02-06** — /pickup
+
+*Loaded SITREP.md, TODO.md, and summarized current state without taking action.*
+
+> **2026-02-06** — grep the logs and figure what we are at, and check git local/remote for recent
+
+*Grepped Hive logs and checked git status across submodules. Found consensus-etc suite and nethermind-etc client had been implemented but not committed. nethermind-etc passing 166/167 tests.*
+
+> **2026-02-06** — awesome, let's commit all our work in this and submodules, and update the sitrep / todos / readme — we probably need some new tables
+
+*Committed hive submodule changes (701402d), updated SITREP.md with latest test results, updated TODO.md with completed items removed, updated README.md with new test suite tables.*
+
+> **2026-02-06** — commit and push*
+
+*Committed all documentation changes and pushed to GitHub.*
+
+> **2026-02-06** — update all docs and CLAUDE.md to recommend using concurrency when testing (like 4)
+
+*Updated CLAUDE.md and documentation to recommend --sim.parallelism 4 for test runs. Initially used incorrect HIVE_PARALLELISM env var.*
+
+> **2026-02-06** — are you sure this is the right command?
+
+*User questioned the HIVE_PARALLELISM environment variable approach. Realized it might be wrong.*
+
+> **2026-02-06** — sim.concurrency or something? you can perhaps check some old claude chats for this
+
+*Searched previous Claude session logs and found the correct flag: --sim.parallelism 4. Updated all documentation to use the correct flag.*
+
+> **2026-02-06** — /handoff
+
+*Prepared handoff: synced docs, updated SITREP and TODO, committed and pushed all changes.*
 
 ---

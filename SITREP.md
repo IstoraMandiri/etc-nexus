@@ -1,50 +1,69 @@
 # Situation Report
 
-Last updated: 2026-02-06 10:00 UTC
+Last updated: 2026-02-06 14:00 UTC
 
 ## Summary
 
-Hive integration testing for ETC clients. core-geth and besu-etc baselines complete. nethermind-etc still in setup. Power outage on Feb 6 killed all running processes; Docker images survived.
+Hive integration testing for ETC clients. Three clients under test: core-geth, besu-etc, nethermind-etc. Implemented `consensus-etc` suite in Hive for streamlined ETC testing. nethermind-etc passing initial consensus tests.
 
-## Test Results
+## Test Results — Baseline (ETH test suites)
+
+Full runs using upstream Hive `legacy` and `legacy-cancun` suites.
 
 | Client | Suite | Tests | Passed | Failed | Pass Rate | Status |
 |--------|-------|-------|--------|--------|-----------|--------|
-| core-geth | legacy | 32,616 | 32,595 | 21 | 99.94% | ✅ Complete |
-| core-geth | legacy-cancun | 111,983 | 111,893 | 90 | 99.92% | ✅ Complete |
-| besu-etc | legacy | 32,616 | 32,613 | 3 | 99.99% | ✅ Complete |
-| besu-etc | full consensus | 572 | 0 | 572 | 0% | ⚠️ Wrong scope |
-| nethermind-etc | legacy | - | - | - | - | ❌ Never started |
+| core-geth | legacy | 32,616 | 32,595 | 21 | 99.94% | Complete |
+| core-geth | legacy-cancun | 111,983 | 111,893 | 90 | 99.92% | Complete |
+| besu-etc | legacy | 32,616 | 32,613 | 3 | 99.99% | Complete |
 
 **Notes:**
-- core-geth failures: All 21+90 are EIP-7610 edge cases (CREATE2 collision) - safe to exclude for ETC
-- besu-etc legacy failures: 3 genuine failures (sstore_combinations, codesizeOOGInvalidSize, ecmul) - needs investigation
-- besu-etc "full consensus" was misconfigured (`--sim.limit .*`) — only matched 572 Cancun tests which besu-etc can't run
-- nethermind-etc was still debugging genesis smoke tests; never progressed to consensus runs
+- core-geth failures: All 21+90 are EIP-7610 edge cases (CREATE2 collision) — safe to exclude for ETC
+- besu-etc legacy failures: 3 genuine failures (sstore_combinations, codesizeOOGInvalidSize, ecmul) — needs investigation
 - Full reports: [`reports/`](reports/)
+
+## Test Results — consensus-etc Suite
+
+The new `consensus-etc` suite filters all test directories to ETC-compatible forks (Frontier through Berlin) and runs only against clients with the `etc` role.
+
+| Client | Scope | Tests | Passed | Failed | Pass Rate | Status |
+|--------|-------|-------|--------|--------|-----------|--------|
+| nethermind-etc | bcValidBlockTest | 167 | 166 | 1 | 99.4% | Partial run |
+
+**Notes:**
+- nethermind-etc: 166/167 real tests pass; only the "test file loader" meta-test failed
+- Fork breakdown (passing): Frontier 20, Homestead 20, EIP150 19, EIP158 19, Byzantium 19, Constantinople 20, ConstantinopleFix 20, Istanbul 14, Berlin 15
+- Full consensus-etc run (all test categories) not yet attempted
+
+## Smoke Tests
+
+| Client | genesis | network | Status |
+|--------|---------|---------|--------|
+| core-geth | 6/6 | 2/2 | Pass |
+| besu-etc | 6/6 | 2/2 | Pass |
+| nethermind-etc | 6/6 | 2/2 | Pass |
 
 ## Active Tests
 
-None — all processes killed by power outage (Feb 6 ~09:39 UTC).
+None running.
 
 ## Infrastructure
 
 | Component | Status |
 |-----------|--------|
-| Hive binary | ✓ Built |
-| core-geth image | ✓ Survived outage |
-| besu-etc image | ✓ Survived outage |
-| nethermind-etc image | ✓ Survived outage |
-| Docker | ✓ Running |
-| Hive processes | ❌ All killed |
+| Hive binary | Built |
+| core-geth image | Ready |
+| besu-etc image | Ready |
+| nethermind-etc image | Ready |
+| Docker | Running |
+| consensus-etc suite | Implemented & pushed |
 
 ## Repository Status
 
-| Repo | Branch | Purpose |
-|------|--------|---------|
-| etc-nexus | `main` | Orchestration repo |
-| hive | `istora-core-geth-client` | Hive fork with ETC clients |
-| core-geth | `master` | ETC client fork |
+| Repo | Branch | Latest Commit | Status |
+|------|--------|---------------|--------|
+| etc-nexus | `main` | `c728939` | Needs update |
+| hive | `istora-core-geth-client` | `701402d` | Pushed |
+| nethermind-etc-plugin | `main` | `bc99146` | In sync |
 
 ## Commands Reference
 
@@ -54,9 +73,18 @@ export PATH=$PATH:/usr/local/go/bin
 
 # Smoke tests
 ./hive --sim smoke/genesis --client core-geth
-./hive --sim smoke/genesis --client besu-etc
+./hive --sim smoke/genesis --client nethermind-etc
 
-# Consensus tests
+# ETC consensus tests (new suite) — always use --sim.parallelism
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth --sim.parallelism 4
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client nethermind-etc --sim.parallelism 4
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client besu-etc --sim.parallelism 4
+
+# Filter by fork or test category
+./hive --sim ethereum/consensus --sim.limit "consensus-etc/Berlin" --client core-geth
+./hive --sim ethereum/consensus --sim.limit "consensus-etc/.*bcValidBlockTest" --client nethermind-etc
+
+# Legacy suites (ETH-native, broader)
 ./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
 ./hive --sim ethereum/consensus --sim.limit legacy-cancun --client core-geth
 ```
@@ -64,6 +92,17 @@ export PATH=$PATH:/usr/local/go/bin
 ---
 
 ## Operation Log
+
+### 2026-02-06: consensus-etc suite & nethermind-etc progress
+- Implemented `consensus-etc` suite in Hive consensus simulator
+  - Added `etc` role to core-geth, besu-etc, nethermind-etc client YAMLs
+  - Created `etc_forks.go` with ETC fork env mappings (Frontier through Berlin + transitions)
+  - Modified `main.go`: `makeETCSuite()` loads all test dirs, filters to ETC forks, uses `etc` role
+  - No DAO fork vote for ETC runs; chain ID 1 for test vector compatibility
+- Added nethermind-etc client definition (Dockerfile, mapper.jq, scripts)
+- nethermind-etc genesis smoke tests fixed: 6/6 pass
+- nethermind-etc consensus-etc/bcValidBlockTest: 166/167 pass (99.4%)
+- Committed and pushed to hive `istora-core-geth-client` branch (`701402d`)
 
 ### 2026-02-06: Power Outage Recovery
 - All Hive processes killed; Docker images survived
@@ -74,7 +113,7 @@ export PATH=$PATH:/usr/local/go/bin
 ### 2026-02-06: nethermind-etc genesis debugging
 - Smoke tests intermittently passing/failing
 - Vanilla nethermind passes (6/6), nethermind-etc regressed
-- Never progressed to consensus/legacy test runs
+- Fixed by resolving plugin architecture conflict
 
 ### 2026-02-01: besu-etc legacy Complete
 - **Result:** 99.99% pass (32,613/32,616)

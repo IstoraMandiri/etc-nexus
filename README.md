@@ -8,7 +8,24 @@ A workspace for developing and testing Ethereum Classic protocol changes using t
 
 **See [TODO.md](TODO.md)** for planned next steps and future work.
 
-**Current Focus**: Validating baseline Hive test suites for core-geth and besu-etc before implementing ECIPs.
+### Test Results
+
+Three ETC clients validated against the ethereum/tests consensus suite:
+
+| Client | Suite | Tests | Passed | Pass Rate | Status |
+|--------|-------|-------|--------|-----------|--------|
+| core-geth | legacy | 32,616 | 32,595 | 99.94% | Complete |
+| core-geth | legacy-cancun | 111,983 | 111,893 | 99.92% | Complete |
+| besu-etc | legacy | 32,616 | 32,613 | 99.99% | Complete |
+| nethermind-etc | consensus-etc (partial) | 167 | 166 | 99.4% | In progress |
+
+### ETC Clients
+
+| Client | Language | Fork Support | Status |
+|--------|----------|-------------|--------|
+| [core-geth](https://github.com/etclabscore/core-geth) | Go | Frontier — Spiral | Baseline complete |
+| [besu-etc](https://github.com/hyperledger/besu) | Java | Frontier — Berlin | Baseline complete |
+| [nethermind-etc](https://github.com/diega/nethermind_etc) | C# | Frontier — Berlin | Initial tests passing |
 
 ## Purpose
 
@@ -29,10 +46,13 @@ Target ECIPs:
 etc-nexus/
 ├── hive/                 # Fork of ethereum/hive
 │   ├── clients/
-│   │   └── core-geth/    # ETC client definition
+│   │   ├── core-geth/    # ETC client definition
+│   │   ├── besu-etc/     # ETC client definition
+│   │   └── nethermind-etc/ # ETC client definition
 │   └── simulators/
-│       └── etc/          # ETC-specific test suites (planned)
+│       └── ethereum/consensus/  # Includes consensus-etc suite
 ├── core-geth/            # Fork of etclabscore/core-geth
+├── nethermind-etc-plugin/ # Nethermind ETC plugin
 ├── .claude/
 │   └── skills/           # Claude Code skills for workflow automation
 └── .devcontainer/        # Docker-in-Docker dev environment
@@ -44,128 +64,65 @@ etc-nexus/
 |-----------|----------|------|---------|
 | `hive/` | [ethereum/hive](https://github.com/ethereum/hive) | [IstoraMandiri/hive](https://github.com/IstoraMandiri/hive) | Test orchestration, ETC simulators |
 | `core-geth/` | [etclabscore/core-geth](https://github.com/etclabscore/core-geth) | [IstoraMandiri/core-geth](https://github.com/IstoraMandiri/core-geth) | ECIP implementation |
+| `nethermind-etc-plugin/` | — | [IstoraMandiri/nethermind-etc-plugin](https://github.com/IstoraMandiri/nethermind-etc-plugin) | Nethermind ETC support |
 
-Future clients:
-- Hyperledger Besu
-- [Fukuii](https://github.com/chippr-robotics/fukuii) (Rust)
+## Hive Test Suites
 
-## Workflow
+### consensus-etc (ETC-specific)
 
-1. **Implement** - Modify client code in `core-geth/` to implement ECIP
-2. **Define** - Add/update client definition in `hive/clients/core-geth/`
-3. **Test** - Create test simulator in `hive/simulators/etc/`
-4. **Run** - Execute tests via Hive
-5. **Iterate** - Fix issues, re-run tests
-6. **Push** - Commit and push to respective forks
+The `consensus-etc` suite automatically filters ethereum/tests to forks supported by ETC (Frontier through Berlin) and runs only against clients with the `etc` role. No manual `--sim.limit` filtering needed.
 
-## Claude Skills
+```bash
+# Run all ETC-compatible consensus tests (use --sim.parallelism for speed)
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth --sim.parallelism 4
 
-This project includes Claude Code skills for session management:
-
-| Skill | Description |
-|-------|-------------|
-| `/pickup` | Resume work from previous session (loads SITREP.md, TODO.md) |
-| `/handoff` | Prepare for context handoff (update docs, commit) |
-| `/wrapup` | End session (run promptlog, commit all changes) |
-| `/promptlog` | Generate PROMPTLOG.md from session history |
-| `/hive-run` | Build and run Hive integration tests |
-| `/submodule-push` | Push submodule changes to fork |
-
-## Multi-Version Testing
-
-Hive supports testing different client versions against each other. Using `Dockerfile.git`, we can specify branches:
-
-```yaml
-clients:
-  - client: core-geth
-    dockerfile: git
-    build_args:
-      github: etclabscore/core-geth
-      tag: master
-
-  - client: core-geth-ecip1121
-    dockerfile: git
-    build_args:
-      github: IstoraMandiri/core-geth
-      tag: ecip-1121
+# Filter by fork or test category
+./hive --sim ethereum/consensus --sim.limit "consensus-etc/Berlin" --client core-geth --sim.parallelism 4
+./hive --sim ethereum/consensus --sim.limit "consensus-etc/.*bcValidBlockTest" --client nethermind-etc --sim.parallelism 4
 ```
 
-This validates that ECIP implementations maintain consensus pre-fork and correctly diverge post-fork.
-
-## Test Suites
-
-### Hive Ethereum Consensus Test Suites
-
-The `ethereum/consensus` simulator runs BlockchainTests from [ethereum/tests](https://github.com/ethereum/tests). Tests are organized into three suites:
+### Legacy ETH Suites
 
 | Suite | Directory | Total Tests | Description |
 |-------|-----------|-------------|-------------|
-| `legacy` | LegacyTests/Constantinople/BlockchainTests | 32,616 | Constantinople-era tests (pre-Istanbul) |
+| `legacy` | LegacyTests/Constantinople/BlockchainTests | 32,616 | Constantinople-era tests |
 | `legacy-cancun` | LegacyTests/Cancun/BlockchainTests | 111,983 | Tests up to Cancun fork |
 | `consensus` | BlockchainTests | 1,148 | Current tests (Cancun/Prague) |
-| **Total** | | **145,747** | |
 
 ### Fork Compatibility
 
-Tests target specific Ethereum forks. ETC clients only support pre-merge forks:
+| ETH Fork | ETC Equivalent | Supported |
+|----------|----------------|-----------|
+| Frontier | Frontier | Yes |
+| Homestead | Homestead | Yes |
+| EIP150 (Tangerine) | Die Hard | Yes |
+| EIP158 (Spurious) | Gotham | Yes |
+| Byzantium | Atlantis | Yes |
+| Constantinople | Agharta | Yes |
+| Petersburg | Agharta | Yes |
+| Istanbul | Phoenix | Yes |
+| Berlin | Magneto | Yes |
+| London | Spiral | Partial |
+| Paris (Merge) | N/A | No |
 
-| Fork | ETC Equivalent | ETC Support | Notes |
-|------|----------------|-------------|-------|
-| Frontier | Frontier | ✅ | Genesis fork |
-| Homestead | Homestead | ✅ | |
-| EIP150 (Tangerine) | Die Hard | ✅ | |
-| EIP158 (Spurious) | Gotham | ✅ | |
-| Byzantium | Atlantis | ✅ | |
-| Constantinople | Agharta | ✅ | |
-| Petersburg | Agharta | ✅ | Bundled with Constantinople in ETC |
-| Istanbul | Phoenix | ✅ | |
-| Berlin | Magneto | ✅ | |
-| London | Spiral | ⚠️ | Partial - EIP-1559 not adopted |
-| Paris (Merge) | N/A | ❌ | Proof-of-Stake transition |
-| Shanghai | N/A | ❌ | Post-merge |
-| Cancun | N/A | ❌ | Post-merge |
+## Workflow
 
-### ETC-Applicable Test Suite
+1. **Implement** - Modify client code to implement ECIP
+2. **Define** - Add/update client definition in `hive/clients/`
+3. **Test** - Run tests via `consensus-etc` suite
+4. **Iterate** - Fix issues, re-run tests
+5. **Push** - Commit and push to respective forks
 
-Filtering Hive tests for ETC-supported forks (pre-merge only):
+## Claude Skills
 
-| Test Category | Filter Pattern | Tests | Status |
-|---------------|----------------|-------|--------|
-| **Legacy Suite (Full)** | `--sim.limit legacy` | 32,616 | ✅ 99.94% pass |
-| **Berlin tests** | `--sim.limit Berlin` | ~15,000 | ✅ Available |
-| **Istanbul tests** | `--sim.limit Istanbul` | ~8,000 | ✅ Available |
-| **Constantinople tests** | `--sim.limit Constantinople` | ~5,000 | ✅ Available |
-| **Pre-merge combined** | `--sim.limit "Frontier\|Homestead\|EIP150\|EIP158\|Byzantium\|Constantinople\|Istanbul\|Berlin"` | ~60,000 | ✅ Available |
-
-**Excluded from ETC testing:**
-- Post-merge forks: Paris, Shanghai, Cancun (~50,000 tests)
-- London EIP-1559 tests (base fee mechanics)
-- DAO fork tests (ETC rejected the DAO fork)
-
-### Running ETC-Compatible Tests
-
-```bash
-# Full legacy suite (Constantinople and earlier)
-./hive --sim ethereum/consensus --sim.limit legacy --client core-geth
-
-# Pre-merge tests from legacy-cancun suite
-./hive --sim ethereum/consensus --sim.limit legacy-cancun \
-  --sim.limit "Berlin|Istanbul" --client core-geth
-
-# All ETC-compatible forks
-./hive --sim ethereum/consensus \
-  --sim.limit "Frontier|Homestead|EIP150|EIP158|Byzantium|Constantinople|Istanbul|Berlin" \
-  --client core-geth
-```
-
-### Test Results Summary
-
-| Client | Legacy (32,616) | Berlin/Istanbul | Notes |
-|--------|-----------------|-----------------|-------|
-| core-geth | 99.94% (32,595/32,616) | 99.9% (111,803/111,893) | 21 CREATE2 edge cases excluded |
-| besu-etc | ✅ Running | - | In progress |
-
-See [SITREP.md](SITREP.md) for detailed test results and progress.
+| Skill | Description |
+|-------|-------------|
+| `/pickup` | Resume work from previous session |
+| `/handoff` | Prepare for context handoff |
+| `/wrapup` | End session (commit all changes) |
+| `/hive-run` | Build and run Hive integration tests |
+| `/submodule-push` | Push submodule changes to fork |
+| `/report` | Create structured reports |
 
 ## Prior Art
 

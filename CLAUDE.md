@@ -42,36 +42,42 @@ Key environment variables the client should handle:
 - `HIVE_CHAIN_ID`, `HIVE_NETWORK_ID` - Chain configuration
 - `HIVE_FORK_*` - Fork block numbers
 
-### ETC Clients Only Support Pre-Merge Forks (2026-01-31)
+### Use consensus-etc Suite for ETC Testing
 
-**Problem:** Running `--sim.limit legacy` against besu-etc produces "unknown client type" errors for many tests.
-
-**Root Cause:** The "unknown client type" error is misleading. It actually means the client failed to start because it doesn't support the requested fork configuration. ETC clients (besu-etc, core-geth) only support forks up through Berlin/Spiral equivalent. They cannot run post-merge Ethereum tests like Paris, Shanghai, Cancun, etc.
-
-**Solution:** Filter consensus tests to ETC-supported forks only:
+**Preferred approach:** Use the `consensus-etc` suite, which automatically filters to ETC-compatible forks and targets only clients with the `etc` role:
 ```bash
-# For ETC clients, filter to supported forks
-./hive --client besu-etc --sim ethereum/consensus \
-  --sim.limit "Byzantium|Constantinople|Petersburg|Istanbul|Berlin"
+# Recommended: use consensus-etc suite
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth
 
-# Or use the legacy suite which targets Constantinople and earlier
-./hive --client besu-etc --sim ethereum/consensus --sim.limit legacy
+# Filter by fork or test category
+./hive --sim ethereum/consensus --sim.limit "consensus-etc/Berlin" --client nethermind-etc
+./hive --sim ethereum/consensus --sim.limit "consensus-etc/.*bcValidBlockTest" --client besu-etc
 ```
 
-**ETC Fork Support:**
+The legacy `--sim.limit` approach still works but requires manual fork filtering.
+
+### Use --sim.parallelism for Faster Test Runs
+
+**Always pass `--sim.parallelism 4` when running consensus tests.** The default parallelism of 1 makes large test runs extremely slow. Use 4 for a good balance of speed and resource usage:
+```bash
+# Recommended: run with parallelism 4
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth --sim.parallelism 4
+
+# For machines with more resources, can go higher
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth --sim.parallelism 8
+```
+
+Without `--sim.parallelism`, tests run serially (~5s per test = hours for full suite).
+
+### ETC Clients Only Support Pre-Merge Forks
+
+ETC clients (core-geth, besu-etc, nethermind-etc) only support forks up through Berlin/Spiral. Post-merge tests (Paris, Shanghai, Cancun) will fail with misleading "unknown client type" errors. The `consensus-etc` suite handles this automatically.
+
 | ETH Fork | ETC Equivalent | Supported |
 |----------|----------------|-----------|
-| Byzantium | Atlantis | ✓ |
-| Constantinople | Agharta | ✓ |
-| Petersburg | Agharta | ✓ |
-| Istanbul | Phoenix | ✓ |
-| Berlin | Magneto/Mystique | ✓ |
-| London | Spiral (partial) | ✓ |
-| Paris (Merge) | N/A | ✗ |
-| Shanghai | N/A | ✗ |
-| Cancun | N/A | ✗ |
-
-**Note:** The `legacy` test suite (`LegacyTests/Constantinople/BlockchainTests`) may still contain tests for newer forks. Always verify the actual test content and filter appropriately.
+| Frontier — Berlin | Frontier — Magneto | Yes |
+| London | Spiral (partial) | Partial (no EIP-1559) |
+| Paris (Merge) and later | N/A | No |
 
 ## Documentation Pattern
 
@@ -135,35 +141,46 @@ Use `/submodule-push` skill for pushing changes in submodules.
 
 ```
 etc-nexus/
-├── hive/           # Submodule: IstoraMandiri/hive (fork of ethereum/hive)
-├── core-geth/      # Submodule: IstoraMandiri/core-geth (fork of etclabscore/core-geth)
-├── .devcontainer/  # Docker-in-Docker dev environment
+├── hive/                  # Submodule: IstoraMandiri/hive (fork of ethereum/hive)
+│   ├── clients/
+│   │   ├── core-geth/     # ETC client (Go)
+│   │   ├── besu-etc/      # ETC client (Java)
+│   │   └── nethermind-etc/ # ETC client (C#)
+│   └── simulators/ethereum/consensus/
+│       ├── main.go        # Includes consensus-etc suite
+│       └── etc_forks.go   # ETC fork env mappings
+├── core-geth/             # Submodule: IstoraMandiri/core-geth
+├── nethermind-etc-plugin/ # Submodule: IstoraMandiri/nethermind-etc-plugin
+├── .devcontainer/         # Docker-in-Docker dev environment
 ├── .claude/
-│   ├── skills/     # Project-specific Claude skills
-│   ├── hooks/      # Hook scripts (session reminders, etc.)
+│   ├── skills/            # Project-specific Claude skills
+│   ├── hooks/             # Hook scripts
 │   └── settings.json
-├── CLAUDE.md       # This file - Agent instructions
-├── SITREP.md       # Single source of truth for current status
-├── TODO.md         # Future work only (no current progress)
-├── README.md       # Brief overview with links
-├── PROMPTLOG.md    # Session prompt history
-└── reports/        # Technical reports and analysis
+├── CLAUDE.md              # This file - Agent instructions
+├── SITREP.md              # Single source of truth for current status
+├── TODO.md                # Future work only
+├── README.md              # Brief overview with links
+├── PROMPTLOG.md           # Session prompt history
+└── reports/               # Technical reports and analysis
 ```
 
 ## Key Context
 
 - **Goal**: Test ECIP-1120 and ECIP-1121 implementations using Hive
 - **Hive**: Ethereum's integration testing framework using Docker containers
-- **core-geth**: The primary ETC client implementation (Go)
+- **ETC clients**: core-geth (Go), besu-etc (Java), nethermind-etc (C#)
 - Hive orchestrates client containers and runs test simulators against them
-- We need to add a `core-geth` client definition to Hive (doesn't exist upstream)
+- Client definitions added for all three ETC clients in our Hive fork
+- `consensus-etc` suite implemented for streamlined ETC testing
 
 ## Hive Basics
 
 - Client definitions live in `hive/clients/<name>/`
 - Simulators live in `hive/simulators/<category>/<name>/`
 - Clients are Docker containers configured via environment variables (HIVE_*)
+- ETC clients have the `etc` role in their `hive.yaml`
 - Use `/hive-run` skill to build and run tests
+- **Always use `--sim.parallelism 4`** (or higher) for consensus test runs
 
 ## References
 

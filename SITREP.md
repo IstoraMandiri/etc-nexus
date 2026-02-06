@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-06 13:24 UTC
+Last updated: 2026-02-06 13:55 UTC
 
 ## Summary
 
@@ -16,14 +16,15 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | ~100 | 0 | Running |
-| besu-etc | ~100 | 0 | Running |
-| nethermind-etc | ~100 | 0 | Running |
+| core-geth | 359 | 0 | Running |
+| besu-etc | 359 | 0 | Running |
+| nethermind-etc | 359 | 0 | Running |
 
-- **Total:** ~300 tests completed (0 failures), all 3 clients progressing evenly
-- **Rate:** ~20 tests/min (all clients combined), ~7 tests/min per client
-- **Phase:** Active testing (image builds complete)
-- **Note:** Total test count TBD — suite loads BlockchainTests + LegacyTests for Frontier through Berlin forks
+- **Total:** 1,074 tests completed (0 failures), all 3 clients progressing evenly
+- **Rate:** ~25 tests/min (all clients combined), ~8 tests/min per client
+- **Elapsed:** ~48 min (started 13:07 UTC)
+- **Fork coverage so far:** Frontier (6), Homestead (39), EIP150 (6), EIP158 (40), Byzantium (330), Constantinople (330), ConstantinopleFix (328)
+- **Note:** Still processing first test directory (BlockchainTests). Istanbul, Berlin, and LegacyTests directories not yet reached — significant tests remaining
 
 ## Test Results — Baseline (ETH test suites)
 

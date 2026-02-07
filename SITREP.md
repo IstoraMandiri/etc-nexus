@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-07 20:08 UTC
+Last updated: 2026-02-07 21:09 UTC
 
 ## Summary
 
@@ -16,15 +16,15 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 16,040 | TBD | Running |
-| besu-etc | 16,040 | TBD | Running |
-| nethermind-etc | 16,040 | TBD | Running |
+| core-geth | 16,573 | TBD | Running |
+| besu-etc | 16,573 | TBD | Running |
+| nethermind-etc | 16,572 | TBD | Running |
 
-- **Total:** 48,120 tests completed (34 failures)
+- **Total:** 49,718 tests completed (34 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 31h (started 2026-02-06 13:07 UTC)
-- **Current test:** `sstore_combinations_initial0` (d1614) — massive sstore combo tests (Constantinople/ConstantinopleFix)
-- **Fork coverage:** Frontier (2,145), Homestead (4,323), EIP150 (2,394), EIP158 (2,799), Byzantium (9,606), Constantinople (13+k), ConstantinopleFix (13+k)
+- **Elapsed:** 32h (started 2026-02-06 13:07 UTC)
+- **Current test:** `sstore_combinations_initial0` (d299) — sstore combo tests continuing (Constantinople/ConstantinopleFix)
+- **Fork coverage:** Frontier (2,145), Homestead (4,323), EIP150 (2,394), EIP158 (2,799), Byzantium (9,606), Constantinople (14+k), ConstantinopleFix (14+k)
 - **Failures by test (34 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
   - `create2collisionStorage` (6) — d0-d2 × Constantinople/ConstantinopleFix — EIP-7610
@@ -35,7 +35,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 48k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 31h elapsed. sstore_combinations (1600+ data variants × 2 forks × 3 clients) still running.
+- **Note:** Approaching 50k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 32h elapsed.
 
 ## Test Results — Baseline (ETH test suites)
 

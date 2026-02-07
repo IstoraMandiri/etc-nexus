@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-07 12:02 UTC
+Last updated: 2026-02-07 13:03 UTC
 
 ## Summary
 
@@ -16,15 +16,15 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 11,718 | TBD | Running |
-| besu-etc | 11,718 | TBD | Running |
-| nethermind-etc | 11,718 | TBD | Running |
+| core-geth | 12,242 | TBD | Running |
+| besu-etc | 12,242 | TBD | Running |
+| nethermind-etc | 12,242 | TBD | Running |
 
-- **Total:** 35,154 tests completed (34 failures)
+- **Total:** 36,726 tests completed (34 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 22h 55m (started 2026-02-06 13:07 UTC)
-- **Current test:** `sstore_changeFromExternalCallInInitCode` — sstore tests (Constantinople/ConstantinopleFix)
-- **Fork coverage:** Frontier (1,821), Homestead (3,897), EIP150 (2,064), EIP158 (2,478), Byzantium (7,113), Constantinople (8,894), ConstantinopleFix (8,884)
+- **Elapsed:** 23h 56m (started 2026-02-06 13:07 UTC)
+- **Current test:** `shallowStack` — stack operation tests (Byzantium/Constantinople/ConstantinopleFix)
+- **Fork coverage:** Frontier (1,947), Homestead (4,077), EIP150 (2,190), EIP158 (2,622), Byzantium (7,452), Constantinople (9,223), ConstantinopleFix (9,214)
 - **Failures by test (34 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
   - `create2collisionStorage` (6) — d0-d2 × Constantinople/ConstantinopleFix — EIP-7610
@@ -35,7 +35,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 35k tests. No new failures since 10k mark. Istanbul/Berlin still not reached
+- **Note:** Past 36k tests. No new failures since 10k mark. Istanbul/Berlin still not reached
 
 ## Test Results — Baseline (ETH test suites)
 

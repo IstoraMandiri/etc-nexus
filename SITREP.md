@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-07 07:53 UTC
+Last updated: 2026-02-07 08:53 UTC
 
 ## Summary
 
@@ -16,19 +16,19 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 9,572 | 10 | Running |
-| besu-etc | 9,572 | 1 | Running |
-| nethermind-etc | 9,572 | 0 | Running |
+| core-geth | 10,097 | 13 | Running |
+| besu-etc | 10,097 | 1 | Running |
+| nethermind-etc | 10,097 | 0 | Running |
 
-- **Total:** 28,712 tests completed (11 failures — stable since ~4,000 mark)
+- **Total:** 30,285 tests completed (14 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 18h 46m (started 2026-02-06 13:07 UTC)
-- **Current test:** `call_then_create_successful_then_returndatasize` — return data tests
-- **Fork coverage:** Frontier (1,557), EIP150 (1,739), Homestead (3,558), EIP158 (1,879), Byzantium (6,393), Constantinople (6,798), ConstantinopleFix (6,789)
-- **core-geth failures (10):** All EIP-7610/CREATE2 edge cases
+- **Elapsed:** 19h 46m (started 2026-02-06 13:07 UTC)
+- **Current test:** `RevertOpcodeInCallsOnNonEmptyReturnData` — revert/return data tests
+- **Fork coverage:** Frontier (1,731), EIP150 (1,929), Homestead (3,762), EIP158 (2,100), Byzantium (6,653), Constantinople (7,060), ConstantinopleFix (7,051)
+- **core-geth failures (13):** All EIP-7610/CREATE edge cases — `create2collisionStorage` (6), `RevertInCreateInInitCreate2` (2), `dynamicAccountOverwriteEmpty` (2), NEW: `RevertInCreateInInit` (3 — Byzantium, Constantinople, ConstantinopleFix)
 - **besu-etc failures (1):** `codesizeOOGInvalidSize_d0g0v0_EIP158` — known
 - **nethermind-etc: 0 failures** — perfect so far
-- **Note:** Past randomStatetest, now in return data tests. Istanbul/Berlin still not reached
+- **Note:** Past 30k tests. Istanbul/Berlin still not reached
 
 ## Test Results — Baseline (ETH test suites)
 

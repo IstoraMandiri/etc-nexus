@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-07 05:52 UTC
+Last updated: 2026-02-07 06:52 UTC
 
 ## Summary
 
@@ -16,19 +16,19 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 8,522 | 10 | Running |
-| besu-etc | 8,522 | 1 | Running |
-| nethermind-etc | 8,522 | 0 | Running |
+| core-geth | 9,051 | 10 | Running |
+| besu-etc | 9,051 | 1 | Running |
+| nethermind-etc | 9,051 | 0 | Running |
 
-- **Total:** 25,561 tests completed (11 failures — stable since ~4,000 mark)
+- **Total:** 27,147 tests completed (11 failures — stable since ~4,000 mark)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 16h 45m (started 2026-02-06 13:07 UTC)
-- **Current test:** `randomStatetest385` — random state transition tests
-- **Fork coverage:** Frontier (1,491), EIP150 (1,662), Homestead (2,826), EIP158 (1,809), Byzantium (5,656), Constantinople (6,064), ConstantinopleFix (6,054)
+- **Elapsed:** 17h 45m (started 2026-02-06 13:07 UTC)
+- **Current test:** `randomStatetest539` — random state transition tests
+- **Fork coverage:** Frontier (1,491), EIP150 (1,662), Homestead (3,220), EIP158 (1,809), Byzantium (6,054), Constantinople (6,462), ConstantinopleFix (6,451)
 - **core-geth failures (10):** All EIP-7610/CREATE2 edge cases
 - **besu-etc failures (1):** `codesizeOOGInvalidSize_d0g0v0_EIP158` — known
 - **nethermind-etc: 0 failures** — perfect so far
-- **Note:** Istanbul, Berlin tests still not reached — in randomStatetest section
+- **Note:** Istanbul, Berlin tests still not reached — in randomStatetest section (numbered 0-600+)
 
 ## Test Results — Baseline (ETH test suites)
 

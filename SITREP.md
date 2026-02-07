@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-07 01:50 UTC
+Last updated: 2026-02-07 02:50 UTC
 
 ## Summary
 
@@ -16,19 +16,19 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 6,489 | 10 | Running |
-| besu-etc | 6,489 | 1 | Running |
-| nethermind-etc | 6,489 | 0 | Running |
+| core-geth | 7,004 | 10 | Running |
+| besu-etc | 7,004 | 1 | Running |
+| nethermind-etc | 7,004 | 0 | Running |
 
-- **Total:** 19,461 tests completed (11 failures — stable since ~4,000 mark)
+- **Total:** 21,008 tests completed (11 failures — stable since ~4,000 mark)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 12h 43m (started 2026-02-06 13:07 UTC)
-- **Current test:** `CALLCODEEcrecover3` — ecrecover precompile tests
-- **Fork coverage:** Frontier (1,237), EIP150 (1,410), Homestead (1,540), EIP158 (1,550), Byzantium (4,302), Constantinople (4,713), ConstantinopleFix (4,710)
+- **Elapsed:** 13h 43m (started 2026-02-06 13:07 UTC)
+- **Current test:** `CallSha256` — SHA-256 precompile tests
+- **Fork coverage:** Frontier (1,458), EIP150 (1,629), Homestead (1,761), EIP158 (1,770), Byzantium (4,527), Constantinople (4,933), ConstantinopleFix (4,930)
 - **core-geth failures (10):** All EIP-7610/CREATE2 edge cases
 - **besu-etc failures (1):** `codesizeOOGInvalidSize_d0g0v0_EIP158` — known
 - **nethermind-etc: 0 failures** — perfect so far
-- **Note:** Past modexp, into ecrecover. Istanbul, Berlin tests still not reached
+- **Note:** Istanbul, Berlin tests still not reached — deep in precompile tests
 
 ## Test Results — Baseline (ETH test suites)
 

@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-07 09:55 UTC
+Last updated: 2026-02-07 10:57 UTC
 
 ## Summary
 
@@ -16,19 +16,26 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 10,621 | 19 | Running |
-| besu-etc | 10,621 | 1 | Running |
-| nethermind-etc | 10,622 | 0 | Running |
+| core-geth | 11,152 | TBD | Running |
+| besu-etc | 11,152 | TBD | Running |
+| nethermind-etc | 11,152 | TBD | Running |
 
-- **Total:** 31,864 tests completed (20 failures)
+- **Total:** 33,456 tests completed (34 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 20h 48m (started 2026-02-06 13:07 UTC)
-- **Current test:** `RevertPrecompiledTouch_nonce` — precompile revert tests
-- **Fork coverage:** Frontier (1,800), Homestead (3,831), EIP150 (1,998), EIP158 (2,381), Byzantium (7,017), Constantinople (7,425), ConstantinopleFix (7,415)
-- **core-geth failures (19):** `create2collisionStorage` (6), `RevertInCreateInInitCreate2` (2), `dynamicAccountOverwriteEmpty` (2), `RevertInCreateInInit` (3), `RevertPrecompiledTouch` (6 — d0g0v0 + d3g0v0 × Byzantium/Constantinople/ConstantinopleFix)
-- **besu-etc failures (1):** `codesizeOOGInvalidSize_d0g0v0_EIP158` — known
-- **nethermind-etc: 0 failures** — perfect through 10,622 tests
-- **Note:** Past 31k tests. Istanbul/Berlin still not reached
+- **Elapsed:** 21h 49m (started 2026-02-06 13:07 UTC)
+- **Current test:** `sstore_Xto0` — sstore tests (Constantinople/ConstantinopleFix)
+- **Fork coverage:** Frontier (1,821), Homestead (3,897), EIP150 (2,064), EIP158 (2,478), Byzantium (7,113), Constantinople (8,046), ConstantinopleFix (8,037)
+- **Failures by test (34 total):**
+  - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
+  - `create2collisionStorage` (6) — d0-d2 × Constantinople/ConstantinopleFix — EIP-7610
+  - `RevertPrecompiledTouch` (6) — d0g0v0 + d3g0v0 × Byz/Const/ConstFix
+  - `RevertPrecompiledTouch_storage` (6) — d0g0v0 + d3g0v0 × Byz/Const/ConstFix
+  - `RevertInCreateInInit` (3) — Byzantium/Constantinople/ConstantinopleFix
+  - `RevertInCreateInInitCreate2` (2) — Constantinople/ConstantinopleFix — EIP-7610
+  - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
+  - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
+- **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
+- **Note:** Past 33k tests. Istanbul/Berlin still not reached
 
 ## Test Results — Baseline (ETH test suites)
 

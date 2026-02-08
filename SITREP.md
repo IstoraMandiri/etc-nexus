@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-08 03:13 UTC
+Last updated: 2026-02-08 04:14 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 19,638 | TBD | Running |
-| besu-etc | 19,638 | TBD | Running |
-| nethermind-etc | 19,638 | TBD | Running |
+| core-geth | 20,143 | TBD | Running |
+| besu-etc | 20,143 | TBD | Running |
+| nethermind-etc | 20,143 | TBD | Running |
 
-- **Total:** 58,914 tests completed (34 failures)
+- **Total:** 60,429 tests completed (34 failures) — passed 60k
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 38h (started 2026-02-06 13:07 UTC)
-- **Current test:** `sstore_combinations_initial1` (d1679) — sstore combo tests continue
+- **Elapsed:** 39h (started 2026-02-06 13:07 UTC)
+- **Current test:** `sstore_combinations_initial1` (d349) — sstore combo tests wrapping up
 - **Fork coverage:** Frontier (2,145), Homestead (4,323), EIP150 (2,394), EIP158 (2,799), Byzantium (9,606), Constantinople (19+k), ConstantinopleFix (19+k)
 - **Failures by test (34 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
@@ -35,7 +35,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Approaching 60k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 38h elapsed.
+- **Note:** Past 60k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 39h elapsed.
 
 ## Test Results — Baseline (ETH test suites)
 

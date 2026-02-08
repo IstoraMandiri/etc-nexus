@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-08 10:17 UTC
+Last updated: 2026-02-08 11:18 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 23,153 | TBD | Running |
-| besu-etc | 23,153 | TBD | Running |
-| nethermind-etc | 23,153 | TBD | Running |
+| core-geth | 23,621 | TBD | Running |
+| besu-etc | 23,621 | TBD | Running |
+| nethermind-etc | 23,621 | TBD | Running |
 
-- **Total:** 69,459 tests completed (34 failures)
+- **Total:** 70,863 tests completed (34 failures) — passed 70k
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 45h (started 2026-02-06 13:07 UTC)
-- **Current test:** `sstore_combinations_initial2` (d1703)
+- **Elapsed:** 46h (started 2026-02-06 13:07 UTC)
+- **Current test:** `sstore_combinations_initial2` (d358)
 - **Fork coverage:** Frontier (2,145), Homestead (4,323), EIP150 (2,394), EIP158 (2,799), Byzantium (9,606), Constantinople (23+k), ConstantinopleFix (23+k)
 - **Failures by test (34 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
@@ -35,7 +35,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Approaching 70k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 45h elapsed. sstore_combinations dominating (initial0-2 each ~1700 data variants × 2 forks × 3 clients).
+- **Note:** Past 70k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 46h elapsed. sstore_combinations dominating (loaded from multiple test directories).
 
 ## Test Results — Baseline (ETH test suites)
 

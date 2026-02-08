@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-08 14:21 UTC
+Last updated: 2026-02-08 15:21 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 25,027 | TBD | Running |
-| besu-etc | 25,027 | TBD | Running |
-| nethermind-etc | 25,026 | TBD | Running |
+| core-geth | 25,481 | TBD | Running |
+| besu-etc | 25,481 | TBD | Running |
+| nethermind-etc | 25,481 | TBD | Running |
 
-- **Total:** 75,080 tests completed (34 failures) — passed 75k
+- **Total:** 76,443 tests completed (40 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 49h (started 2026-02-06 13:07 UTC)
-- **Current test:** `sstore_combinations_initial2` (d991)
+- **Elapsed:** 50h (started 2026-02-06 13:07 UTC)
+- **Current test:** `Opcodes_TransactionInit` — opcode tests (all forks)
 - **Fork coverage:** Frontier (2,145), Homestead (4,323), EIP150 (2,394), EIP158 (2,799), Byzantium (9,606), Constantinople (25+k), ConstantinopleFix (25+k)
 - **Failures by test (34 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
@@ -33,9 +33,10 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `RevertInCreateInInit` (3) — Byzantium/Constantinople/ConstantinopleFix
   - `RevertInCreateInInitCreate2` (2) — Constantinople/ConstantinopleFix — EIP-7610
   - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
+  - `static_Call50000_sha256` (6) — d0+d1 × Byz/Const/ConstFix — NEW, heavy precompile test, client returns genesis (block import failure/timeout)
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 75k tests (25k per client). No new failures since 10k mark. Istanbul/Berlin still not reached. 49h elapsed.
+- **Note:** Past 76k tests (25k per client). 50h elapsed. Moved past sstore_combinations into opcode tests. Istanbul/Berlin still not reached.
 
 ## Test Results — Baseline (ETH test suites)
 

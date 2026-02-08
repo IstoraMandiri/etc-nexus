@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-08 18:25 UTC
+Last updated: 2026-02-08 19:26 UTC
 
 ## Summary
 
@@ -16,15 +16,15 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 27,026 | TBD | Running |
-| besu-etc | 27,025 | TBD | Running |
-| nethermind-etc | 27,025 | TBD | Running |
+| core-geth | 27,515 | TBD | Running |
+| besu-etc | 27,515 | TBD | Running |
+| nethermind-etc | 27,515 | TBD | Running |
 
-- **Total:** 81,076 tests completed (40 failures) — passed 80k
+- **Total:** 82,545 tests completed (40 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 53h (started 2026-02-06 13:07 UTC)
+- **Elapsed:** 54h (started 2026-02-06 13:07 UTC)
 - **Current test:** `ecmul` — elliptic curve multiplication precompile tests (Byzantium+)
-- **Fork coverage:** Frontier (2,706), Homestead (4,917), EIP150 (2,964), EIP158 (3,009), Byzantium (10,500+), Constantinople (27,800+), ConstantinopleFix (27,800+)
+- **Fork coverage:** Frontier (2,706), Homestead (4,917), EIP150 (2,964), EIP158 (3,009), Byzantium (10,500+), Constantinople (28+k), ConstantinopleFix (28+k)
 - **Failures by test (34 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
   - `create2collisionStorage` (6) — d0-d2 × Constantinople/ConstantinopleFix — EIP-7610
@@ -36,7 +36,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `static_Call50000_sha256` (6) — d0+d1 × Byz/Const/ConstFix — NEW, heavy precompile test, client returns genesis (block import failure/timeout)
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 81k tests (27k per client). 53h elapsed. Istanbul/Berlin still not reached.
+- **Note:** Past 82k tests (27.5k per client). 54h elapsed. Istanbul/Berlin still not reached.
 
 ## Test Results — Baseline (ETH test suites)
 

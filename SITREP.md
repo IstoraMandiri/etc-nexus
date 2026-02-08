@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-08 08:16 UTC
+Last updated: 2026-02-08 09:17 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 22,147 | TBD | Running |
-| besu-etc | 22,147 | TBD | Running |
-| nethermind-etc | 22,147 | TBD | Running |
+| core-geth | 22,642 | TBD | Running |
+| besu-etc | 22,641 | TBD | Running |
+| nethermind-etc | 22,641 | TBD | Running |
 
-- **Total:** 66,441 tests completed (34 failures)
+- **Total:** 67,924 tests completed (34 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 43h (started 2026-02-06 13:07 UTC)
-- **Current test:** `sstore_combinations_initial2` (d1250) — sstore combo tests continue
+- **Elapsed:** 44h (started 2026-02-06 13:07 UTC)
+- **Current test:** `sstore_combinations_initial2` (d1474)
 - **Fork coverage:** Frontier (2,145), Homestead (4,323), EIP150 (2,394), EIP158 (2,799), Byzantium (9,606), Constantinople (22+k), ConstantinopleFix (22+k)
 - **Failures by test (34 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
@@ -35,7 +35,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 66k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 43h elapsed. sstore_combinations dominating (initial0, initial1 done; initial2 in progress).
+- **Note:** Approaching 68k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 44h elapsed. sstore_combinations dominating run time.
 
 ## Test Results — Baseline (ETH test suites)
 

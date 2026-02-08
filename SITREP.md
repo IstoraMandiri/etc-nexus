@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-08 06:15 UTC
+Last updated: 2026-02-08 07:15 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 21,158 | TBD | Running |
-| besu-etc | 21,157 | TBD | Running |
-| nethermind-etc | 21,157 | TBD | Running |
+| core-geth | 21,646 | TBD | Running |
+| besu-etc | 21,645 | TBD | Running |
+| nethermind-etc | 21,645 | TBD | Running |
 
-- **Total:** 63,472 tests completed (34 failures)
+- **Total:** 64,936 tests completed (34 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 41h (started 2026-02-06 13:07 UTC)
-- **Current test:** `sstore_combinations_initial1` (d805) — sstore combo tests continue
+- **Elapsed:** 42h (started 2026-02-06 13:07 UTC)
+- **Current test:** `sstore_combinations_initial2` (d1025) — moved to initial2 variant
 - **Fork coverage:** Frontier (2,145), Homestead (4,323), EIP150 (2,394), EIP158 (2,799), Byzantium (9,606), Constantinople (21+k), ConstantinopleFix (21+k)
 - **Failures by test (34 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
@@ -35,7 +35,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 63k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 41h elapsed.
+- **Note:** Past 64k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 42h elapsed. sstore_combinations tests dominating (initial0 done, initial1 done, initial2 in progress).
 
 ## Test Results — Baseline (ETH test suites)
 

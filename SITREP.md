@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-08 00:11 UTC
+Last updated: 2026-02-08 01:12 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 18,118 | TBD | Running |
-| besu-etc | 18,118 | TBD | Running |
-| nethermind-etc | 18,117 | TBD | Running |
+| core-geth | 18,625 | TBD | Running |
+| besu-etc | 18,625 | TBD | Running |
+| nethermind-etc | 18,624 | TBD | Running |
 
-- **Total:** 54,353 tests completed (34 failures)
+- **Total:** 55,874 tests completed (34 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 35h (started 2026-02-06 13:07 UTC)
-- **Current test:** `sstore_combinations_initial0` (d995) — sstore combo tests nearing end (Constantinople/ConstantinopleFix)
+- **Elapsed:** 36h (started 2026-02-06 13:07 UTC)
+- **Current test:** `sstore_combinations_initial1` (d1221) — moved past initial0, sstore tests continue
 - **Fork coverage:** Frontier (2,145), Homestead (4,323), EIP150 (2,394), EIP158 (2,799), Byzantium (9,606), Constantinople (17+k), ConstantinopleFix (17+k)
 - **Failures by test (34 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
@@ -35,7 +35,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 54k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 35h elapsed.
+- **Note:** Past 55k tests. No new failures since 10k mark. Istanbul/Berlin still not reached. 36h elapsed.
 
 ## Test Results — Baseline (ETH test suites)
 

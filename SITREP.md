@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-09 01:28 UTC
+Last updated: 2026-02-09 02:28 UTC
 
 ## Summary
 
@@ -16,27 +16,29 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 30,593 | TBD | Running |
-| besu-etc | 30,593 | TBD | Running |
-| nethermind-etc | 30,593 | TBD | Running |
+| core-geth | 31,124 | TBD | Running |
+| besu-etc | 31,123 | TBD | Running |
+| nethermind-etc | 31,123 | TBD | Running |
 
-- **Total:** 91,779 tests completed (40 failures)
+- **Total:** 93,370 tests completed (45 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 60h (started 2026-02-06 13:07 UTC)
-- **Current test:** `ecmul` — elliptic curve multiplication precompile tests (Byz/Const/ConstFix)
+- **Elapsed:** 61h (started 2026-02-06 13:07 UTC)
+- **Current test:** `wrongParentHash`/`wrongStateRoot` — block validation tests (all forks)
 - **Fork coverage:** Frontier (2,787+), Homestead (5,793+), EIP150 (3,045+), EIP158 (3,090+), Byzantium (13k+), Constantinople (30k+), ConstantinopleFix (30k+)
-- **Failures by test (34 total):**
+- **Failures by test (45 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
   - `create2collisionStorage` (6) — d0-d2 × Constantinople/ConstantinopleFix — EIP-7610
   - `RevertPrecompiledTouch` (6) — d0g0v0 + d3g0v0 × Byz/Const/ConstFix
   - `RevertPrecompiledTouch_storage` (6) — d0g0v0 + d3g0v0 × Byz/Const/ConstFix
+  - `static_Call50000_sha256` (6) — d0+d1 × Byz/Const/ConstFix — heavy precompile test, block import failure
+  - `UncleFromSideChain` (4) — Frontier/EIP150/Constantinople/ConstantinopleFix — **NEW**, uncle validation
   - `RevertInCreateInInit` (3) — Byzantium/Constantinople/ConstantinopleFix
   - `RevertInCreateInInitCreate2` (2) — Constantinople/ConstantinopleFix — EIP-7610
   - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
-  - `static_Call50000_sha256` (6) — d0+d1 × Byz/Const/ConstFix — NEW, heavy precompile test, client returns genesis (block import failure/timeout)
+  - `ForkUncle` (1) — **NEW**, uncle validation
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 91k tests (30.5k per client). 60h / 2.5 days elapsed. Istanbul/Berlin still not reached.
+- **Note:** Past 93k tests (31k per client). 61h / 2.5 days elapsed. Istanbul/Berlin still not reached. 5 new uncle validation failures appeared.
 
 ## Test Results — Baseline (ETH test suites)
 

@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-09 03:30 UTC
+Last updated: 2026-02-09 04:31 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 31,619 | TBD | Running |
-| besu-etc | 31,619 | TBD | Running |
-| nethermind-etc | 31,619 | TBD | Running |
+| core-geth | 32,126 | TBD | Running |
+| besu-etc | 32,125 | TBD | Running |
+| nethermind-etc | 32,126 | TBD | Running |
 
-- **Total:** 94,857 tests completed (81 failures)
+- **Total:** 96,377 tests completed (81 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 62h (started 2026-02-06 13:07 UTC)
-- **Current test:** `randomStatetest34BC`/`randomStatetest35BC` — random state tests (all forks)
+- **Elapsed:** 63h (started 2026-02-06 13:07 UTC)
+- **Current test:** `UserTransactionGasLimitIsTooLowWhenZeroCost` — transaction validation tests (all forks)
 - **Fork coverage:** Frontier (2,787+), Homestead (5,793+), EIP150 (3,045+), EIP158 (3,090+), Byzantium (13k+), Constantinople (30k+), ConstantinopleFix (30k+)
 - **Failures by test (81 total):**
   - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
@@ -46,7 +46,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - `ForkUncle` (1) — uncle validation
   - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
 - **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 94k tests (31.6k per client). 62h / 2.6 days elapsed. Istanbul/Berlin still not reached. 36 new failures this hour: chain reorg tests (ChainAtoChainB family: 24), RPC_API_Test (7), ForkStressTest (5). These are blockchain-level tests, not state tests.
+- **Note:** Past 96k tests (32k per client). 63h / 2.6 days elapsed. Istanbul/Berlin still not reached. Failures stabilized at 81 after last hour's spike (chain reorg/fork tests).
 
 ## Test Results — Baseline (ETH test suites)
 

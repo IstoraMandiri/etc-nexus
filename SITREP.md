@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-09 04:31 UTC
+Last updated: 2026-02-09 05:32 UTC
 
 ## Summary
 
@@ -16,37 +16,29 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 32,126 | TBD | Running |
-| besu-etc | 32,125 | TBD | Running |
-| nethermind-etc | 32,126 | TBD | Running |
+| core-geth | 32,560 | TBD | Running |
+| besu-etc | 32,560 | TBD | Running |
+| nethermind-etc | 32,560 | TBD | Running |
 
-- **Total:** 96,377 tests completed (81 failures)
+- **Total:** 97,680 tests completed (121 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 63h (started 2026-02-06 13:07 UTC)
-- **Current test:** `UserTransactionGasLimitIsTooLowWhenZeroCost` — transaction validation tests (all forks)
+- **Elapsed:** 64h (started 2026-02-06 13:07 UTC)
+- **Current test:** `log1_correct` — logging tests (all forks)
 - **Fork coverage:** Frontier (2,787+), Homestead (5,793+), EIP150 (3,045+), EIP158 (3,090+), Byzantium (13k+), Constantinople (30k+), ConstantinopleFix (30k+)
-- **Failures by test (81 total):**
-  - `InitCollision` (8) — d0-d3 × Constantinople/ConstantinopleFix — EIP-7610
-  - `RPC_API_Test` (7) — all 7 pre-Istanbul forks — **NEW**, chain-level RPC test
-  - `create2collisionStorage` (6) — d0-d2 × Constantinople/ConstantinopleFix — EIP-7610
-  - `RevertPrecompiledTouch` (6) — d0g0v0 + d3g0v0 × Byz/Const/ConstFix
-  - `RevertPrecompiledTouch_storage` (6) — d0g0v0 + d3g0v0 × Byz/Const/ConstFix
-  - `static_Call50000_sha256` (6) — d0+d1 × Byz/Const/ConstFix — heavy precompile test
-  - `ForkStressTest` (5) — Frontier/EIP150/Byz/Const/ConstFix — **NEW**, fork stress
-  - `ChainAtoChainB` (4) — Frontier/EIP150/Const/ConstFix — **NEW**, chain reorg
-  - `ChainAtoChainB_difficultyB` (4) — same forks — **NEW**, difficulty-based reorg
-  - `ChainAtoChainB_BlockHash` (4) — same forks — **NEW**, block hash reorg
-  - `ChainAtoChainBCallContractFormA` (4) — same forks — **NEW**, contract call reorg
-  - `ChainAtoChainBtoChainA` (4) — same forks — **NEW**, A→B→A reorg
-  - `ChainAtoChainBtoChainAtoChainB` (4) — same forks — **NEW**, A→B→A→B reorg
-  - `UncleFromSideChain` (4) — Frontier/EIP150/Const/ConstFix — uncle validation
-  - `RevertInCreateInInit` (3) — Byzantium/Constantinople/ConstantinopleFix
-  - `RevertInCreateInInitCreate2` (2) — Constantinople/ConstantinopleFix — EIP-7610
-  - `dynamicAccountOverwriteEmpty` (2) — Constantinople/ConstantinopleFix — EIP-7610
-  - `ForkUncle` (1) — uncle validation
-  - `codesizeOOGInvalidSize` (1) — EIP158 — known besu-etc failure
-- **Per-client attribution pending** — detail log doesn't include client IDs; will finalize from results JSON after completion. EIP-7610 tests (18) are likely core-geth (known from legacy run).
-- **Note:** Past 96k tests (32k per client). 63h / 2.6 days elapsed. Istanbul/Berlin still not reached. Failures stabilized at 81 after last hour's spike (chain reorg/fork tests).
+- **Failures by test (121 total):**
+  - **EIP-7610 / CREATE2 collision (18):** `InitCollision` (8), `create2collisionStorage` (6), `RevertInCreateInInitCreate2` (2), `dynamicAccountOverwriteEmpty` (2) — likely core-geth (known from legacy)
+  - **Precompile touch (12):** `RevertPrecompiledTouch` (6), `RevertPrecompiledTouch_storage` (6) — Byz/Const/ConstFix
+  - **Chain reorg / bcMultiChainTest (24):** `ChainAtoChainB` (4), `ChainAtoChainB_difficultyB` (4), `ChainAtoChainB_BlockHash` (4), `ChainAtoChainBCallContractFormA` (4), `ChainAtoChainBtoChainA` (4), `ChainAtoChainBtoChainAtoChainB` (4) — Frontier/EIP150/Const/ConstFix
+  - **Chain reorg / bcTotalDifficulty (12):** `newChainFrom4Block` (4), `newChainFrom5Block` (4), `newChainFrom6Block` (4) — same forks
+  - **Sidechain / uncle (17):** `UncleFromSideChain` (4), `uncleBlockAtBlock3AfterBlock3` (4), `sideChainWithMoreTransactions2` (4), `sideChainWithNewMaxDifficulty...` (4), `ForkUncle` (1) — Frontier/EIP150/Const/ConstFix
+  - **Trie tests (8):** `lotsOfLeafs` (4), `lotsOfBranchesOverrideAtTheMiddle` (4), `lotsOfBranchesOverrideAtTheEnd` (4) — same forks
+  - **RPC / fork stress (12):** `RPC_API_Test` (7), `ForkStressTest` (5) — all pre-Istanbul forks
+  - **Heavy precompile (6):** `static_Call50000_sha256` (6) — Byz/Const/ConstFix, block import failure
+  - **State tests (7):** `RevertInCreateInInit` (3), `randomStatetest94` (4) — Byz/Const/ConstFix + Homestead
+  - **Known single (1):** `codesizeOOGInvalidSize` (1) — EIP158, known besu-etc
+- **Pattern:** 81 of 121 failures follow the same 4-fork pattern (Frontier/EIP150/Const/ConstFix), suggesting one client systematically failing blockchain-level tests (chain reorg, uncle, trie, RPC). Per-client attribution will be confirmed from results JSON.
+- **Known attributions:** EIP-7610 (18) → core-geth; `codesizeOOGInvalidSize` (1) → besu-etc
+- **Note:** Past 97k tests (32.5k per client). 64h / 2.7 days elapsed. Istanbul/Berlin still not reached. Failures spiking in blockchain-level tests (chain reorg, uncle, trie categories).
 
 ## Test Results — Baseline (ETH test suites)
 

@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-09 08:35 UTC
+Last updated: 2026-02-09 09:36 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 33,840 | TBD | Running |
-| besu-etc | 33,840 | TBD | Running |
-| nethermind-etc | 33,840 | TBD | Running |
+| core-geth | 34,276 | TBD | Running |
+| besu-etc | 34,276 | TBD | Running |
+| nethermind-etc | 34,276 | TBD | Running |
 
-- **Total:** 101,520 tests completed (121 failures)
+- **Total:** 102,828 tests completed (121 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 67h (started 2026-02-06 13:07 UTC)
-- **Current test:** `jumpToPush` — EVM jump tests (all forks including Istanbul/Berlin)
+- **Elapsed:** 68h (started 2026-02-06 13:07 UTC)
+- **Current test:** `log3`/`log4` — LOG opcode tests (Istanbul/Berlin)
 - **Fork coverage:** Frontier (3,540+), Homestead (6,552+), EIP150 (3,777+), EIP158 (3,780+), Byzantium (15k+), Constantinople (32k+), ConstantinopleFix (32k+), Istanbul (225+), Berlin (233+)
 - **Failures by test (121 total):**
   - **EIP-7610 / CREATE2 collision (18):** `InitCollision` (8), `create2collisionStorage` (6), `RevertInCreateInInitCreate2` (2), `dynamicAccountOverwriteEmpty` (2) — likely core-geth (known from legacy)
@@ -38,7 +38,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - **Known single (1):** `codesizeOOGInvalidSize` (1) — EIP158, known besu-etc
 - **Pattern:** 81 of 121 failures follow the same 4-fork pattern (Frontier/EIP150/Const/ConstFix), suggesting one client systematically failing blockchain-level tests (chain reorg, uncle, trie, RPC). Per-client attribution will be confirmed from results JSON.
 - **Known attributions:** EIP-7610 (18) → core-geth; `codesizeOOGInvalidSize` (1) → besu-etc
-- **Note:** Past 101k tests (33.8k per client). 67h / 2.8 days. All 9 ETC forks active. Failures stable at 121.
+- **Note:** Past 102k tests (34.3k per client). 68h / 2.8 days. All 9 ETC forks active. Failures stable at 121.
 
 ## Test Results — Baseline (ETH test suites)
 

@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-09 14:40 UTC
+Last updated: 2026-02-09 15:41 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 36,602 | TBD | Running |
-| besu-etc | 36,602 | TBD | Running |
-| nethermind-etc | 36,602 | TBD | Running |
+| core-geth | 37,069 | TBD | Running |
+| besu-etc | 37,069 | TBD | Running |
+| nethermind-etc | 37,069 | TBD | Running |
 
-- **Total:** 109,806 tests completed (144 failures)
+- **Total:** 111,207 tests completed (144 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 73h / 3 days (started 2026-02-06 13:07 UTC)
-- **Current test:** `RawExtCodeCopyGas` — EVM gas cost tests (Istanbul/Berlin)
+- **Elapsed:** 74h / 3.1 days (started 2026-02-06 13:07 UTC)
+- **Current test:** `gasCostMemSeg` — memory gas cost tests (Istanbul/Berlin)
 - **Fork coverage:** Frontier (3,540+), Homestead (6,552+), EIP150 (3,777+), EIP158 (3,780+), Byzantium (15k+), Constantinople (32k+), ConstantinopleFix (32k+), Istanbul (225+), Berlin (233+)
 - **Failures by test (132 total):**
   - **EIP-7610 / CREATE2 collision (34):** `InitCollision` (8), `create2collisionStorage` (12), `create2collisionStorageParis` (6), `RevertInCreateInInitCreate2` (4), `dynamicAccountOverwriteEmpty` (2), `RevertInCreateInInitCreate2Paris` (2) — likely core-geth (known from legacy), expanding through Istanbul/Berlin
@@ -39,7 +39,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - **Known single (1):** `codesizeOOGInvalidSize` (1) — EIP158, known besu-etc
 - **Pattern:** 81 of 121 failures follow the same 4-fork pattern (Frontier/EIP150/Const/ConstFix), suggesting one client systematically failing blockchain-level tests (chain reorg, uncle, trie, RPC). Per-client attribution will be confirmed from results JSON.
 - **Known attributions:** EIP-7610 (18) → core-geth; `codesizeOOGInvalidSize` (1) → besu-etc
-- **Note:** Past 109k tests (36.6k per client). 73h / 3 days. EIP-7610 failures continuing to expand in Istanbul/Berlin (now 34 total).
+- **Note:** Past 111k tests (37k per client). 74h / 3.1 days. Failures stable at 144.
 
 ## Test Results — Baseline (ETH test suites)
 

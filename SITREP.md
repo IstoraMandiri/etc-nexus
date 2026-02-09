@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-09 05:32 UTC
+Last updated: 2026-02-09 06:34 UTC
 
 ## Summary
 
@@ -16,15 +16,15 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 32,560 | TBD | Running |
-| besu-etc | 32,560 | TBD | Running |
-| nethermind-etc | 32,560 | TBD | Running |
+| core-geth | 32,983 | TBD | Running |
+| besu-etc | 32,983 | TBD | Running |
+| nethermind-etc | 32,983 | TBD | Running |
 
-- **Total:** 97,680 tests completed (121 failures)
+- **Total:** 98,949 tests completed (121 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 64h (started 2026-02-06 13:07 UTC)
-- **Current test:** `log1_correct` — logging tests (all forks)
-- **Fork coverage:** Frontier (2,787+), Homestead (5,793+), EIP150 (3,045+), EIP158 (3,090+), Byzantium (13k+), Constantinople (30k+), ConstantinopleFix (30k+)
+- **Elapsed:** 65h (started 2026-02-06 13:07 UTC)
+- **Current test:** `divByZero` — arithmetic tests (Istanbul + Berlin forks now active!)
+- **Fork coverage:** Frontier (3,540), Homestead (6,552), EIP150 (3,777), EIP158 (3,780), Byzantium (15,000), Constantinople (32,421), ConstantinopleFix (32,406), **Istanbul (225)**, **Berlin (233)**
 - **Failures by test (121 total):**
   - **EIP-7610 / CREATE2 collision (18):** `InitCollision` (8), `create2collisionStorage` (6), `RevertInCreateInInitCreate2` (2), `dynamicAccountOverwriteEmpty` (2) — likely core-geth (known from legacy)
   - **Precompile touch (12):** `RevertPrecompiledTouch` (6), `RevertPrecompiledTouch_storage` (6) — Byz/Const/ConstFix
@@ -38,7 +38,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - **Known single (1):** `codesizeOOGInvalidSize` (1) — EIP158, known besu-etc
 - **Pattern:** 81 of 121 failures follow the same 4-fork pattern (Frontier/EIP150/Const/ConstFix), suggesting one client systematically failing blockchain-level tests (chain reorg, uncle, trie, RPC). Per-client attribution will be confirmed from results JSON.
 - **Known attributions:** EIP-7610 (18) → core-geth; `codesizeOOGInvalidSize` (1) → besu-etc
-- **Note:** Past 97k tests (32.5k per client). 64h / 2.7 days elapsed. Istanbul/Berlin still not reached. Failures spiking in blockchain-level tests (chain reorg, uncle, trie categories).
+- **Note:** Past 98k tests (33k per client). 65h / 2.7 days. **Istanbul and Berlin forks now reached!** All 9 ETC-compatible forks being tested. Failures stable at 121.
 
 ## Test Results — Baseline (ETH test suites)
 

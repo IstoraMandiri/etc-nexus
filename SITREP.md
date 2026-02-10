@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-10 02:49 UTC
+Last updated: 2026-02-10 03:50 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 42,130 | TBD | Running |
-| besu-etc | 42,129 | TBD | Running |
-| nethermind-etc | 42,129 | TBD | Running |
+| core-geth | 42,672 | TBD | Running |
+| besu-etc | 42,672 | TBD | Running |
+| nethermind-etc | 42,672 | TBD | Running |
 
-- **Total:** 126,388 tests completed (148 failures)
+- **Total:** 128,016 tests completed (152 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 85h / 3.5 days (started 2026-02-06 13:07 UTC)
-- **Current test:** `randomStatetest649-650` — random state tests (Istanbul/Berlin)
+- **Elapsed:** 86h / 3.6 days (started 2026-02-06 13:07 UTC)
+- **Current test:** `RevertPrecompiledTouchExactOOG` — precompile touch with exact OOG (Istanbul/Berlin)
 - **Fork coverage:** Frontier (3,540+), Homestead (6,552+), EIP150 (3,777+), EIP158 (3,780+), Byzantium (15k+), Constantinople (32k+), ConstantinopleFix (32k+), Istanbul (225+), Berlin (233+)
 - **Failures by test (132 total):**
   - **EIP-7610 / CREATE2 collision (38):** `InitCollision` (8), `create2collisionStorage` (12), `create2collisionStorageParis` (6), `RevertInCreateInInitCreate2` (4), `dynamicAccountOverwriteEmpty` (4), `dynamicAccountOverwriteEmpty_Paris` (2), `RevertInCreateInInitCreate2Paris` (2) — likely core-geth (known from legacy), expanding through Istanbul/Berlin
@@ -35,11 +35,11 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - **RPC / fork stress (12):** `RPC_API_Test` (7), `ForkStressTest` (5) — all pre-Istanbul forks
   - **Heavy precompile (6):** `static_Call50000_sha256` (6) — Byz/Const/ConstFix, block import failure
   - **Loop/compute (7):** `loopMul` (6) — d0/d1/d2 × Istanbul/Berlin — **NEW**, heavy loop test; `loopExp` (1) — Istanbul — **NEW**
-  - **State tests (7):** `RevertInCreateInInit` (3), `randomStatetest94` (4) — Byz/Const/ConstFix + Homestead
+  - **State tests (11):** `RevertInCreateInInit` (5), `RevertInCreateInInit_Paris` (2), `randomStatetest94` (4) — expanding through Istanbul/Berlin
   - **Known single (1):** `codesizeOOGInvalidSize` (1) — EIP158, known besu-etc
 - **Pattern:** 81 of 121 failures follow the same 4-fork pattern (Frontier/EIP150/Const/ConstFix), suggesting one client systematically failing blockchain-level tests (chain reorg, uncle, trie, RPC). Per-client attribution will be confirmed from results JSON.
 - **Known attributions:** EIP-7610 (18) → core-geth; `codesizeOOGInvalidSize` (1) → besu-etc
-- **Note:** Past 126k tests (42.1k per client). 85h / 3.5 days. Failures stable at 148.
+- **Note:** Past 128k tests (42.7k per client). 86h / 3.6 days. 4 more EIP-7610 failures in Istanbul/Berlin.
 
 ## Test Results — Baseline (ETH test suites)
 

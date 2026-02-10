@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-10 10:57 UTC
+Last updated: 2026-02-10 11:57 UTC
 
 ## Summary
 
@@ -16,14 +16,14 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 46,172 | TBD | Running |
-| besu-etc | 46,172 | TBD | Running |
-| nethermind-etc | 46,172 | TBD | Running |
+| core-geth | 46,657 | TBD | Running |
+| besu-etc | 46,657 | TBD | Running |
+| nethermind-etc | 46,657 | TBD | Running |
 
-- **Total:** 138,516 tests completed (168 failures)
+- **Total:** 139,971 tests completed (170 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 93h / 3.9 days (started 2026-02-06 13:07 UTC)
-- **Current test:** `suicideCaller` — SELFDESTRUCT tests (Istanbul/Berlin)
+- **Elapsed:** 94h / 3.9 days (started 2026-02-06 13:07 UTC)
+- **Current test:** `sstore_combinations_initial00` — SSTORE combination tests (Istanbul/Berlin) — will be long
 - **Fork coverage:** Frontier (3,624), Homestead (6,894), EIP150 (4,122), EIP158 (4,125), Byzantium (15,456), Constantinople (32,922), ConstantinopleFix (32,907), Istanbul (15,670), Berlin (18,820)
 - **Failures by test (132 total):**
   - **EIP-7610 / CREATE2 collision (54):** `InitCollision` (16), `create2collisionStorage` (12), `InitCollisionParis` (8), `create2collisionStorageParis` (6), `RevertInCreateInInitCreate2` (4), `dynamicAccountOverwriteEmpty` (4), `dynamicAccountOverwriteEmpty_Paris` (2), `RevertInCreateInInitCreate2Paris` (2) — likely core-geth, expanding across all forks + Paris variants
@@ -33,13 +33,13 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - **Sidechain / uncle (17):** `UncleFromSideChain` (4), `uncleBlockAtBlock3AfterBlock3` (4), `sideChainWithMoreTransactions2` (4), `sideChainWithNewMaxDifficulty...` (4), `ForkUncle` (1) — Frontier/EIP150/Const/ConstFix
   - **Trie tests (8):** `lotsOfLeafs` (4), `lotsOfBranchesOverrideAtTheMiddle` (4), `lotsOfBranchesOverrideAtTheEnd` (4) — same forks
   - **RPC / fork stress (12):** `RPC_API_Test` (7), `ForkStressTest` (5) — all pre-Istanbul forks
-  - **Heavy precompile (6):** `static_Call50000_sha256` (6) — Byz/Const/ConstFix, block import failure
+  - **Heavy precompile (8):** `static_Call50000_sha256` (6) — Byz/Const/ConstFix, block import failure; `CALLBlake2f_MaxRounds` (2) — Istanbul/Berlin — **NEW**, BLAKE2 precompile
   - **Loop/compute (7):** `loopMul` (6) — d0/d1/d2 × Istanbul/Berlin — **NEW**, heavy loop test; `loopExp` (1) — Istanbul — **NEW**
   - **State tests (11):** `RevertInCreateInInit` (5), `RevertInCreateInInit_Paris` (2), `randomStatetest94` (4) — expanding through Istanbul/Berlin
   - **Known single (1):** `codesizeOOGInvalidSize` (1) — EIP158, known besu-etc
 - **Pattern:** 81 of 121 failures follow the same 4-fork pattern (Frontier/EIP150/Const/ConstFix), suggesting one client systematically failing blockchain-level tests (chain reorg, uncle, trie, RPC). Per-client attribution will be confirmed from results JSON.
 - **Known attributions:** EIP-7610 (18) → core-geth; `codesizeOOGInvalidSize` (1) → besu-etc
-- **Note:** Past 138k tests (46.2k per client). 93h / 3.9 days. Failures stable at 168.
+- **Note:** Approaching 140k tests (46.7k per client). 94h / 3.9 days. 2 new BLAKE2 precompile failures. Entering sstore_combinations for Istanbul/Berlin (will take ~15+ hours based on prior Const/ConstFix run).
 
 ## Test Results — Baseline (ETH test suites)
 

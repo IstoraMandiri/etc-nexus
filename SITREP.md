@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-10 03:50 UTC
+Last updated: 2026-02-10 04:51 UTC
 
 ## Summary
 
@@ -16,17 +16,17 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 42,672 | TBD | Running |
-| besu-etc | 42,672 | TBD | Running |
-| nethermind-etc | 42,672 | TBD | Running |
+| core-geth | 43,229 | TBD | Running |
+| besu-etc | 43,229 | TBD | Running |
+| nethermind-etc | 43,228 | TBD | Running |
 
-- **Total:** 128,016 tests completed (152 failures)
+- **Total:** 129,686 tests completed (168 failures)
 - **Rate:** ~26 tests/min (all clients combined), ~8.6 tests/min per client
-- **Elapsed:** 86h / 3.6 days (started 2026-02-06 13:07 UTC)
-- **Current test:** `RevertPrecompiledTouchExactOOG` — precompile touch with exact OOG (Istanbul/Berlin)
+- **Elapsed:** 87h / 3.6 days (started 2026-02-06 13:07 UTC)
+- **Current test:** `sstore_0to0to0` — SSTORE gas cost tests (Istanbul/Berlin)
 - **Fork coverage:** Frontier (3,540+), Homestead (6,552+), EIP150 (3,777+), EIP158 (3,780+), Byzantium (15k+), Constantinople (32k+), ConstantinopleFix (32k+), Istanbul (225+), Berlin (233+)
 - **Failures by test (132 total):**
-  - **EIP-7610 / CREATE2 collision (38):** `InitCollision` (8), `create2collisionStorage` (12), `create2collisionStorageParis` (6), `RevertInCreateInInitCreate2` (4), `dynamicAccountOverwriteEmpty` (4), `dynamicAccountOverwriteEmpty_Paris` (2), `RevertInCreateInInitCreate2Paris` (2) — likely core-geth (known from legacy), expanding through Istanbul/Berlin
+  - **EIP-7610 / CREATE2 collision (54):** `InitCollision` (16), `create2collisionStorage` (12), `InitCollisionParis` (8), `create2collisionStorageParis` (6), `RevertInCreateInInitCreate2` (4), `dynamicAccountOverwriteEmpty` (4), `dynamicAccountOverwriteEmpty_Paris` (2), `RevertInCreateInInitCreate2Paris` (2) — likely core-geth, expanding across all forks + Paris variants
   - **Precompile touch (12):** `RevertPrecompiledTouch` (6), `RevertPrecompiledTouch_storage` (6) — Byz/Const/ConstFix
   - **Chain reorg / bcMultiChainTest (24):** `ChainAtoChainB` (4), `ChainAtoChainB_difficultyB` (4), `ChainAtoChainB_BlockHash` (4), `ChainAtoChainBCallContractFormA` (4), `ChainAtoChainBtoChainA` (4), `ChainAtoChainBtoChainAtoChainB` (4) — Frontier/EIP150/Const/ConstFix
   - **Chain reorg / bcTotalDifficulty (12):** `newChainFrom4Block` (4), `newChainFrom5Block` (4), `newChainFrom6Block` (4) — same forks
@@ -39,7 +39,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - **Known single (1):** `codesizeOOGInvalidSize` (1) — EIP158, known besu-etc
 - **Pattern:** 81 of 121 failures follow the same 4-fork pattern (Frontier/EIP150/Const/ConstFix), suggesting one client systematically failing blockchain-level tests (chain reorg, uncle, trie, RPC). Per-client attribution will be confirmed from results JSON.
 - **Known attributions:** EIP-7610 (18) → core-geth; `codesizeOOGInvalidSize` (1) → besu-etc
-- **Note:** Past 128k tests (42.7k per client). 86h / 3.6 days. 4 more EIP-7610 failures in Istanbul/Berlin.
+- **Note:** Approaching 130k tests (43.2k per client). 87h / 3.6 days. 16 more EIP-7610 failures (InitCollision expanded to Istanbul/Berlin).
 
 ## Test Results — Baseline (ETH test suites)
 

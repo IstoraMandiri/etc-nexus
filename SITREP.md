@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-11 14:23 UTC
+Last updated: 2026-02-11 15:23 UTC
 
 ## Summary
 
@@ -16,15 +16,15 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 59,438 | TBD | Running |
-| besu-etc | 59,438 | TBD | Running |
-| nethermind-etc | 59,438 | TBD | Running |
+| core-geth | 59,939 | TBD | Running |
+| besu-etc | 59,939 | TBD | Running |
+| nethermind-etc | 59,939 | TBD | Running |
 
-- **Total:** 178,314 tests completed (174 failures)
+- **Total:** 179,817 tests completed (174 failures)
 - **Rate:** ~25 tests/min (all clients combined), ~8.3 tests/min per client
-- **Elapsed:** 121h / 5+ days (started 2026-02-06 13:07 UTC)
-- **Current test:** `pointMulAdd2` — EC point multiplication (Istanbul/Berlin)
-- **Fork coverage:** Frontier (3,924), Homestead (7,194), EIP150 (4,422), EIP158 (4,425), Byzantium (15,756), Constantinople (33,222), ConstantinopleFix (33,207), Istanbul (35,976), Berlin (39,175)
+- **Elapsed:** 122h / 5+ days (started 2026-02-06 13:07 UTC)
+- **Current test:** `ecmul_0-0_0` — EC multiplication precompile (Istanbul/Berlin)
+- **Fork coverage:** Frontier (3,924), Homestead (7,194), EIP150 (4,422), EIP158 (4,425), Byzantium (15,756), Constantinople (33,222), ConstantinopleFix (33,207), Istanbul (36,745), Berlin (39,909)
 - **Failures by test (132 total):**
   - **EIP-7610 / CREATE2 collision (54):** `InitCollision` (16), `create2collisionStorage` (12), `InitCollisionParis` (8), `create2collisionStorageParis` (6), `RevertInCreateInInitCreate2` (4), `dynamicAccountOverwriteEmpty` (4), `dynamicAccountOverwriteEmpty_Paris` (2), `RevertInCreateInInitCreate2Paris` (2) — likely core-geth, expanding across all forks + Paris variants
   - **Precompile touch (12):** `RevertPrecompiledTouch` (6), `RevertPrecompiledTouch_storage` (6) — Byz/Const/ConstFix
@@ -39,7 +39,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - **Known single (1):** `codesizeOOGInvalidSize` (1) — EIP158, known besu-etc
 - **Pattern:** 81 of 121 failures follow the same 4-fork pattern (Frontier/EIP150/Const/ConstFix), suggesting one client systematically failing blockchain-level tests (chain reorg, uncle, trie, RPC). Per-client attribution will be confirmed from results JSON.
 - **Known attributions:** EIP-7610 (18) → core-geth; `codesizeOOGInvalidSize` (1) → besu-etc
-- **Note:** 178.3k tests (59.4k per client). 121h / 5+ days. Running EC point multiplication tests (Istanbul/Berlin). Failures stable at 174.
+- **Note:** 179.8k tests (59.9k per client — nearly 60k). 122h / 5+ days. Running ecmul precompile tests (Istanbul/Berlin). Failures stable at 174.
 
 ## Test Results — Baseline (ETH test suites)
 

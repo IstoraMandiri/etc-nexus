@@ -1,6 +1,6 @@
 # Situation Report
 
-Last updated: 2026-02-11 01:10 UTC
+Last updated: 2026-02-11 02:11 UTC
 
 ## Summary
 
@@ -16,15 +16,15 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 | Client | Tests Done | Failures | Status |
 |--------|-----------|----------|--------|
-| core-geth | 53,154 | TBD | Running |
-| besu-etc | 53,153 | TBD | Running |
-| nethermind-etc | 53,153 | TBD | Running |
+| core-geth | 53,613 | TBD | Running |
+| besu-etc | 53,613 | TBD | Running |
+| nethermind-etc | 53,613 | TBD | Running |
 
-- **Total:** 159,460 tests completed (170 failures)
+- **Total:** 160,839 tests completed (170 failures)
 - **Rate:** ~25 tests/min (all clients combined), ~8.3 tests/min per client
-- **Elapsed:** 108h / 4.5 days (started 2026-02-06 13:07 UTC)
+- **Elapsed:** 109h / 4.5 days (started 2026-02-06 13:07 UTC)
 - **Current test:** `sstore_combinations_initial20` — SSTORE combination tests (Istanbul/Berlin)
-- **Fork coverage:** Frontier (3,624), Homestead (6,894), EIP150 (4,122), EIP158 (4,125), Byzantium (15,456), Constantinople (32,922), ConstantinopleFix (32,907), Istanbul (27,615), Berlin (30,781)
+- **Fork coverage:** Frontier (3,624), Homestead (6,894), EIP150 (4,122), EIP158 (4,125), Byzantium (15,456), Constantinople (32,922), ConstantinopleFix (32,907), Istanbul (28,308), Berlin (31,467)
 - **Failures by test (132 total):**
   - **EIP-7610 / CREATE2 collision (54):** `InitCollision` (16), `create2collisionStorage` (12), `InitCollisionParis` (8), `create2collisionStorageParis` (6), `RevertInCreateInInitCreate2` (4), `dynamicAccountOverwriteEmpty` (4), `dynamicAccountOverwriteEmpty_Paris` (2), `RevertInCreateInInitCreate2Paris` (2) — likely core-geth, expanding across all forks + Paris variants
   - **Precompile touch (12):** `RevertPrecompiledTouch` (6), `RevertPrecompiledTouch_storage` (6) — Byz/Const/ConstFix
@@ -39,7 +39,7 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
   - **Known single (1):** `codesizeOOGInvalidSize` (1) — EIP158, known besu-etc
 - **Pattern:** 81 of 121 failures follow the same 4-fork pattern (Frontier/EIP150/Const/ConstFix), suggesting one client systematically failing blockchain-level tests (chain reorg, uncle, trie, RPC). Per-client attribution will be confirmed from results JSON.
 - **Known attributions:** EIP-7610 (18) → core-geth; `codesizeOOGInvalidSize` (1) → besu-etc
-- **Note:** 159.5k tests (53.2k per client). 108h / 4.5 days. In sstore_combinations_initial20 for Istanbul/Berlin. Failures stable at 170.
+- **Note:** 160.8k tests (53.6k per client). 109h / 4.5 days. In sstore_combinations_initial20 for Istanbul/Berlin. Failures stable at 170.
 
 ## Test Results — Baseline (ETH test suites)
 

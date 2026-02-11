@@ -711,3 +711,35 @@ Picked up after power outage. Discovered previous session had implemented consen
 *Prepared handoff: synced docs, updated SITREP and TODO, committed and pushed all changes.*
 
 ---
+
+## Session 36: Full 3-Client Consensus-ETC Suite Run
+
+Launched the full consensus-etc test suite against all 3 ETC clients simultaneously. The run took ~125 hours (5.2 days) and completed 183,985 tests with 302 failures. Monitored progress across multiple context continuations, extracted per-client results from the 115MB results JSON, and generated a comprehensive report.
+
+> **2026-02-06 13:05** — /pickup and run the full etc suite against the 3 etc clients
+
+*Began setting up serial test runs for each client individually.*
+
+> **2026-02-06 13:06** — stop. we shouldn't need to run each one in series. we can pass all clients to the same command right?
+
+*Confirmed that Hive supports `--client core-geth,besu-etc,nethermind-etc` in a single command.*
+
+> **2026-02-06 13:07** — update claude.md and relevant areas docs to note this, then kick it off
+
+*Updated CLAUDE.md with multi-client command pattern and started background task: `./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth,besu-etc,nethermind-etc --sim.parallelism 4`. Monitored automatically over 5+ days across multiple context continuations. Suite completed Feb 11 ~18:16 UTC with 183,985 tests, 302 failures. Extracted per-client results using jq on 115MB results JSON: core-geth 64 failures (99.90%), besu-etc 7 failures (99.99%), nethermind-etc 230 failures (99.62%). Generated comprehensive report at `reports/260211_CONSENSUS_ETC_RESULTS.md`.*
+
+---
+
+## Session 37: Hourly Monitor - 3-Client Suite Progress
+
+Automated hourly monitoring agent that tracked the 3-client consensus-etc test run progress, updated SITREP.md, and pushed to GitHub on an hourly cadence for 5+ days.
+
+> **2026-02-06 13:09** — /hourly-monitor we're warming up 3 client full suite tests, follow progress and auto-push updates.
+
+*Started hourly monitoring loop. Tracked test progress from warmup through ~184K tests over 5 days.*
+
+> **2026-02-06 13:11** — please update git now to show progress, then continue monitoring
+
+*Committed and pushed current progress to GitHub, then continued hourly monitoring loop with automated SITREP updates and Git pushes through test completion on Feb 11.*
+
+---

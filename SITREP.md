@@ -1,10 +1,10 @@
 # Situation Report
 
-Last updated: 2026-02-11 18:30 UTC
+Last updated: 2026-02-11 18:50 UTC
 
 ## Summary
 
-Hive integration testing for ETC clients. Three clients under test: core-geth, besu-etc, nethermind-etc. Implemented `consensus-etc` suite in Hive for streamlined ETC testing. **Full 3-client consensus-etc run complete: 99.88% pass rate (183,760 / 183,985).**
+Hive integration testing for ETC clients. Three clients under test: core-geth, besu-etc, nethermind-etc. Implemented `consensus-etc` suite in Hive for streamlined ETC testing. **Full 3-client consensus-etc run complete: 183,985 tests, 302 failures. Per-client attribution finalized from results JSON.**
 
 ## Active Tests
 
@@ -16,34 +16,30 @@ None — all test runs complete.
 ./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth,besu-etc,nethermind-etc --sim.parallelism 4
 ```
 
-| Client | Tests | Failures | Pass Rate | Status |
-|--------|-------|----------|-----------|--------|
-| core-geth | 61,328 | TBD* | TBD* | Complete |
-| besu-etc | 61,328 | TBD* | TBD* | Complete |
-| nethermind-etc | 61,328 | TBD* | TBD* | Complete |
-| **Combined** | **183,985** | **225** | **99.88%** | **Complete** |
-
-*\*Per-client failure attribution requires results JSON analysis — detail log does not include client identifiers.*
+| Client | Tests | Passed | Failed | Pass Rate | Status |
+|--------|-------|--------|--------|-----------|--------|
+| core-geth | 61,328 | 61,264 | 64 | 99.90% | Complete |
+| besu-etc | 61,328 | 61,321 | 7 | 99.99% | Complete |
+| nethermind-etc | 61,328 | 61,098 | 230 | 99.62% | Complete |
+| meta-test | 1 | 0 | 1 | — | Complete |
+| **Total** | **183,985** | **183,683** | **302** | **99.84%** | **Complete** |
 
 - **Duration:** ~125h / 5.2 days (2026-02-06 13:07 — 2026-02-11 ~18:30 UTC)
 - **Rate:** ~24.5 tests/min (all clients combined), ~8.2 tests/min per client
 - **Fork coverage:** Frontier (3,927), Homestead (7,197), EIP150 (4,425), EIP158 (4,428), Byzantium (15,759), Constantinople (33,225), ConstantinopleFix (33,210), Istanbul (38,793), Berlin (41,964)
-- **Failures by category (225 total):**
-  - **EIP-7610 / CREATE2 collision (54):** `InitCollision` (16), `create2collisionStorage` (12), `InitCollisionParis` (8), `create2collisionStorageParis` (6), `RevertInCreateInInitCreate2` (4), `dynamicAccountOverwriteEmpty` (6), `dynamicAccountOverwriteEmpty_Paris` (2) — likely core-geth
-  - **Chain reorg / bcMultiChainTest (33):** `ChainAtoChainB` (6), `ChainAtoChainBCallContractFormA` (6), `ChainAtoChainBtoChainA` (5), `ChainAtoChainBtoChainAtoChainB` (6), `ChainAtoChainB_BlockHash` (5), `ChainAtoChainB_difficultyB` (4), `ForkUncle` (1)
-  - **Sidechain / uncle (22):** `uncleBlockAtBlock3AfterBlock3` (6), `sideChainWithMoreTransactions2` (5), `sideChainWithNewMaxDifficulty...` (5), `UncleFromSideChain` (4), `ForkUncle` (1), `newChainFrom4Block` (included in bcTotalDifficulty below)
-  - **Chain reorg / bcTotalDifficulty (16):** `newChainFrom4Block` (6), `newChainFrom5Block` (5), `newChainFrom6Block` (5)
-  - **InvalidBlocks / LegacyTests/Cancun (18):** `CreateTransactionReverted` (2), `RefundOverflow` (2), `RefundOverflow2` (2), `callcodeOutput2` (2), `createNameRegistratorPerTxsNotEnoughGasAt` (2), `dataTx` (2), `transactionFromNotExistingAccount` (2), `UncleFromSideChain` (2), `lotsOfLeafs` (2) — Istanbul/Berlin from LegacyTests/Cancun path
-  - **RPC / fork stress (15):** `RPC_API_Test` (8), `ForkStressTest` (7) — all forks Frontier through Istanbul
-  - **State tests (15):** `RevertInCreateInInit` (7), `RevertInCreateInInitCreate2` (4), `randomStatetest94` (4)
-  - **Precompile touch (12):** `RevertPrecompiledTouch` (6), `RevertPrecompiledTouch_storage` (6) — Byz/Const/ConstFix
-  - **Heavy precompile (12):** `static_Call50000_sha256` (10), `CALLBlake2f_MaxRounds` (2) — Byz through Berlin
-  - **Trie tests (12):** `lotsOfBranchesOverrideAtTheEnd` (6), `lotsOfBranchesOverrideAtTheMiddle` (6), `lotsOfLeafs` (4) — Frontier/EIP150/Const/ConstFix/Istanbul/Berlin
-  - **DAO fork transitions (10):** `DaoTransactions` (9), `HomesteadOverrideFrontier` (1) — expected for ETC (no DAO fork)
-  - **Loop/compute (7):** `loopMul` (6), `loopExp` (1)
-  - **Known single (1):** `codesizeOOGInvalidSize` — besu-etc
-- **Known attributions:** EIP-7610 → core-geth; `codesizeOOGInvalidSize` → besu-etc; DAO fork → all 3 clients (expected)
-- **Note:** Per-client failure breakdown pending results JSON analysis. Many failures are infrastructure/timeout (RPC_API_Test, ForkStressTest, chain reorg, trie) rather than EVM correctness issues.
+- **core-geth (64 failures):** ALL EIP-7610/CREATE2 collision edge cases (61) + DAO fork tests (3). No genuine EVM failures. Categories: `InitCollision` (16+8 Paris), `create2collisionStorage` (12+6 Paris), `RevertInCreateInInit` (5+2 Paris), `RevertInCreateInInitCreate2` (4+2 Paris), `dynamicAccountOverwriteEmpty` (4+2 Paris), `DaoTransactions` (3)
+- **besu-etc (7 failures):** DAO fork tests (3) + 4 genuine: `codesizeOOGInvalidSize_EIP158` (known), `RevertOpcode_d0g1v0_Istanbul`, `eip2929OOG_d3g0v0_Istanbul`, `gasCostMemSeg_d41g0v0_Berlin`
+- **nethermind-etc (230 failures):** Multiple systematic categories:
+  - Chain reorg/multi-chain (~60): ChainAtoChainB variants, newChainFrom4/5/6Block, sidechain/uncle tests
+  - RPC/infrastructure (16): RPC_API_Test (9), ForkStressTest (7)
+  - Precompile (24): RevertPrecompiledTouch (12), static_Call50000_sha256 (10), CALLBlake2f_MaxRounds (2)
+  - Trie/branch tests (16): lotsOfBranches variants, lotsOfLeafs
+  - Istanbul/Berlin specific (~50): randomStatetest variants, InvalidBlocks, wallet tests, storage/state tests
+  - Heavy compute (7): loopMul (6), loopExp (1)
+  - DAO fork (4): DaoTransactions (3), HomesteadOverrideFrontier (1)
+  - Block-level (5): BLOCK_* RLP tests, ExtraData32, notxs
+  - Final crashes (5): wallet* tests at very end — "terminated unexpectedly"
+- **Full report:** [`reports/260211_CONSENSUS_ETC_RESULTS.md`](reports/260211_CONSENSUS_ETC_RESULTS.md)
 
 ## Test Results — Baseline (ETH test suites)
 
@@ -131,21 +127,18 @@ export PATH=$PATH:/usr/local/go/bin
 ## Operation Log
 
 ### 2026-02-11: consensus-etc Full Suite Complete
-- **Result:** 99.88% pass (183,760 / 183,985) across 3 clients
-- **Duration:** ~125 hours / 5.2 days (Feb 6 13:07 — Feb 11 ~18:30 UTC)
-- **Failed:** 225 tests (combined across all 3 clients)
-- **Clients tested:** core-geth, besu-etc, nethermind-etc (61,328 tests each)
-- **Forks tested:** Frontier, Homestead, EIP150, EIP158, Byzantium, Constantinople, ConstantinopleFix, Istanbul, Berlin
-- **Key failure categories:**
-  - EIP-7610/CREATE2 collision (54) — known core-geth issue, safe for ETC
-  - Chain reorg/uncle/sidechain (~71) — infrastructure/timeout related
-  - InvalidBlocks from LegacyTests/Cancun (18) — Istanbul/Berlin
-  - RPC/ForkStress (15) — infrastructure related
-  - Precompile (24) — heavy compute + precompile touch
-  - DAO fork transitions (10) — expected for ETC
-  - Loop/compute/state (22)
-  - codesizeOOGInvalidSize (1) — besu-etc specific
-- Per-client failure attribution pending (detail log doesn't include client identifiers)
+- **Result:** 183,985 tests, 302 failures across 3 clients
+- **Duration:** ~125 hours / 5.2 days (Feb 6 13:07 — Feb 11 18:16 UTC)
+- **Per-client results (from results JSON):**
+  - core-geth: 61,264/61,328 passed (99.90%) — 64 failures, all EIP-7610 + DAO fork
+  - besu-etc: 61,321/61,328 passed (99.99%) — 7 failures (3 DAO + 4 genuine)
+  - nethermind-etc: 61,098/61,328 passed (99.62%) — 230 failures (chain reorg, precompile, Istanbul/Berlin issues)
+- **Forks tested:** Frontier, Homestead, EIP150, EIP158, Byzantium, Constantinople, ConstantinopleFix, Istanbul, Berlin (all 9 ETC-compatible forks)
+- **Key findings:**
+  - core-geth: No genuine EVM failures — all 64 are EIP-7610 (not applicable to ETC) + DAO fork (disabled for ETC)
+  - besu-etc: Best pass rate at 99.99% — only 4 genuine failures beyond DAO tests
+  - nethermind-etc: Systematic issues with chain reorg/uncle handling (~60 failures), heavy precompile tests, and Istanbul/Berlin-specific tests
+- **Report:** [`reports/260211_CONSENSUS_ETC_RESULTS.md`](reports/260211_CONSENSUS_ETC_RESULTS.md)
 
 ### 2026-02-06: consensus-etc suite & nethermind-etc progress
 - Implemented `consensus-etc` suite in Hive consensus simulator

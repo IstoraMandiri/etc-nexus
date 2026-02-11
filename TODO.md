@@ -3,24 +3,21 @@
 > **Note:** For current test progress and status, see [SITREP.md](SITREP.md).
 > This file focuses on planned future work.
 
-## Immediate — Full consensus-etc Runs
+## Immediate — Analyze Results
 
-1. **Run full consensus-etc for nethermind-etc** — only bcValidBlockTest subset done so far (166/167). Run without `--sim.limit` filter to cover all test categories.
-2. **Run full consensus-etc for core-geth** — validate against the new suite (should match legacy results)
-3. **Run full consensus-etc for besu-etc** — validate against the new suite
-
-## Investigate Known Failures
-
-- [ ] **besu-etc 3 legacy failures** — NOT EIP-7610. Failures: `sstore_combinations_initial1_d1243g0v0_Constantinople`, `codesizeOOGInvalidSize_d0g0v0_EIP158`, `ecmul_1-2_340282366920938463463374607431768211456_21000_128_d0g1v0_ConstantinopleFix`
-- [ ] **nethermind-etc "test file loader" meta-test failure** — the 1 failure in the 166/167 run; may be a harness issue rather than a real consensus failure
-- [ ] **besu-etc legacy-cancun** — was misconfigured last time (`--sim.limit .*`). Run properly with `--sim.limit legacy-cancun`
-
-## Pending Analysis
-
-When test runs complete:
-- [ ] Create multi-client validation summary (core-geth vs besu-etc vs nethermind-etc)
-- [ ] Create besu-etc legacy results report (compare with core-geth baseline)
-- [ ] Analyze core-geth Istanbul/Berlin subset from legacy-cancun
+1. **Investigate nethermind-etc 230 failures** — systematic issues in several categories:
+   - [ ] Chain reorg/uncle handling (~60 failures) — all bcMultiChainTest and bcTotalDifficulty tests fail
+   - [ ] Heavy precompile tests (10) — `static_Call50000_sha256` block import failures
+   - [ ] Istanbul/Berlin-specific failures (~50) — randomStatetest variants, InvalidBlocks, storage tests
+   - [ ] RPC_API_Test (9) / ForkStressTest (7) — infrastructure/timeout issues
+   - [ ] Precompile revert (12) — `RevertPrecompiledTouch` d0/d3 variants
+   - [ ] Final crashes (5) — wallet* tests "terminated unexpectedly"
+2. **Investigate besu-etc 4 genuine failures** (beyond DAO fork):
+   - [ ] `RevertOpcode_d0g1v0_Istanbul` — NEW
+   - [ ] `eip2929OOG_d3g0v0_Istanbul` — EIP-2929 gas cost issue
+   - [ ] `gasCostMemSeg_d41g0v0_Berlin` — gas cost calculation
+   - [ ] `codesizeOOGInvalidSize_d0g0v0_EIP158` — known from legacy
+3. **Create EIP-7610 exclusion list** for core-geth — 61 failures are all CREATE2 collision tests not applicable to ETC
 
 ## Run Additional Test Suites
 ```bash

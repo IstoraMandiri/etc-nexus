@@ -743,3 +743,75 @@ Automated hourly monitoring agent that tracked the 3-client consensus-etc test r
 *Committed and pushed current progress to GitHub, then continued hourly monitoring loop with automated SITREP updates and Git pushes through test completion on Feb 11.*
 
 ---
+
+## Session 38: README Fork Documentation and SITREP Cleanup
+
+Updated the README with upstream nethermind-etc-plugin link and documented what changed in each forked submodule. Reorganized SITREP to hoist active tests to the top for visibility. Committed and pushed multiple logical commits.
+
+> **2026-02-06 13:20** — in the readme, note the upstream nethermind client is at https://github.com/ETCCooperative/nethermind-etc-plugin/releases and document what changed between upstream and the forks. commit and push
+
+*Updated README with upstream nethermind-etc-plugin link, added Fork Changes section documenting: hive (6 commits, 3 ETC clients + consensus-etc suite), core-geth (mirror, no changes), nethermind-etc-plugin (1 commit, IChainSpecEngineParameters fix). Committed and pushed.*
+
+> **2026-02-06 13:32** — push
+
+*Found unstaged changes in CLAUDE.md, TODO.md, and nethermind-etc-plugin submodule. Split into 2 logical commits: (1) docs documenting multi-client --client flag, (2) nethermind-etc-plugin submodule pointer update.*
+
+> **2026-02-06 13:33** — [/step-through-changes] and auto-push
+
+*Reviewed and committed changes in two logical groups, pushed as commits 166106b and 07b90e5.*
+
+> **2026-02-06 13:38** — hoist the currently running tests to the top of the sitrep. push
+
+*Moved Active Tests section to just below Summary in SITREP.md for better visibility. Pushed as commit e7f85e7.*
+
+---
+
+## Session 39: Test Suite Explanation and Progress Check
+
+Checked progress of the 3-client consensus-etc suite run (~23 hours in) and explained what "consensus" means in the Hive testing context. Discussed the difference between consensus tests (ETC-specific fork rules) and general protocol tests (devp2p, RPC).
+
+> **2026-02-07 12:13** — where we at?
+
+*Reported status: full consensus-etc run with all 3 clients running for ~23 hours, 35,154 tests completed (~11,718 each), 34 failures total (mostly EIP-7610 CREATE2 collision edge cases expected for core-geth).*
+
+> **2026-02-07 12:35** — can you explain why it's called consensus-etc? what does consensus mean in this context
+
+*Explained that consensus tests verify all clients agree on the correct state after processing blocks/transactions. Tests feed blocks to a client and check if the resulting state matches expected output. If clients disagree, they'd fork the chain.*
+
+> **2026-02-07 12:37** — i see, so devp2p and other non-consensus-etc tests are 'general' and not specific to ETC fork? also, when we're running these tests, are they running the clients in the same environment -- like are they doing transactions between each other?
+
+*Clarified that devp2p tests are general protocol tests (wire protocol, discovery) not fork-specific. Consensus tests run each client individually in its own Docker container -- they don't transact between clients. Each client is tested against known-good expected outputs independently.*
+
+---
+
+## Session 40: Nethermind Plugin Fork Report for Maintainer
+
+The nethermind-etc-plugin maintainer asked why we needed to fork the plugin. Investigated the exact change (1 line in 1 file), created a detailed report explaining the TypeDiscovery conflict, and generated a Discord-friendly summary for the maintainer.
+
+> **2026-02-17 08:08** — i just had a chat with the maintainer of nethermind-etc-plugin he's wondering why we needed to fork the plugin and has this to say [discord conversation about the fork and the IChainSpecEngineParameters conflict]
+
+*Investigated the fork changes. Found exactly one line was changed: removed `: IChainSpecEngineParameters` from the base class to prevent Nethermind's TypeDiscovery from finding two classes with EngineName "Ethash". Drafted a response explaining the conflict between the plugin's base class and Nethermind's built-in EthashChainSpecEngineParameters.*
+
+> **2026-02-17 08:12** — use the report skill to create a report about this, including the discord length response. do not include reference to the maintainer, just explain the change.
+
+*Created report at reports/260217_NETHERMIND_PLUGIN_FORK.md with full technical analysis and a Discord-length summary under 1900 characters explaining the TypeDiscovery conflict and the one-line fix.*
+
+> **2026-02-17 08:16** — please push
+
+*Pushed report to GitHub.*
+
+---
+
+## Session 41: Server Decommissioning and Final Handoff
+
+Verified all test suites complete, no running processes, no uncommitted work, and all submodules synced before server decommissioning. Prepared final handoff documentation.
+
+> **2026-02-17 08:19** — So I can see that the test is complete and scanning the reports folder, I see that we've done everything that I believe is needed. Can you check that there's anything running in the background or any loose ends that need to be tied up before I decommission this server because we are going to turn it off and then restore in a different instance later on to save costs.
+
+*Checked everything: git status clean across all repos (etc-nexus, hive, nethermind-etc-plugin, core-geth), no Hive tests or client processes running, no unpushed commits. Confirmed safe to decommission.*
+
+> **2026-02-17 08:20** — [/handoff]
+
+*Prepared final handoff: synced all documentation, updated SITREP and TODO, committed and pushed final state.*
+
+---

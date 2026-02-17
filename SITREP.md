@@ -1,14 +1,16 @@
 # Situation Report
 
-Last updated: 2026-02-11 18:50 UTC
+Last updated: 2026-02-17 UTC
 
 ## Summary
 
 Hive integration testing for ETC clients. Three clients under test: core-geth, besu-etc, nethermind-etc. Implemented `consensus-etc` suite in Hive for streamlined ETC testing. **Full 3-client consensus-etc run complete: 183,985 tests, 302 failures. Per-client attribution finalized from results JSON.**
 
+**Status: All work committed and pushed. Server decommissioned. Ready to restore on a new instance.**
+
 ## Active Tests
 
-None — all test runs complete.
+None — all test runs complete. Server being decommissioned.
 
 ## Test Results — consensus-etc Full Suite (3 clients)
 
@@ -92,7 +94,7 @@ Early partial runs before the full 3-client suite was started.
 
 | Repo | Branch | Latest Commit | Status |
 |------|--------|---------------|--------|
-| etc-nexus | `main` | `c728939` | Needs update |
+| etc-nexus | `main` | `bd64ef7` | Up to date |
 | hive | `istora-core-geth-client` | `701402d` | Pushed |
 | nethermind-etc-plugin | `main` | `bc99146` | In sync |
 
@@ -125,6 +127,12 @@ export PATH=$PATH:/usr/local/go/bin
 ---
 
 ## Operation Log
+
+### 2026-02-17: Server Decommission Handoff
+- Verified all work committed and pushed across all repos (etc-nexus, hive, nethermind-etc-plugin)
+- No running processes, no uncommitted changes, no unpushed commits
+- Server being shut down to save costs; restore from `git clone --recursive` on new instance
+- To resume: `/pickup` in a new session
 
 ### 2026-02-11: consensus-etc Full Suite Complete
 - **Result:** 183,985 tests, 302 failures across 3 clients

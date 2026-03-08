@@ -38,16 +38,133 @@
 
 ---
 
-## Future: ETC-Divergent Forks (ECIP-1120, ECIP-1121, etc.)
+## ECIP-1121 Implementation (Active)
 
-Eventually ETC will have forks with no Ethereum equivalent. These require:
+Implement ECIP-1121 on core-geth: next ETC hard fork adding selected Cancun EIPs.
 
-1. **ETC-specific test directory** (`ETCTests/ECIP1120/`, etc.)
-2. **ETC-only fork definitions** in `etc_forks.go` (new `HIVE_FORK_ECIP*` env vars)
-3. **Test generation** from reference implementations
-4. **Client support** for new env vars in mapper.jq/startup scripts
+**EIPs included:**
+- EIP-1153: Transient Storage (TSTORE/TLOAD opcodes)
+- EIP-5656: MCOPY (memory copying instruction)
+- EIP-6780: SELFDESTRUCT restriction (only in same transaction)
 
-See [ECIP-1120](https://ecips.ethereumclassic.org/ECIPs/ecip-1120) and [ECIP-1121](https://ecips.ethereumclassic.org/ECIPs/ecip-1121).
+**NOT included** (PoS-specific): EIP-4844, EIP-4788, EIP-7516
+
+**Status:** EVM implementations already exist in core-geth. Only activation wiring + tests needed.
+
+### Research Complete ✓
+- [x] Map EIP scope and implementations (Task #1)
+- [x] Map test infrastructure (Task #2)
+- [x] Create implementation plan (Task #3)
+
+**Reference docs**:
+- `ECIP1121_TEST_INFRASTRUCTURE_REPORT.md` — test architecture & fixtures
+- `ECIP1121_IMPLEMENTATION_PLAN.md` — detailed implementation spec
+
+### Phase 1: Core-geth Fork Definition (Task #4)
+
+**Files to modify:**
+1. Create `params/coregeth.json.d/etc_ecip1121_test.json`
+   - Copy from `etc_magneto_test.json` template
+   - Set `eip1153FBlock: 0`, `eip5656FBlock: 0`, `eip6780FBlock: 0`
+   - Est: 15 min
+
+2. Edit `tests/init.go:41-56` — add fork entry
+   ```go
+   "ETC_ECIP1121": "etc_ecip1121_test.json",
+   ```
+   - Est: 5 min
+
+**Verification**:
+```bash
+cd /home/dob/etc-nexus/core-geth/tests
+CG_CHAINCONFIG_CHAINSPECS_COREGETH_KEY=1 go test -run TestState -v 2>&1 | grep ECIP1121
+```
+
+**Note**: No changes to `config_classic.go` or `config_mordor.go` needed for testing. Those are for mainnet/testnet activation (block TBD by community).
+
+### Phase 2: Hive/Nexus Integration (Task #7)
+
+**Files to modify:**
+1. Edit `hive/clients/core-geth/mapper.jq:58-62` — add 3 new fields
+   ```jq
+   "eip1153FBlock": env.HIVE_FORK_ECIP1121_EIP1153|to_int,
+   "eip5656FBlock": env.HIVE_FORK_ECIP1121_EIP5656|to_int,
+   "eip6780FBlock": env.HIVE_FORK_ECIP1121_EIP6780|to_int,
+   ```
+   - Est: 5 min
+
+2. Edit `hive/simulators/ethereum/consensus/etc_forks.go:202+` — add fork entry
+   ```go
+   "ETC_ECIP1121": {
+       "HIVE_FORK_HOMESTEAD":      0,
+       "HIVE_FORK_TANGERINE":      0,
+       "HIVE_FORK_SPURIOUS":       0,
+       "HIVE_FORK_BYZANTIUM":      0,
+       "HIVE_FORK_CONSTANTINOPLE": 0,
+       "HIVE_FORK_PETERSBURG":     0,
+       "HIVE_FORK_ISTANBUL":       0,
+       "HIVE_FORK_BERLIN":         0,
+       "HIVE_FORK_LONDON":         2000,
+       "HIVE_FORK_ECIP1121_EIP1153": 0,
+       "HIVE_FORK_ECIP1121_EIP5656": 0,
+       "HIVE_FORK_ECIP1121_EIP6780": 0,
+   },
+   ```
+   - Est: 10 min
+
+### Phase 3: Unit Tests (Task #6)
+
+**Files to create:**
+1. Create `core/vm/ecip1121_test.go` (~200 lines)
+   - Test TSTORE/TLOAD: gas, storage, clearing, nesting
+   - Test MCOPY: basic, overlapping, memory expansion
+   - Test SELFDESTRUCT: same-tx vs cross-tx restrictions
+   - Pattern: Follow `instructions_test.go` and `runtime_test.go`
+   - Est: 2 hours
+
+### Phase 4: Integration Testing (Task #8)
+
+**Run tests**:
+```bash
+# Unit tests
+cd /home/dob/etc-nexus/core-geth/core/vm
+go test -run ECIP1121 -v
+
+# State tests with fork registration
+cd /home/dob/etc-nexus/core-geth/tests
+CG_CHAINCONFIG_CHAINSPECS_COREGETH_KEY=1 go test -run TestState -v
+
+# Hive ECIP-1121 subset (10+ tests)
+cd /home/dob/etc-nexus/hive
+./hive --sim ethereum/consensus --sim.limit "consensus-etc/ETC_ECIP1121" --client core-geth --sim.parallelism 4
+
+# Full ETC suite (validation)
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client core-geth --sim.parallelism 4
+```
+
+**Success criteria**:
+- ✓ All ECIP-1121 unit tests pass
+- ✓ Hive consensus-etc/ETC_ECIP1121 tests pass (10+ tests)
+- ✓ All existing ETC forks (Frontier-Berlin) still pass
+- ✓ No regressions
+
+### Summary
+- **Total files**: 6 (4 modifications, 2 creations)
+- **Total changes**: ~350 lines
+- **Estimated effort**: ~4 hours (mostly test execution time)
+- **Risk**: Low (config + tests, EIP code already exists)
+
+### Key Notes
+- Core-geth has EIP1153/5656/6780 implementations already (synced from upstream geth)
+- Only fork activation wiring needed, no EIP implementation code changes
+- ETC consensus-etc suite uses `chainId: 1` for test compatibility (upstream fixture compat)
+- Upstream Cancun fixtures (38 tests) automatically reusable via fork registration
+
+---
+
+## Future: ECIP-1120 and Beyond
+
+See [ECIP-1120](https://ecips.ethereumclassic.org/ECIPs/ecip-1120).
 
 ---
 

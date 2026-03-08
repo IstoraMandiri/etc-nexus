@@ -67,7 +67,7 @@ All 12 ECIP-1121 EIPs implemented on core-geth. On `claude/ecip-1121` branches i
 - [ ] Run Hive consensus-etc/ETC_ECIP1121 tests to validate
 - [ ] Run full consensus-etc suite to check for regressions
 - [ ] Review EIP-7702 authorization processing in state transition (currently handles delegation resolution but not auth list processing)
-- [ ] Push branches to remote forks
+- [x] Push branches to remote forks
 
 ### Reference docs
 - `ECIP1121_IMPLEMENTATION_PLAN.md` — detailed implementation spec

@@ -1,12 +1,14 @@
 # Situation Report
 
-Last updated: 2026-02-17 UTC
+Last updated: 2026-03-08 UTC
 
 ## Summary
 
 Hive integration testing for ETC clients. Three clients under test: core-geth, besu-etc, nethermind-etc. Implemented `consensus-etc` suite in Hive for streamlined ETC testing. **Full 3-client consensus-etc run complete: 183,985 tests, 302 failures. Per-client attribution finalized from results JSON.**
 
-**Status: All work committed and pushed. Server decommissioned. Ready to restore on a new instance.**
+**ECIP-1121 implementation complete** — all 12 EIPs implemented in core-geth on `claude/ecip-1121` branch. Hive fork config updated.
+
+**Status: All work committed and pushed to IstoraMandiri repos. Pending: Hive test validation of ECIP-1121 fork.**
 
 ## Active Tests
 
@@ -94,9 +96,20 @@ Early partial runs before the full 3-client suite was started.
 
 | Repo | Branch | Latest Commit | Status |
 |------|--------|---------------|--------|
-| etc-nexus | `main` | `bd64ef7` | Up to date |
-| hive | `istora-core-geth-client` | `701402d` | Pushed |
+| etc-nexus | `claude/ecip-1121` | `bc91314` | Pushed |
+| core-geth | `claude/ecip-1121` | `c620fbf` | Pushed |
+| hive | `claude/ecip-1121` | `fd21bf7` | Pushed |
 | nethermind-etc-plugin | `main` | `bc99146` | In sync |
+
+### ECIP-1121 Implementation (core-geth `claude/ecip-1121`)
+
+All 12 EIPs implemented. Activation blocks: Classic mainnet 21,000,000 / Mordor testnet 10,500,000.
+
+- EIP-1153 (Transient Storage), EIP-5656 (MCOPY), EIP-6780 (SELFDESTRUCT restriction) — existing, wired
+- EIP-2537 (BLS12-381 precompile) — existing, activation wired
+- EIP-7883 (MODEXP gas increase), EIP-7825 (TX gas limit cap), EIP-7623 (Calldata cost floor), EIP-7934 (10 MiB RLP block limit) — new implementations
+- EIP-2935 (Historical block hashes), EIP-7910 (eth_config RPC), EIP-7702 (EOA code delegation), EIP-7951 (secp256r1 precompile) — new implementations
+- Deferred: EIP-7935 (default gas limit 60M) — per community decision
 
 ## Commands Reference
 
@@ -127,6 +140,12 @@ export PATH=$PATH:/usr/local/go/bin
 ---
 
 ## Operation Log
+
+### 2026-03-08: ECIP-1121 Branches Pushed
+- All `claude/ecip-1121` branches pushed to IstoraMandiri remotes (etc-nexus, core-geth, hive)
+- core-geth: 3 commits — initial fork wiring (EIP-1153/5656/6780), full 12-EIP implementation, EIP-7702 delegation fix
+- hive: 2 commits — ECIP-1121 fork support, all EIPs in hive config
+- Remaining: run Hive consensus-etc tests to validate, review EIP-7702 auth list processing
 
 ### 2026-02-17: Server Decommission Handoff
 - Verified all work committed and pushed across all repos (etc-nexus, hive, nethermind-etc-plugin)

@@ -3,7 +3,18 @@
 > **Note:** For current test progress and status, see [SITREP.md](SITREP.md).
 > This file focuses on planned future work.
 
-## Immediate — Analyze Results
+## Immediate — ECIP-1121 Validation
+
+1. **Run consensus-etc against ECIP-1121 core-geth build** — validate all 12 EIPs, check for regressions
+   ```bash
+   cd /home/dob/etc-nexus/hive
+   ./hive --sim ethereum/consensus --sim.limit consensus-etc --client "core-geth_claude/ecip-1121" --sim.parallelism 4
+   ```
+   - [ ] Existing forks (Frontier–Berlin): no new failures vs baseline (64 known EIP-7610/DAO)
+   - [ ] ECIP-1121 fork tests: pass rate TBD
+   - [ ] Review EIP-7702 authorization processing (delegation resolution done, auth list processing pending)
+
+## Backlog — Analyze Pre-ECIP-1121 Results
 
 1. **Investigate nethermind-etc 230 failures** — systematic issues in several categories:
    - [ ] Chain reorg/uncle handling (~60 failures) — all bcMultiChainTest and bcTotalDifficulty tests fail

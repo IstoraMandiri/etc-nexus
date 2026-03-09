@@ -8,11 +8,25 @@ Hive integration testing for ETC clients. Three clients under test: core-geth, b
 
 **ECIP-1121 implementation complete** — all 12 EIPs implemented in core-geth on `claude/ecip-1121` branch. Hive fork config updated.
 
-**Status: All work committed and pushed to IstoraMandiri repos. Pending: Hive test validation of ECIP-1121 fork.**
+**Status: All work committed and pushed to IstoraMandiri repos. Docker image verified. Ready to run ECIP-1121 Hive validation.**
+
+## Next Step
+
+Run consensus-etc suite against the ECIP-1121 core-geth build to validate all 12 EIPs and check for regressions against pre-ECIP-1121 forks (Frontier through Berlin).
+
+```bash
+cd /home/dob/etc-nexus/hive
+./hive --sim ethereum/consensus --sim.limit consensus-etc --client "core-geth_claude/ecip-1121" --sim.parallelism 4
+```
+
+- Docker image builds and starts successfully from `claude/ecip-1121` (`CoreGeth/v1.12.21-unstable-c620fbf6`)
+- Expecting ~61K tests across 9 existing forks + new ECIP-1121 fork tests
+- Baseline: 64 failures on pre-ECIP-1121 core-geth (all EIP-7610/DAO — no genuine EVM issues)
+- Goal: no new regressions on existing forks, ECIP-1121 fork tests pass
 
 ## Active Tests
 
-None — all test runs complete. Server being decommissioned.
+None — ready to start ECIP-1121 validation run.
 
 ## Test Results — consensus-etc Full Suite (3 clients)
 
@@ -140,6 +154,12 @@ export PATH=$PATH:/usr/local/go/bin
 ---
 
 ## Operation Log
+
+### 2026-03-09: ECIP-1121 Build Verified
+- Docker image builds from `claude/ecip-1121` branch: `CoreGeth/v1.12.21-unstable-c620fbf6`
+- Container starts, initializes chain, opens RPC — confirmed working
+- Hive binary built, client definition ready with `etc` role
+- Next: run `consensus-etc` suite to validate
 
 ### 2026-03-08: ECIP-1121 Branches Pushed
 - All `claude/ecip-1121` branches pushed to IstoraMandiri remotes (etc-nexus, core-geth, hive)
